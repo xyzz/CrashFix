@@ -1,0 +1,388 @@
+
+ 
+
+
+
+ 
+ 
+ 
+
+
+
+ 
+ 
+ <!DOCTYPE html>
+<html>
+<head>
+ <link rel="icon" type="image/vnd.microsoft.icon" href="http://www.gstatic.com/codesite/ph/images/phosting.ico">
+ 
+ 
+ <link rel="canonical" href="http://code.google.com/p/pdbparser/wiki/FormatDescription" />
+ 
+ <script type="text/javascript">
+ 
+ 
+ 
+ 
+ var codesite_token = null;
+ 
+ 
+ var CS_env = {"token":null,"assetHostPath":"http://www.gstatic.com/codesite/ph","domainName":null,"assetVersionPath":"http://www.gstatic.com/codesite/ph/18339216115563546213","projectName":"pdbparser","projectHomeUrl":"/p/pdbparser","absoluteBaseUrl":"http://code.google.com","relativeBaseUrl":"","urlPrefix":"p","loggedInUserEmail":null};
+ </script>
+ 
+ 
+ <title>FormatDescription - 
+ pdbparser -
+ 
+ Contains summary format description for PDB files. Particular subformats are descibed at the corresponding pages. - 
+ Parsing library for PDB file format (debugging information) - Google Project Hosting
+ </title>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+ <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
+ 
+ <meta name="ROBOTS" content="NOARCHIVE">
+ 
+ <link type="text/css" rel="stylesheet" href="http://www.gstatic.com/codesite/ph/18339216115563546213/css/ph_core.css">
+ 
+ <link type="text/css" rel="stylesheet" href="http://www.gstatic.com/codesite/ph/18339216115563546213/css/ph_detail.css" >
+ 
+ 
+ 
+ <link type="application/atom+xml" rel="alternate" href="/feeds/p/pdbparser/svnchanges/basic?path=/wiki/FormatDescription.wiki">
+ 
+ 
+<!--[if IE]>
+ <link type="text/css" rel="stylesheet" href="http://www.gstatic.com/codesite/ph/18339216115563546213/css/d_ie.css" >
+<![endif]-->
+ <style type="text/css">
+ .menuIcon.off { background: no-repeat url(http://www.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 -42px }
+ .menuIcon.on { background: no-repeat url(http://www.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 -28px }
+ .menuIcon.down { background: no-repeat url(http://www.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 0; }
+ 
+ 
+ #maincol {
+ padding-top: 0;
+ padding-bottom: 0;
+ }
+
+ </style>
+</head>
+<body class="t6">
+ <script type="text/javascript">
+ var _gaq = _gaq || [];
+ _gaq.push(
+ ['siteTracker._setAccount', 'UA-18071-1'],
+ ['siteTracker._trackPageview']);
+ 
+ (function() {
+ var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+ (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+ })();
+ </script>
+<div class="headbg">
+ <div id="gaia">
+ 
+
+ <span>
+ 
+ <a href="#" id="projects-dropdown" onclick="return false;"><u>My favorites</u> <small>&#9660;</small></a>
+ | <a href="https://www.google.com/accounts/ServiceLogin?service=code&amp;ltmpl=phosting&amp;continue=http%3A%2F%2Fcode.google.com%2Fp%2Fpdbparser%2Fwiki%2FFormatDescription&amp;followup=http%3A%2F%2Fcode.google.com%2Fp%2Fpdbparser%2Fwiki%2FFormatDescription" onclick="_CS_click('/gb/ph/signin');"><u>Sign in</u></a>
+ 
+ </span>
+
+ </div>
+ <div class="gbh" style="left: 0pt;"></div>
+ <div class="gbh" style="right: 0pt;"></div>
+ 
+ 
+ <div style="height: 1px"></div>
+<!--[if lte IE 7]>
+<div style="text-align:center;">
+Your version of Internet Explorer is not supported. Try a browser that
+contributes to open source, such as <a href="http://www.firefox.com">Firefox</a>,
+<a href="http://www.google.com/chrome">Google Chrome</a>, or
+<a href="http://code.google.com/chrome/chromeframe/">Google Chrome Frame</a>.
+</div>
+<![endif]-->
+
+
+
+
+ <table style="padding:0px; margin: 0px 0px 10px 0px; width:100%" cellpadding="0" cellspacing="0">
+ <tr style="height: 58px;">
+ 
+ <td id="plogo">
+ <a href="/p/pdbparser/">
+ 
+ <img src="http://www.gstatic.com/codesite/ph/images/defaultlogo.png" alt="Logo">
+ 
+ </a>
+ </td>
+ 
+ <td style="padding-left: 0.5em">
+ 
+ <div id="pname">
+ <a href="/p/pdbparser/">pdbparser</a>
+ </div>
+ 
+ <div id="psum">
+ <a id="project_summary_link" href="/p/pdbparser/" >Parsing library for PDB file format (debugging information)</a>
+ 
+ </div>
+ 
+ 
+ </td>
+ <td style="white-space:nowrap;text-align:right; vertical-align:bottom;">
+ 
+ <form action="/hosting/search">
+ <input size="30" name="q" value="" type="text">
+ <input type="submit" name="projectsearch" value="Search projects" >
+ </form>
+ 
+ </tr>
+ </table>
+
+</div>
+
+ 
+<div id="mt" class="gtb"> 
+ <a href="/p/pdbparser/" class="tab ">Project&nbsp;Home</a>
+ 
+ 
+ 
+ 
+ <a href="/p/pdbparser/downloads/list" class="tab ">Downloads</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/pdbparser/w/list" class="tab active">Wiki</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/pdbparser/issues/list"
+ class="tab ">Issues</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/pdbparser/source/checkout"
+ class="tab ">Source</a>
+ 
+ 
+ 
+ 
+ 
+ <div class=gtbc></div>
+</div>
+<table cellspacing="0" cellpadding="0" width="100%" align="center" border="0" class="st">
+ <tr>
+ 
+ 
+ 
+ <td class="subt">
+ <div class="issueDetail">
+<div class="isf">
+ 
+ <span class="inIssueList"> 
+ <span>Search</span>
+ <form action="/p/pdbparser/w/list" method="GET" style="display:inline">
+ <select id="can" name="can" >
+ <option disabled="disabled">Search within:</option>
+ 
+ <option value="1" >&nbsp;All wiki pages</option>
+ <option value="3" >&nbsp;Featured pages</option>
+ <option value="2" selected="selected">&nbsp;Current pages</option>
+ 
+ 
+ <option value="4" >&nbsp;Deprecated pages</option>
+ 
+ </select>
+ <span>for</span>
+ <span id="qq"><input type="text" size="38" id="searchq" name="q" value=""
+ autocomplete="off" ></span>
+ 
+ 
+ <input type="submit" value="Search" >
+ </form>
+ </span>
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+</div>
+</div>
+
+ </td>
+ 
+ 
+ 
+ 
+ 
+ 
+ <td align="right" valign="top" class="bevel-right"></td>
+ </tr>
+</table>
+
+
+<script type="text/javascript">
+ var cancelBubble = false;
+ function _go(url) { document.location = url; }
+</script>
+<div id="maincol"
+ 
+>
+
+ 
+<!-- IE -->
+
+
+
+
+
+
+
+ <style type="text/css">
+ .delcom { background: #e8e8e8 }
+ .commentcontent {
+ margin: 2em;
+ padding: 0px 10px;
+ width: 66em;
+ }
+ .artifactcomment {
+ border-top: 3px solid #c3d9ff;
+ }
+ #commentform {
+ border-top: 3px solid #c3d9ff;
+ }
+ </style>
+
+<div id="wikipage">
+<table>
+ <tr>
+ 
+ 
+ <td style="vertical-align:top; padding-left:5px">
+ 
+ <div id="wikiheader">
+ 
+ <span style="font-size:120%;font-weight:bold">FormatDescription</span>
+ &nbsp;
+ <div> 
+ 
+ <i>Contains summary format description for PDB files. Particular subformats are descibed at the corresponding pages.</i>
+ 
+ 
+ <br/>
+ 
+ <a class="label" style="padding-top: 2px"
+ href="/p/pdbparser/w/list?q=label:Phase-Internals"
+ title=""
+ >Phase-Internals</a>, 
+ 
+ <a class="label" style="padding-top: 2px"
+ href="/p/pdbparser/w/list?q=label:Phase-Implementation"
+ title="Developers&#39; guide"
+ >Phase-Implementation</a>, 
+ 
+ <a class="label" style="padding-top: 2px"
+ href="/p/pdbparser/w/list?q=label:File-Format"
+ title=""
+ >File-Format</a>
+ 
+ 
+ 
+ <div id="wikiauthor" style="float:right">
+ Updated <span title="Fri Jul  9 07:03:56 2010">
+ Jul 9, 2010</span>
+ 
+ by <a style="white-space: nowrap" href="/u/xgreatx/">xgreatx</a>
+ 
+ </div>
+ </div>
+ </div>
+ 
+ <div id="wikicontent">
+ <div class="vt" id="wikimaincol">
+ <h1><a name="Outer_format:_MSF_container"></a>Outer format: MSF container<a href="#Outer_format:_MSF_container" class="section_anchor"></a></h1><p>The outer format of PDB file is a MSF (Multi-Stream File, see MSF_Format).  Data is contained in so called &#x27;streams&#x27; (numbered data streams). Also, MSF container is divided in &#x27;pages&#x27; (blocks of fixed size, page size resides in MSF header). Size of MSF container is always a multiple of PageSize (and equals <tt>PageSize * PageCount</tt>). First page contains MSF file header (see MSF_Format for detailed description), followed by <strong>Root Directory</strong> (array of stream descriptors; defines where the particular stream exists within the MSF). Root Directory contains number of streams, stream page counts and stream pointers (list of page numbers occupied by the stream). Root Directory is usually followed by stream data. Stream pages can be placed randomly (e.g. Stream #0 can consist of Pages# 1,4-9,15, but Stream #1 can consist of Pages# 2-3,10-14, for example). When parsing MSF container and reading stream content, parser enumerates all page numbers in StreamPointers and for each page# reads stream pages and places them in the proper order. &#x27;cause stream may be fragmented, MSF container can&#x27;t be simply mapped for manipulating pointers within this mapped view. For reading stream contents, memory block of stream size should be allocated and there pages have to be read one by one and consequently written in this block. Pointer to the beginning of the block is returned as &#x27;stream data pointer&#x27; (of course, should be freed when is not yet necessary). </p><h1><a name="MSF_Container_Internals"></a>MSF Container Internals<a href="#MSF_Container_Internals" class="section_anchor"></a></h1><h2><a name="PDB_stream"></a>PDB stream<a href="#PDB_stream" class="section_anchor"></a></h2><p>PDB stream contains GUID signature and PDB age for identification it in a symbol store or symbol server (which is actually a symbol store, accessible from the Web with compression-on-the-fly option). </p><h2><a name="TPI_stream"></a>TPI stream<a href="#TPI_stream" class="section_anchor"></a></h2><p>Contains Type Information (array of type descriptors). It includes type of function or method arguments, their return values, global structures, prototypes or classes, etc.. Also, type of structure field is also included in TPI. So, each structure includes one entry per the structure itself and one optional entry per field for describing it&#x27;s field. There is a predefined type list (<tt>int,char,unsigned,void*,...</tt> - all integer,real and other types, pointers to it, double-pointers to it (<tt>type**</tt>), etc.. List of predefined types can be found here: ListOfPredefinedTypes. </p><p>TPI info is a list of descriptors of compex types used in the image. It could be structure, pointer to a (for instance, <tt>struct _KAPC *</tt>), union, etc.. Each entry has an integer ID - <strong>Type ID</strong>. Types in the TPI are identified by this TypeID. For example, TPI module exports function to find type descriptor by type id / find type name by type id. </p><p>Struct/class/union type info contains names, offsets and sizes, type IDs of each field (yes, complex type of each field is described in the separate type descriptor). </p><p>Also, TPI module exports a routine to format TPI dump in C header style (in the ideal: generates compileable header file; current version sometimes &#x27;swallows&#x27; union members). </p><p><i><strong>TODO</strong>: Improve C header file generation in TPI dump: unions are not processed correctly. The problem is in the absence of difference between struct or union (or their combination) in type descriptor list, so looking at the particular struct/union descriptor, parser can&#x27;t tell the union descriptor from struct descriptor or from some their combination. </i></p><p>Symbols for variables has a separate field for type ID of this variable (can be even one of predefined types or type ID in TPI list). </p>
+ </div>
+ </div>
+ </td><tr>
+</table>
+ </div>
+
+
+ 
+ 
+ 
+ 
+ <br>
+ <div class="artifactcomment">
+ <span class="indicator">&#9658;</span> <a href="https://www.google.com/accounts/ServiceLogin?service=code&amp;ltmpl=phosting&amp;continue=http%3A%2F%2Fcode.google.com%2Fp%2Fpdbparser%2Fwiki%2FFormatDescription&amp;followup=http%3A%2F%2Fcode.google.com%2Fp%2Fpdbparser%2Fwiki%2FFormatDescription"
+ >Sign in</a> to add a comment
+ </div>
+ 
+ 
+ 
+ 
+ <form name="delcom" action="../w/delComment.do" method="POST">
+ <input type="hidden" name="sequence_num" value="" >
+ <input type="hidden" name="create_time" value="" >
+ <input type="hidden" name="mode" value="" >
+ <input type="hidden" name="pagename" value="FormatDescription" >
+ <input type="hidden" name="token" value="" >
+ </form>
+
+
+
+ <script src="http://www.gstatic.com/codesite/ph/18339216115563546213/js/prettify/prettify.js"></script>
+ <script type="text/javascript">
+ prettyPrint();
+ </script>
+
+<script type="text/javascript" src="http://www.gstatic.com/codesite/ph/18339216115563546213/js/dit_scripts.js"></script>
+
+
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js">
+</script>
+
+  
+ 
+ 
+ <script type="text/javascript" src="http://www.gstatic.com/codesite/ph/18339216115563546213/js/ph_core.js"></script>
+ 
+ 
+ 
+ 
+ <script type="text/javascript" src="/js/codesite_product_dictionary_ph.pack.04102009.js"></script>
+</div> 
+<div id="footer" dir="ltr">
+ <div class="text">
+ &copy;2011 Google -
+ <a href="/projecthosting/terms.html">Terms</a> -
+ <a href="http://www.google.com/privacy.html">Privacy</a> -
+ <a href="/p/support/">Project Hosting Help</a>
+ </div>
+</div>
+ <div class="hostedBy" style="margin-top: -20px;">
+ <span style="vertical-align: top;">Powered by <a href="http://code.google.com/projecthosting/">Google Project Hosting</a></span>
+ </div>
+ 
+ 
+
+
+ 
+ </body>
+</html>
+
+

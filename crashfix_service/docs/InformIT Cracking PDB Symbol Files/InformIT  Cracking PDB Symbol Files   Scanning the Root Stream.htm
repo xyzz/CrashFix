@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0062)http://www.informit.com/articles/article.aspx?p=22429&seqNum=4 -->
+<html xmlns="http://www.w3.org/1999/xhtml" class=" webkit chrome win js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/widget57.css" media="all"><meta name="verify-v1" content="jKqgZt8qtZUt+IrazV2fydKUZG2KKR8QEUoYjH9tth4="><meta name="keywords" content="Articles and Sample Chapters"><title>InformIT: Cracking PDB Symbol Files &gt; Scanning the Root Stream</title><script language="JavaScript" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/jquery.js" type="text/JavaScript"></script><script language="JavaScript" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/swfobject.js" type="text/JavaScript"></script><script language="JavaScript" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/jqueryui.custom.min.js" type="text/JavaScript"></script><script language="JavaScript" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/css_browser_selector.js" type="text/JavaScript"></script><link rel="shortcut icon" href="http://www.informit.com/display/InformIT/images/objects/favicon.ico" type="image/x-icon"><link rel="stylesheet" type="text/css" href="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/jquery-ui-custom.css"><link href="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/style.css" rel="stylesheet" type="text/css"><!--[if lt IE 7]>
+					<link href="/display/InformIT/css/ie-fix.css" rel="stylesheet" type="text/css" />
+				<![endif]--><link href="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/widget.css" rel="stylesheet" type="text/css"><meta name="WT.si_n" content="Site_Funnel" xmlns=""><meta name="WT.si_p" content="Article" xmlns=""><meta name="WT.ad" content="Home &gt; Articles &gt; Operating Systems, Server &gt; Microsoft Windows Server" xmlns=""><script type="text/javascript" async="" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/embed.js"></script><script src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/thread.js" async="" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/defaults.css"><script src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/disqus.js" async="" charset="UTF-8" data-callback-id="0"></script><style></style><link rel="stylesheet" type="text/css" href="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/t_c4ca4238a0b923820dcc509a6f75849b.css"><script src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/t_c4ca4238a0b923820dcc509a6f75849b.js" async="" charset="UTF-8" data-callback-id="6"></script><script src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/all.js" async="" charset="UTF-8"></script><style type="text/css">.fb_hidden{position:absolute;top:-10000px;z-index:10001}
+.fb_reset{background:none;border-spacing:0;border:0;color:#000;cursor:auto;direction:ltr;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}
+.fb_link img{border:none}
+.fb_dialog{position:absolute;top:-10000px;z-index:10001}
+.fb_dialog_advanced{background:rgba(82, 82, 82, .7);padding:10px;-moz-border-radius:8px;-webkit-border-radius:8px}
+.fb_dialog_content{background:#fff;color:#333}
+.fb_dialog_close_icon{background:url(http://static.ak.fbcdn.net/rsrc.php/v1/zq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v1/zL/r/s816eWC-2sl.gif);cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px;top:8px\9;right:7px\9}
+.fb_dialog_close_icon:hover{background:url(http://static.ak.fbcdn.net/rsrc.php/v1/zq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v1/zL/r/s816eWC-2sl.gif)}
+.fb_dialog_close_icon:active{background:url(http://static.ak.fbcdn.net/rsrc.php/v1/zq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v1/zL/r/s816eWC-2sl.gif)}
+.fb_dialog_loader{background-color:#f2f2f2;border:1px solid #606060;font-size:24px;padding:20px}
+.fb_dialog_top_left,
+.fb_dialog_top_right,
+.fb_dialog_bottom_left,
+.fb_dialog_bottom_right{height:10px;width:10px;overflow:hidden;position:absolute}
+.fb_dialog_top_left{background:url(http://static.ak.fbcdn.net/rsrc.php/v1/ze/r/8YeTNIlTZjm.png) no-repeat 0 0;left:-10px;top:-10px}
+.fb_dialog_top_right{background:url(http://static.ak.fbcdn.net/rsrc.php/v1/ze/r/8YeTNIlTZjm.png) no-repeat 0 -10px;right:-10px;top:-10px}
+.fb_dialog_bottom_left{background:url(http://static.ak.fbcdn.net/rsrc.php/v1/ze/r/8YeTNIlTZjm.png) no-repeat 0 -20px;bottom:-10px;left:-10px}
+.fb_dialog_bottom_right{background:url(http://static.ak.fbcdn.net/rsrc.php/v1/ze/r/8YeTNIlTZjm.png) no-repeat 0 -30px;right:-10px;bottom:-10px}
+.fb_dialog_vert_left,
+.fb_dialog_vert_right,
+.fb_dialog_horiz_top,
+.fb_dialog_horiz_bottom{position:absolute;background:#525252;filter:alpha(opacity=70);opacity:.7}
+.fb_dialog_vert_left,
+.fb_dialog_vert_right{width:10px;height:100%}
+.fb_dialog_vert_left{margin-left:-10px}
+.fb_dialog_vert_right{right:0;margin-right:-10px}
+.fb_dialog_horiz_top,
+.fb_dialog_horiz_bottom{width:100%;height:10px}
+.fb_dialog_horiz_top{margin-top:-10px}
+.fb_dialog_horiz_bottom{bottom:0;margin-bottom:-10px}
+.fb_dialog_iframe{line-height:0}
+.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #3b5998;color:#fff;font-size:14px;font-weight:bold;margin:0}
+.fb_dialog_content .dialog_title > span{background:url(http://static.ak.fbcdn.net/rsrc.php/v1/zd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}
+.fb_dialog_content .dialog_content{background:url(http://static.ak.fbcdn.net/rsrc.php/v1/z9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #555;border-bottom:0;border-top:0;height:150px}
+.fb_dialog_content .dialog_footer{background:#f2f2f2;border:1px solid #555;border-top-color:#ccc;height:40px}
+#fb_dialog_loader_close{float:right}
+.fb_iframe_widget{position:relative;display:-moz-inline-block;display:inline-block}
+.fb_iframe_widget iframe{position:relative;vertical-align:text-bottom}
+.fb_iframe_widget span{position:relative}
+.fb_hide_iframes iframe{position:relative;left:-10000px}
+.fb_iframe_widget_loader{position:relative;display:inline-block}
+.fb_iframe_widget_loader iframe{min-height:32px;z-index:2;zoom:1}
+.fb_iframe_widget_loader .FB_Loader{background:url(http://static.ak.fbcdn.net/rsrc.php/v1/z9/r/jKEcVPZFk-2.gif) no-repeat;height:32px;width:32px;margin-left:-16px;position:absolute;left:50%;z-index:4}
+.fb_button_simple,
+.fb_button_simple_rtl{background-image:url(http://static.ak.fbcdn.net/rsrc.php/v1/zH/r/eIpbnVKI9lR.png);background-repeat:no-repeat;cursor:pointer;outline:none;text-decoration:none}
+.fb_button_simple_rtl{background-position:right 0}
+.fb_button_simple .fb_button_text{margin:0 0 0 20px;padding-bottom:1px}
+.fb_button_simple_rtl .fb_button_text{margin:0 10px 0 0}
+a.fb_button_simple:hover .fb_button_text,
+a.fb_button_simple_rtl:hover .fb_button_text,
+.fb_button_simple:hover .fb_button_text,
+.fb_button_simple_rtl:hover .fb_button_text{text-decoration:underline}
+.fb_button,
+.fb_button_rtl{background:#29447e url(http://static.ak.fbcdn.net/rsrc.php/v1/zL/r/FGFbc80dUKj.png);background-repeat:no-repeat;cursor:pointer;display:inline-block;padding:0 0 0 1px;text-decoration:none;outline:none}
+.fb_button .fb_button_text,
+.fb_button_rtl .fb_button_text{background:#5f78ab url(http://static.ak.fbcdn.net/rsrc.php/v1/zL/r/FGFbc80dUKj.png);border-top:solid 1px #879ac0;border-bottom:solid 1px #1a356e;color:#fff;display:block;font-family:"lucida grande",tahoma,verdana,arial,sans-serif;font-weight:bold;padding:2px 6px 3px 6px;margin:1px 1px 0 21px;text-shadow:none}
+a.fb_button,
+a.fb_button_rtl,
+.fb_button,
+.fb_button_rtl{text-decoration:none}
+a.fb_button:active .fb_button_text,
+a.fb_button_rtl:active .fb_button_text,
+.fb_button:active .fb_button_text,
+.fb_button_rtl:active .fb_button_text{border-bottom:solid 1px #29447e;border-top:solid 1px #45619d;background:#4f6aa3;text-shadow:none}
+.fb_button_xlarge,
+.fb_button_xlarge_rtl{background-position:left -60px;font-size:24px;line-height:30px}
+.fb_button_xlarge .fb_button_text{padding:3px 8px 3px 12px;margin-left:38px}
+a.fb_button_xlarge:active{background-position:left -99px}
+.fb_button_xlarge_rtl{background-position:right -268px}
+.fb_button_xlarge_rtl .fb_button_text{padding:3px 8px 3px 12px;margin-right:39px}
+a.fb_button_xlarge_rtl:active{background-position:right -307px}
+.fb_button_large,
+.fb_button_large_rtl{background-position:left -138px;font-size:13px;line-height:16px}
+.fb_button_large .fb_button_text{margin-left:24px;padding:2px 6px 4px 6px}
+a.fb_button_large:active{background-position:left -163px}
+.fb_button_large_rtl{background-position:right -346px}
+.fb_button_large_rtl .fb_button_text{margin-right:25px}
+a.fb_button_large_rtl:active{background-position:right -371px}
+.fb_button_medium,
+.fb_button_medium_rtl{background-position:left -188px;font-size:11px;line-height:14px}
+a.fb_button_medium:active{background-position:left -210px}
+.fb_button_medium_rtl{background-position:right -396px}
+.fb_button_text_rtl,
+.fb_button_medium_rtl .fb_button_text{padding:2px 6px 3px 6px;margin-right:22px}
+a.fb_button_medium_rtl:active{background-position:right -418px}
+.fb_button_small,
+.fb_button_small_rtl{background-position:left -232px;font-size:10px;line-height:10px}
+.fb_button_small .fb_button_text{padding:2px 6px 3px;margin-left:17px}
+a.fb_button_small:active,
+.fb_button_small:active{background-position:left -250px}
+.fb_button_small_rtl{background-position:right -440px}
+.fb_button_small_rtl .fb_button_text{padding:2px 6px;margin-right:18px}
+a.fb_button_small_rtl:active{background-position:right -458px}
+.fb_share_count_wrapper{position:relative;float:left}
+.fb_share_count{background:#b0b9ec none repeat scroll 0 0;color:#333;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;text-align:center}
+.fb_share_count_inner{background:#e8ebf2;display:block}
+.fb_share_count_right{margin-left:-1px;display:inline-block}
+.fb_share_count_right .fb_share_count_inner{border-top:solid 1px #e8ebf2;border-bottom:solid 1px #b0b9ec;margin:1px 1px 0 1px;font-size:10px;line-height:10px;padding:2px 6px 3px;font-weight:bold}
+.fb_share_count_top{display:block;letter-spacing:-1px;line-height:34px;margin-bottom:7px;font-size:22px;border:solid 1px #b0b9ec}
+.fb_share_count_nub_top{border:none;display:block;position:absolute;left:7px;top:35px;margin:0;padding:0;width:6px;height:7px;background-repeat:no-repeat;background-image:url(http://static.ak.fbcdn.net/rsrc.php/v1/zU/r/bSOHtKbCGYI.png)}
+.fb_share_count_nub_right{border:none;display:inline-block;padding:0;width:5px;height:10px;background-repeat:no-repeat;background-image:url(http://static.ak.fbcdn.net/rsrc.php/v1/zX/r/i_oIVTKMYsL.png);vertical-align:top;background-position:right 5px;z-index:10;left:2px;margin:0 2px 0 0;position:relative}
+.fb_share_no_count{display:none}
+.fb_share_size_Small .fb_share_count_right .fb_share_count_inner{font-size:10px}
+.fb_share_size_Medium .fb_share_count_right .fb_share_count_inner{font-size:11px;padding:2px 6px 3px;letter-spacing:-1px;line-height:14px}
+.fb_share_size_Large .fb_share_count_right .fb_share_count_inner{font-size:13px;line-height:16px;padding:2px 6px 4px;font-weight:normal;letter-spacing:-1px}
+.fb_share_count_hidden .fb_share_count_nub_top,
+.fb_share_count_hidden .fb_share_count_top,
+.fb_share_count_hidden .fb_share_count_nub_right,
+.fb_share_count_hidden .fb_share_count_right{visibility:hidden}
+.fb_connect_bar_container div,
+.fb_connect_bar_container span,
+.fb_connect_bar_container a,
+.fb_connect_bar_container img,
+.fb_connect_bar_container strong{background:none;border-spacing:0;border:0;direction:ltr;font-style:normal;font-variant:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal;vertical-align:baseline}
+.fb_connect_bar_container{position:fixed;left:0 !important;right:0 !important;height:42px !important;padding:0 25px !important;margin:0 !important;vertical-align:middle !important;border-bottom:1px solid #333 !important;background:#3b5998 !important;z-index:99999999 !important;overflow:hidden !important}
+.fb_connect_bar_container_ie6{position:absolute;top:expression(document.compatMode=="CSS1Compat"? document.documentElement.scrollTop+"px":body.scrollTop+"px")}
+.fb_connect_bar{position:relative;margin:auto;height:100%;width:100%;padding:6px 0 0 0 !important;background:none;color:#fff !important;font-family:"lucida grande", tahoma, verdana, arial, sans-serif !important;font-size:13px !important;font-style:normal !important;font-variant:normal !important;font-weight:normal !important;letter-spacing:normal !important;line-height:1 !important;text-decoration:none !important;text-indent:0 !important;text-shadow:none !important;text-transform:none !important;white-space:normal !important;word-spacing:normal !important}
+.fb_connect_bar a:hover{color:#fff}
+.fb_connect_bar .fb_profile img{height:30px;width:30px;vertical-align:middle;margin:0 6px 5px 0}
+.fb_connect_bar div a,
+.fb_connect_bar span,
+.fb_connect_bar span a{color:#bac6da;font-size:11px;text-decoration:none}
+.fb_connect_bar .fb_buttons{float:right;margin-top:7px}
+.fb_edge_widget_with_comment{position:relative;*z-index:1000}
+.fb_edge_widget_with_comment span.fb_edge_comment_widget{position:absolute}
+.fb_edge_widget_with_comment span.fb_edge_comment_widget iframe.fb_ltr{left:-4px}
+.fb_edge_widget_with_comment span.fb_edge_comment_widget iframe.fb_rtl{left:2px}
+.fb_edge_widget_with_comment span.fb_send_button_form_widget{left:0}
+.fb_edge_widget_with_comment span.fb_send_button_form_widget .FB_Loader{left:10%}
+#fb_social_bar_container{position:fixed;left:0;right:0;height:34px;padding:0 25px;z-index:999999999}
+.fb_social_bar_iframe{position:relative;float:right;opacity:0;-moz-opacity:0;filter:alpha(opacity=0)}
+.fb_social_bar_iframe_bottom_ie6{bottom:auto;top:expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-this.offsetHeight-(parseInt(this.currentStyle.marginTop,10)||0)-(parseInt(this.currentStyle.marginBottom,10)||0)))}
+.fb_social_bar_iframe_top_ie6{bottom:auto;top:expression(eval(document.documentElement.scrollTop-this.offsetHeight-(parseInt(this.currentStyle.marginTop,10)||0)-(parseInt(this.currentStyle.marginBottom,10)||0)))}
+</style></head><body onload="startList();"><script language="JavaScript">
+		$(document).ready( function(){
+		$(document).bind('click', function(e)
+		{
+		var $clicked = $(e.target);
+		if($clicked.is('#articleTOC') || $clicked.parents().is('#articleTOC'))
+		$('#articleTOCList').show();
+		else
+		hideTOC();
+		});
+		});
+
+		function hideTOC()
+		{
+		$('#articleTOCList').hide();
+		}
+		</script><div id="content" class="articleProduct" xmlns=""><div id="columnOne"><p class="crumb"><a href="http://www.informit.com/index.aspx">Home</a> &gt; <a href="http://www.informit.com/articles/index.aspx">Articles</a> &gt; <a href="http://www.informit.com/articles/index.aspx?st=60264">Operating Systems, Server</a> &gt; <a href="http://www.informit.com/articles/index.aspx?st=60201">Microsoft Windows Server</a></p><div id="articleContent"><div id="articleHeader"><h1><a href="http://www.informit.com/articles/article.aspx?p=22429">Cracking PDB Symbol Files</a></h1><ul><li class="authorName">By <a href="http://www.informit.com/authors/bio.aspx?a=cbf58439-5b41-4b9c-972b-09219ecb72f6">Sven B. Schreiber</a></li><li>Jul 30, 2001</li></ul></div><div class="articleTools"><div id="articleTOC"><p><a href="javascript:void(0);" title="Toggle Open Article Table of Contents"><img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/toc_16.png" id="toggle" alt="Toggle Open Article Table of Contents"></a><a href="javascript:void(0);" title="Toggle Open Article Table of Contents">Article Contents</a></p><div id="articleTOCList" class="closed"><p><a href="javascript:hideTOC();" class="x" title="Close Table of Contents"><img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/toc_16.png" id="toggle" alt="Close Table of Contents"></a><a href="javascript:hideTOC();" class="x" title="Close Table of Contents">Article Contents</a></p><ol><li><a href="http://www.informit.com/articles/article.aspx?p=22429">.dbg and .pdb Symbol Files</a></li><li><a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=3">Global PDB File Layout</a></li><li>Scanning the Root Stream</li><li><a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=5">Decomposing a PDB File</a></li><li><a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=6">Sample Code Archive</a></li><li><a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=7">Bibliography</a></li></ol><a href="javascript:hideTOC();" class="toggleClose" title="Close Table of Contents"><img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/close_window_16.png" alt="Close Table of Contents"></a></div></div><div class="pagination"><a class="paginationPrevious" href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=3">&lt; Back
+						</a><span class="paginationLocation"><strong>
+					Page 4</strong> of 6</span><a class="paginationNext" href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=5">
+						Next &gt;</a></div><div class="articleInteraction"><ul><li><a href="http://www.informit.com/articles/printerfriendly.aspx?p=22429" title="Print"><img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/print_16.png" alt="Print"></a><a href="http://www.informit.com/articles/printerfriendly.aspx?p=22429" title="Print"><span>Print</span></a></li><li><script type="text/javascript">
+												addthis_pub             = 'informit';
+												addthis_logo            = 'http://www.informit.com/display/InformIT/images/header/informit.png';
+												addthis_logo_background = '596770';
+												addthis_logo_color      = '596770';
+												addthis_brand           = 'informIT';
+												addthis_options         = 'email, delicious, digg, facebook, google, newsvine, reddit, slashdot, stumbleupon, technorati, twitter, more';
+											</script><a href="http://www.addthis.com/bookmark.php" onmouseover="return addthis_open(this, &#39;&#39;, &#39;[URL]&#39;, &#39;[TITLE]&#39;)" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/share_16.png" width="16" height="16" border="0" alt="Share This"></a><a href="http://www.addthis.com/bookmark.php" onmouseover="return addthis_open(this, &#39;&#39;, &#39;[URL]&#39;, &#39;[TITLE]&#39;)" onmouseout="addthis_close()" onclick="return addthis_sendto()"><span>Share This</span></a><script type="text/javascript" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/addthis_widget.js"></script></li><li class="last"><a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=4#articleDiscussion" title="Discuss"><img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/discuss_16.png" alt="Discuss"></a><a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=4#articleDiscussion" title="Discuss"><span>Discuss</span></a></li></ul></div></div><div id="articleText"><h2>Scanning the Root Stream</h2>
+<p>Once you have located the pages that comprise the root stream, you can easily
+access the data stream directory. The root stream is composed of two main
+parts:</p>
+<ul>
+<li><p>A variable-length header in the form of a <tt>PDB_ROOT</tt> structure, as
+outlined in Listing 3</p></li>
+<li><p>An array of 16-bit zero-based page numbers</p></li>
+</ul>
+<p>The <tt>wCount</tt> member of the <tt>PDB_ROOT</tt> structure states the
+number of stored data streams, and as such defines the number of
+<tt>PDB_STREAM</tt> items in the <tt>aStreams[]</tt> array. The
+<tt>PDB_ROOT__()</tt> macro at the end of Listing 3 is a convenient shorthand
+notation to calculate the overall size of the root stream header, given the
+number of data streams. The Windows 2000 PDB symbol files contain eight streams,
+so their header size is <i>4 + (8 * (4 + 4)) = 68</i> bytes.</p>
+<p><b>Listing 3 PDB Root Stream Structure</b></p>
+<pre>typedef struct _PDB_ROOT
+  {
+  WORD    wCount;   // &lt; PDB_STREAM_MAX
+  WORD    wReserved;  // 0
+  PDB_STREAM aStreams []; // stream #0 reserved for stream table
+  }
+  PDB_ROOT, *PPDB_ROOT, **PPPDB_ROOT;
+
+#define PDB_ROOT_ sizeof (PDB_ROOT)
+#define PDB_ROOT__(_n) (PDB_ROOT_ + ((_n) * PDB_STREAM_))</pre>
+<p>The page number array follows immediately after the header. One problem with
+this design is that you cannot randomly access the data streams because the root
+stream doesn't specify the data streams' start indices within the
+array. To locate the page numbers that are associated with the third stream, you
+have to compute the number of pages occupied by the first two streams from their
+stream sizes with respect to the current PDB page size. This is where the
+<tt>pwStreamPages</tt> of the <tt>PDB_STREAM</tt> structure (see Listing 2)
+comes in handy—a PDB file processor needs to look up the page number
+subsets only once after loading the PDB data to virtual memory and can set up
+the <tt>pwStreamPages</tt> member of each stream to point to its first page
+number within the array. Note that this is just one out of the possible uses for
+this structure member, and not necessarily the one that Microsoft designed it
+for.</p>
+<p>The rest of the story is quickly told: Read any data stream of interest just
+as you have read the root stream before, (that is, walk down the list of page
+numbers and look up each page by multiplying the page number by the page size).
+Isn't it strange? Although the PDB file format looks quite convoluted on
+first sight, it turns out, after closer examination, that it is actually quite
+simple to process. All you need is a subroutine that takes an array of page
+numbers, and concatenates all pages referenced by it. In the remaining sections,
+I will present a sample implementation of a PDB file processor that doesn't
+do much more than this.</p>
+
+</div><div class="articleToolsSecond"><div class="pagination"><a class="paginationPrevious" href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=3">&lt; Back
+						</a><span class="paginationLocation"><strong>
+					Page 4</strong> of 6</span><a class="paginationNext" href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=5">
+						Next &gt;</a></div><div class="articleInteraction"><ul><li><script type="text/javascript">
+												addthis_pub             = 'informit';
+												addthis_logo            = 'http://www.informit.com/display/InformIT/images/header/informit.png';
+												addthis_logo_background = '596770';
+												addthis_logo_color      = '596770';
+												addthis_brand           = 'informIT';
+												addthis_options         = 'email, delicious, digg, facebook, google, newsvine, reddit, slashdot, stumbleupon, technorati, twitter, more';
+											</script><a href="http://www.addthis.com/bookmark.php" onmouseover="return addthis_open(this, &#39;&#39;, &#39;[URL]&#39;, &#39;[TITLE]&#39;)" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/share_16.png" width="16" height="16" border="0" alt="Share This"></a><a href="http://www.addthis.com/bookmark.php" onmouseover="return addthis_open(this, &#39;&#39;, &#39;[URL]&#39;, &#39;[TITLE]&#39;)" onmouseout="addthis_close()" onclick="return addthis_sendto()"><span>Share This</span></a><script type="text/javascript" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/addthis_widget.js"></script></li><li class="last"><a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=4#" onclick="openBrWindow(&#39;/my_account/addTo.aspx?p=bea43c0b-e91a-4ca5-b9b5-951a2798bad1&amp;e=a009c9da-897f-4df2-b4c5-5a7d3ce8e925&amp;t=a&#39;,&#39;addMyAccount&#39;,&#39;scrollbars=no,resizable=yes,width=300,height=200&#39;);return false;" title="Your Account"><img class="save" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/save_16.png"></a><a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=4#" onclick="openBrWindow(&#39;/my_account/addTo.aspx?p=bea43c0b-e91a-4ca5-b9b5-951a2798bad1&amp;e=a009c9da-897f-4df2-b4c5-5a7d3ce8e925&amp;t=a&#39;,&#39;addMyAccount&#39;,&#39;scrollbars=no,resizable=yes,width=300,height=200&#39;);return false;">Save To Your Account</a></li></ul></div></div><div class="clear"></div></div><div id="articleDiscussion"><h3>Discussions</h3><script language="JavaScript">
+							var disqus_identifier = 'b2209154-8a93-4466-b8a8-931411da5506';
+							var discussionEnv = 'informit';
+							var disqus_skip_auth = true;
+							</script><div id="disqus_thread"><div id="dsq-content-stub" style="display: none; "><img width="71" height="17" alt="DISQUS" src="data:image/png;base64,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"><img width="16" height="11" alt="..." src="data:image/gif;base64,R0lGODlhEAALAPQAAP///z2LqeLt8dvp7u7090GNqz2LqV+fuJ/F1IW2ycrf51aatHWswaXJ14i4ys3h6FmctUCMqniuw+vz9eHs8fb5+meku+Tu8vT4+cfd5bbT3tbm7PH2+AAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA" style="margin:0 0 3px 5px"></div><div id="dsq-content" style="display: block; " class="clearfix">    <div id="dsq-global-toolbar" class="dsq-community-preview">    <table class="dsq-global-toolbar-container">      <tbody><tr>        <td class="dsq-global-toolbar-likes">                    <div class="dsq-group">            <a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=4#" id="dsq-like-thread-button" class="dsq-thread-like dsq-toolbar-item  dsq-tt" onclick="DISQUS.dtpl.actions.fire(&#39;thread.vote&#39;, 1); return false;" title="I like this page">Like</a>            <a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=4#" id="dsq-dislike-thread-button" class="dsq-thread-dislike dsq-toolbar-item  dsq-tt" onclick="DISQUS.dtpl.actions.fire(&#39;thread.vote&#39;, -1); return false" title="I don&#39;t like this page">Dislike</a>          </div>          <ul class="dsq-like-faces">                  <li class="dsq-like-activity">    </li>          </ul>                  </td>        <td>                        <a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=4#" class="dsq-community-launcher dsq-toolbar-item dsq-tt" onclick="DISQUS.dtpl.actions.fire(&#39;community.show&#39;); return false" title="Expand Community Box"> Community</a>                    </td>                <td class="dsq-global-toolbar-dropdown-container">              <div id="dsq-toolbar-dropdown">    <a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=4#" onclick="return false" class="dsq-toolbar-logo dsq-toolbar-item">Disqus</a>    <div id="dsq-toolbar-dropdown-wrap" style="display: none">      <ul>                    <li><a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=4#" onclick="DISQUS.dtpl.actions.fire(&#39;auth.login&#39;); return false">Login</a></li>                    <li><a href="http://disqus.com/" target="_blank">About Disqus</a></li>      </ul>    </div>  </div>        </td>      </tr>    </tbody></table>  </div>  <div id="dsq-like-tooltip">    <div id="dsq-share-step-1" class="dsq-share-step">      <h3>Glad you liked it. Would you like to share?</h3>      <p class="dsq-tooltip-checkbox"><input type="checkbox" id="dsq-share-thread-facebook" value="Facebook"><label for="dsq-share-thread-facebook"><span class="dsq-facebook">Facebook</span></label></p>      <p class="dsq-tooltip-checkbox"><input type="checkbox" id="dsq-share-thread-twitter" value="Twitter"><label for="dsq-share-thread-twitter"><span class="dsq-twitter">Twitter</span></label></p>      <ul id="dsq-tooltip-actions">                    <li><a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=4#" onclick="DISQUS.dtpl.actions.fire(&#39;thread.share&#39;); return false" class="dsq-primary-action">Share</a></li>                <li><a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=4#" onclick="DISQUS.dtpl.actions.fire(&#39;thread.share.cancel&#39;); return false" class="dsq-secondary-action">No thanks</a></li>      </ul>    </div>    <div id="dsq-share-step-2" class="dsq-share-step" style="display:none !important">      <p>Sharing this page …</p>    </div>    <div id="dsq-share-step-3" class="dsq-share-step" style="display:none !important">      <p>Thanks! <a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=4#" class="dsq-tooltip-decline" onclick="DISQUS.dtpl.actions.fire(&#39;thread.share.cancel&#39;); return false">Close</a></p>    </div>  </div>                <div id="dsq-comments-title">    <h3>                        Showing <span id="dsq-num-posts">0</span> comments                  </h3>  </div>  <div class="dsq-options">      <span class="dsq-item-sort">    Sort by    <select id="dsq-sort-select" onchange="DISQUS.dtpl.actions.fire(&#39;thread.sort&#39;, this.value);">            <option value="hot">Popular now</option>            <option value="best">Best rating</option>            <option value="newest">Newest first</option>            <option value="oldest" selected="selected">Oldest first</option>          </select>  </span>      <span class="dsq-subscribe-email">    <img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/email.png" alt="">&nbsp;    <span id="dsq-subscribe">            <a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=4#" onclick="return DISQUS.dtpl.actions.fire(&#39;thread.subscribe&#39;);">Subscribe by email</a>          </span>    <span class="dsq-subscribe-rss">      <img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/bullet-feed.png" alt="">&nbsp;      <a href="http://informit.disqus.com/informit_cracking_pdb_symbol_files_dbg_and_pdb_symbol_files/latest.rss">Subscribe by RSS</a>    </span>  </span>  </div>          <ul id="dsq-comments">      </ul>        <div id="dsq-pagination" class="dsq-pagination">        </div>                    <div id="dsq-new-post" class="dsq-post-area dsq-unauthenticated">          <h3>Add New Comment</h3>      <div style="clear:both"></div>              <div id="dsq-form-area">      <div class="dsq-textarea">        <div class="dsq-textarea-wrapper dsq-textarea-loading" id="dsq-textarea-wrapper">            <!-- filled dynamically -->        </div>      </div>              <div id="dsq-media-preview" class="dsq-media-preview" style="display:none">        </div>                  <div class="dsq-post-footer">              <div class="dsq-attach-media">            <div class="dsq-attach-media-container">                <span>Image</span>                <!-- filled dynamically -->            </div>        </div>                                    <button type="button" class="dsq-button" id="dsq-post-button" onclick="DISQUS.dtpl.actions.fire(&#39;comments.validate&#39;, null);">            <span>              Post as …            </span>          </button>                      </div>      <div style="clear:both"></div>    </div>  </div>              </div><div>  </div></div><script language="JavaScript" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/disqus(1).js" type="text/JavaScript"></script><script charset="utf-8" type="text/javascript" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/get_num_replies.js"></script><noscript>Please enable JavaScript to view the &lt;a href="http://disqus.com/?ref_noscript=informit"&gt;comments powered by Disqus.&lt;/a&gt;</noscript><a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a><div class="clear"></div></div></div><div id="columnTwo"><div id="promotions" class="tabwidget prop"><h4>Related Resources</h4><ul class="tabs"><li><a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=4#" onclick="tabWidget(1,&#39;promotions&#39;); return false;">Podcasts</a></li><li><a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=4#" onclick="tabWidget(2,&#39;promotions&#39;); return false;">Blogs</a></li><li><a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=4#" onclick="tabWidget(3,&#39;promotions&#39;); return false;">Articles</a></li><li class="selected"><a href="http://www.informit.com/articles/article.aspx?p=22429&seqNum=4#" onclick="tabWidget(4,&#39;promotions&#39;); return false;">Store</a></li></ul><div class="container"><dl><dt><a href="http://www.informit.com/podcasts/channel.aspx?c=1977eb71-4a34-42dd-a7d0-7952a08c527e"><img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/OnOpen_Source_75_75.jpg" alt="OnOpenSource (Audio + Video)" class="art"></a><a href="http://www.informit.com/podcasts/channel.aspx?c=1977eb71-4a34-42dd-a7d0-7952a08c527e" class="title">OnOpenSource (Audio + Video)</a></dt><dd class="resPod"><p>Recent Episodes</p><ul><li class="video"><a href="http://www.informit.com/podcasts/episode.aspx?e=1d62049b-b927-44b3-8323-bb082e755b4a">Ubuntu Unleashed 2011 Edition &amp; The Official Ubuntu Book, 5th Edition</a><br><span class="author"><a href="http://www.informit.com/authors/bio.aspx?a=d3bca8ef-8d96-40ad-a090-eab5896db775">Matthew Helmke</a></span></li><li class="audio"><a href="http://www.informit.com/podcasts/episode.aspx?e=d858232f-01e0-4a63-8289-c41f65362051">Grids, Base themes and the Zen of theming (Audio)</a><br><span class="author"><a href="http://www.informit.com/authors/bio.aspx?a=d07ad75d-cd73-48ee-8fc5-3e31d8fc1de3">Emma Hogbin</a></span></li></ul></dd><dd class="resPodSubscribe"><img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/plus_gray.png" alt="">&nbsp;<a href="http://onopensourcevid.pearson.libsynpro.com/rss">Subscribe</a></dd></dl><dl><dt><a href="http://www.informit.com/podcasts/channel.aspx?c=bf1b2c76-35bb-4d89-982e-83b7987272ea"><img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/OnHomeOffice_75.jpg" alt="OnHomeandOffice (Video)" class="art"></a><a href="http://www.informit.com/podcasts/channel.aspx?c=bf1b2c76-35bb-4d89-982e-83b7987272ea" class="title">OnHomeandOffice (Video)</a></dt><dd class="resPod"><p>Recent Episodes</p><ul><li class="video"><a href="http://www.informit.com/podcasts/episode.aspx?e=5b6e89f9-a021-4ae2-889a-82ce5a4ad2c2">Understanding Protected View in Office 2010 </a><br><span class="author"><a href="http://www.informit.com/authors/bio.aspx?a=4c0c0e78-8398-487e-ad4e-dc7d4cf089cb">ClipTraining</a></span></li><li class="video"><a href="http://www.informit.com/podcasts/episode.aspx?e=d18f135d-4c19-4b89-ba56-d8edfb0a9595"> Facebook Essentials: Navigating Facebook</a><br><span class="author"><a href="http://www.informit.com/authors/bio.aspx?a=ec7db704-60a1-40b6-b6e4-02fc86c7f443">Michael Miller</a></span></li></ul></dd><dd class="resPodSubscribe"><img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/plus_gray.png" alt="">&nbsp;<a href="http://onhomeandoffice.pearson.libsynpro.com/rss">Subscribe</a></dd></dl><p class="more"><img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/plus.png" alt=""><a href="http://www.informit.com/podcasts/index.aspx?n=e5c1876f-c3e9-45dc-85a1-f7cb4214d114">See More Podcasts</a></p></div><div class="container"><dl class="blogs"><dt><a href="http://www.informit.com/authors/bio.aspx?a=ddaf3394-4de3-428b-a4d3-63c4d9b2ca3b"><img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/traenkenschuh_john_e.jpg" alt="John  Traenkenschuh" class="author"></a><a href="http://www.informit.com/blogs/blog.aspx?uk=What-happened-to-Pocket-PC" class="title">What happened to the Pocket PC?</a></dt><dd class="meta">
+				By <a href="http://www.informit.com/authors/bio.aspx?a=ddaf3394-4de3-428b-a4d3-63c4d9b2ca3b">John Traenkenschuh</a> on
+				<span class="timestamp">April 8, 2011</span><span class="comments"><a href="http://www.informit.com/blogs/blog.aspx?uk=What-happened-to-Pocket-PC#disqus_thread" data-disqus-identifier="ef6c1747-1987-46ed-9b1c-abaa201f7285">Comments</a></span></dd><dd class="intro"><p>Windows CE is a tough computer to outfit!</p></dd></dl><dl class="blogs"><dt><a href="http://www.informit.com/authors/bio.aspx?a=ddaf3394-4de3-428b-a4d3-63c4d9b2ca3b"><img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/traenkenschuh_john_e.jpg" alt="John  Traenkenschuh" class="author"></a><a href="http://www.informit.com/blogs/blog.aspx?uk=Technology-Butlers" class="title">Technology Butlers</a></dt><dd class="meta">
+				By <a href="http://www.informit.com/authors/bio.aspx?a=ddaf3394-4de3-428b-a4d3-63c4d9b2ca3b">John Traenkenschuh</a> on
+				<span class="timestamp">March 27, 2011</span><span class="comments"><a href="http://www.informit.com/blogs/blog.aspx?uk=Technology-Butlers#disqus_thread" data-disqus-identifier="4026d8c6-cc62-40cf-a252-cf71801bd13b">Comments</a></span></dd><dd class="intro"><p>Traenk wants to know how much faster we can become more sustainable, using fewer resources, with an application of common technology.<br>
+<br>
+</p></dd></dl><dl class="blogs"><dt><a href="http://www.informit.com/authors/bio.aspx?a=ddaf3394-4de3-428b-a4d3-63c4d9b2ca3b"><img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/traenkenschuh_john_e.jpg" alt="John  Traenkenschuh" class="author"></a><a href="http://www.informit.com/blogs/blog.aspx?uk=Will-This-Work" class="title">Will This Work?</a></dt><dd class="meta">
+				By <a href="http://www.informit.com/authors/bio.aspx?a=ddaf3394-4de3-428b-a4d3-63c4d9b2ca3b">John Traenkenschuh</a> on
+				<span class="timestamp">March 22, 2011</span><span class="comments"><a href="http://www.informit.com/blogs/blog.aspx?uk=Will-This-Work#disqus_thread" data-disqus-identifier="20e00b19-31f4-4fed-be87-908348af5f06">Comments</a></span></dd><dd class="intro"><p>Traenk adds a $99 Mobile gadget to the stable of gear.&nbsp; Can it input blogs as his Android phone cannot???</p>
+<p></p></dd></dl><p class="more"><img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/plus.png" alt=""><a href="http://www.informit.com/blogs/index.aspx?n=0ca48785-cebd-4bef-a208-3209274f6394">See All Related Blogs</a></p></div><div class="container"><dl class="articles"><dt><a href="http://www.informit.com/articles/article.aspx?p=26961" class="title">Understanding Active Directory, Part IV</a></dt><dd class="meta">By <a href="http://www.informit.com/authors/bio.aspx?a=d86fa01a-1a52-447a-806a-e5b5a0fd6d52">Robert Williams</a>, <a href="http://www.informit.com/authors/bio.aspx?a=06b4d5f9-a193-4db3-94ae-4abd86965880">Mark Walla</a></dd></dl><dl class="articles"><dt><a href="http://www.informit.com/articles/article.aspx?p=20902" class="title">Windows 2000 Deployment Guide Part 27: A Little Help From Your Friends</a></dt><dd class="meta">By <a href="http://www.informit.com/authors/bio.aspx?a=a35d3b54-7e66-484b-943e-6414bf845a13">Dale Holmes</a></dd></dl><dl class="articles"><dt><a href="http://www.informit.com/articles/article.aspx?p=23471" class="title">Planning and Deploying Clients</a></dt><dd class="meta">By <a href="http://www.informit.com/authors/bio.aspx?a=a46126f0-c1a6-4e43-83d4-2e71defd6cd5">Roberta Bragg</a></dd></dl><p class="more"><img src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/plus.png" alt=""><a href="http://www.informit.com/articles/index.aspx?n=0ca48785-cebd-4bef-a208-3209274f6394">See All Related Articles</a></p></div><div class="container on"><p>There are currently no related titles. Please check back later.</p></div></div><div class="advertisement rectangle"><script type="text/JavaScript" language="JavaScript1.1" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/Articles;abr=!webtv;cat=microsoft_windows_2000_&_earlier;cat=operating_systems_server;sz=300x250;tile=2"></script><script type="text/javascript">
+<!--//<![CDATA[
+ord = window.ord || Math.floor(Math.random()*1E16);
+document.write('<script type="text/javascript" src="http://ad1.netshelter.net/adj/ns.informit/general;ppos=atf;kw=;tile=2;sz=300x250,336x280;ord=' + ord + '?"><\/script>');
+//]]>-->
+</script><script type="text/javascript" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/general;ppos=atf;kw=;tile=2;sz=300x250,336x280"></script><script language="javascript" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/general;ppos=atf;kw=;tile=2;sz=300x250,336x280;net=ns;ord=6350018621888012;ord1=509960"></script><script type="text/javascript">document.write('<scr'+'ipt language="javascript" src="http://ad.doubleclick.net/adj/ns.informit/general;net=ns;u=,ns-83081420_1303213175,11f91413178f4f0,Miscellaneous,;;ppos=atf;kw=;tile=2;cmw=nurl;sz=300x250,336x280;net=ns;ord1=509960;contx=Miscellaneous;dc=w;btg=;ord=6350018621888012?"></scr'+'ipt>');</script><script language="Javascript">CollectiveMedia.createAndAttachAd("ns-83081420_1303213175","http://ad.doubleclick.net/adj/ns.informit/general;net=ns;u=,ns-83081420_1303213175,11f91413178f4f0,Miscellaneous,;;ppos=atf;kw=;tile=2;cmw=nurl;sz=300x250,336x280;net=ns;ord1=509960;contx=Miscellaneous;dc=w;btg=;ord=6350018621888012?","300","250,336",false);</script><script language="javascript" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/general;net=ns;u=,ns-83081420_1303213175,11f91413178f4f0,Miscellaneous,;;ppos=atf;kw=;tile=2;cmw=nurl;sz=300x250,336x280;net=ns;ord1=509960;contx=Misc"></script>
+<script type="text/javascript" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/show_ads.js">
+</script><ins style="display:inline-table;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px"><ins id="aswift_0_anchor" style="display:block;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px"><iframe allowtransparency="true" frameborder="0" height="250" hspace="0" marginwidth="0" marginheight="0" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){i+=&#39;.call&#39;;setTimeout(h,0)}else if(h.match){i+=&#39;.nav&#39;;w.location.replace(h)}s.log&amp;&amp;s.log.push(i)}" scrolling="no" vspace="0" width="300" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;"></iframe></ins></ins>
+<noscript>&lt;a href="http://ad1.netshelter.net/jump/ns.informit/general;ppos=atf;kw=;tile=2;sz=300x250,336x280;ord=123456789?" target="_blank" &gt;&lt;img src="http://ad1.netshelter.net/ad/ns.informit/general;ppos=atf;kw=;tile=2;sz=300x250,336x280;ord=123456789?" border="0" alt="" /&gt;&lt;/a&gt;</noscript>
+
+<script type="text/JavaScript" language="JavaScript1.1"><!--if ((!document.images &&navigator.userAgent.indexOf('Mozilla/2.') >= 0)  ||navigator.userAgent.indexOf("WebTV")>= 0) {  document.write('<a href="http://ad.doubleclick.net/jump/informit/Articles;cat=microsoft_windows_2000_&_earlier;cat=operating_systems_server;sz=300x250;tile=2;ord=79?">');document.write('<img src="http://ad.doubleclick.net/ad/informit/Articles;cat=microsoft_windows_2000_&_earlier;cat=operating_systems_server;sz=300x250;tile=2;ord=79?" border="0" height="250" width="300" alt="Advertisement" /></a>')}--></script> <noscript>&lt;a href="http://ad.doubleclick.net/jump/informit/Articles;cat=microsoft_windows_2000_&amp;_earlier;cat=operating_systems_server;sz=300x250;tile=2;ord=79?"&gt;&lt;img src="http://ad.doubleclick.net/ad/informit/Articles;cat=microsoft_windows_2000_&amp;_earlier;cat=operating_systems_server;sz=300x250;tile=2;ord=79?" border="0" height="250" width="300" alt="Advertisement" /&gt;&lt;/a&gt;</noscript></div><div class="hireReach"><script type="text/javascript"> <!--//<![CDATA[
+								var m3_u = (location.protocol=='https:'?'https://jobs.hrkspjbs.com/js.ashx':'http://jobs.hrkspjbs.com/js.ashx');
+								var m3_r = Math.floor(Math.random()*99999999999);
+								document.write ("<sc"+"ri"+"pt type='text/javascript' src='"+m3_u);
+								document.write ("?pid=E9B8A40E51804C1F83A0485374A7B2AE");
+								document.write ("&amp;tl=" + m3_r);
+								document.write ("&amp;cid=8e6593c1-139a-4681-9b35-be6ccca637f7");
+								document.write ("&amp;did=22429");
+								document.write ("&amp;pgn=1");
+								document.write ("&amp;loc=" + escape(window.location));
+								if (document.referrer) document.write ("&amp;referer=" + escape(document.referrer));
+								if (document.context) document.write ("&amp;context=" + escape(document.context));
+								document.write ("'><\/sc"+"ri"+"pt>");
+								//]]>--></script><script type="text/javascript" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/js.ashx"></script></div></div><div id="leaderboard"><div><script language="JavaScript1.1" type="text/JavaScript" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/Articles;abr=!webtv;cat=microsoft_windows_2000_&_earlier;cat=operating_systems_server;dcopt=ist;sz=728x90;tile=1"></script><script type="text/javascript">
+<!--//<![CDATA[
+ord = window.ord || Math.floor(Math.random()*1E16);
+document.write('<script type="text/javascript" src="http://ad1.netshelter.net/adj/ns.informit/general;ppos=atf;kw=;tile=1;dcopt=ist;sz=728x90;ord=' + ord + '?"><\/script>');
+//]]>-->1680977310
+</script><script type="text/javascript" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/general;ppos=atf;kw=;tile=1;dcopt=ist;sz=728x90"></script><script language="javascript" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/general;ppos=atf;kw=;tile=1;dcopt=ist;sz=728x90;net=ns;ord=6350018621888012;ord1=30117"></script><script type="text/javascript">document.write('<scr'+'ipt language="javascript" src="http://ad.doubleclick.net/adj/ns.informit/general;net=ns;u=,ns-2225852_1303213176,11f91413178f4f0,Miscellaneous,;;ppos=atf;kw=;tile=1;dcopt=ist;cmw=nurl;sz=728x90;net=ns;ord1=30117;contx=Miscellaneous;dc=w;btg=;ord=6350018621888012?"></scr'+'ipt>');</script><script language="Javascript">CollectiveMedia.createAndAttachAd("ns-2225852_1303213176","http://ad.doubleclick.net/adj/ns.informit/general;net=ns;u=,ns-2225852_1303213176,11f91413178f4f0,Miscellaneous,;;ppos=atf;kw=;tile=1;dcopt=ist;cmw=nurl;sz=728x90;net=ns;ord1=30117;contx=Miscellaneous;dc=w;btg=;ord=6350018621888012?","728","90",false);</script><script language="javascript" src="./InformIT  Cracking PDB Symbol Files   Scanning the Root Stream_files/general;net=ns;u=,ns-2225852_1303213176,11f91413178f4f0,Miscellaneous,;;ppos=atf;kw=;tile=1;dcopt=ist;cmw=nurl;sz=728x90;net=ns;ord1=30117;contx=Misce"></script></div></div></div><div id="fb-root" class=" fb_reset"><div style="position: absolute; top: -10000px; height: 0px; width: 0px; "></div></div><div id="FB_HiddenContainer" style="position: absolute; top: -10000px; left: -10000px; width: 0px; height: 0px; "></div></body></html>

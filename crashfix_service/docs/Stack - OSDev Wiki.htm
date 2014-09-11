@@ -1,0 +1,380 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+				<meta name="keywords" content="Stack,Bootloader,C++,GDT,GRUB,Segmentation,Stack Trace,FIFO,Networking,X86" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="OSDev Wiki (English)" />
+<link rel="alternate" type="application/rss+xml" title="OSDev Wiki RSS Feed" href="http://wiki.osdev.org/index.php?title=Special:Recentchanges&amp;feed=rss" />
+<link rel="alternate" type="application/atom+xml" title="OSDev Wiki Atom Feed" href="http://wiki.osdev.org/index.php?title=Special:Recentchanges&amp;feed=atom" />
+		<title>Stack - OSDev Wiki</title>
+		<style type="text/css" media="screen, projection">/*<![CDATA[*/
+			@import "/skins/common/shared.css?116";
+			@import "/skins/monobook/main.css?116";
+		/*]]>*/</style>
+		<link rel="stylesheet" type="text/css" media="print" href="/skins/common/commonPrint.css?116" />
+		<!--[if lt IE 5.5000]><style type="text/css">@import "/skins/monobook/IE50Fixes.css?116";</style><![endif]-->
+		<!--[if IE 5.5000]><style type="text/css">@import "/skins/monobook/IE55Fixes.css?116";</style><![endif]-->
+		<!--[if IE 6]><style type="text/css">@import "/skins/monobook/IE60Fixes.css?116";</style><![endif]-->
+		<!--[if IE 7]><style type="text/css">@import "/skins/monobook/IE70Fixes.css?116";</style><![endif]-->
+		<!--[if lt IE 7]><script type="text/javascript" src="/skins/common/IEFixes.js?116"></script>
+		<meta http-equiv="imagetoolbar" content="no" /><![endif]-->
+		
+		<script type= "text/javascript">/*<![CDATA[*/
+var skin = "monobook";
+var stylepath = "/skins";
+var wgArticlePath = "/$1";
+var wgScriptPath = "";
+var wgScript = "/index.php";
+var wgServer = "http://wiki.osdev.org";
+var wgCanonicalNamespace = "";
+var wgCanonicalSpecialPageName = false;
+var wgNamespaceNumber = 0;
+var wgPageName = "Stack";
+var wgTitle = "Stack";
+var wgAction = "view";
+var wgRestrictionEdit = [];
+var wgRestrictionMove = [];
+var wgArticleId = "1704";
+var wgIsArticle = true;
+var wgUserName = null;
+var wgUserGroups = null;
+var wgUserLanguage = "en";
+var wgContentLanguage = "en";
+var wgBreakFrames = false;
+var wgCurRevisionId = "8672";
+var wgVersion = "1.12.0";
+var wgEnableAPI = true;
+var wgEnableWriteAPI = false;
+/*]]>*/</script>
+                
+		<script type="text/javascript" src="/skins/common/wikibits.js?116"><!-- wikibits js --></script>
+		<!-- Head Scripts -->
+		<script type="text/javascript" src="/skins/common/ajax.js?116"></script>
+		<script type="text/javascript" src="/index.php?title=-&amp;action=raw&amp;gen=js&amp;useskin=monobook"><!-- site js --></script>
+		<style type="text/css">/*<![CDATA[*/
+@import "/index.php?title=MediaWiki:Common.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=18000";
+@import "/index.php?title=MediaWiki:Monobook.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=18000";
+@import "/index.php?title=-&action=raw&gen=css&maxage=18000";
+/*]]>*/</style>
+	</head>
+<body class="mediawiki ns-0 ltr page-Stack">
+	<div id="globalWrapper">
+		<div id="column-content">
+	<div id="content">
+		<a name="top" id="top"></a>
+				<h1 class="firstHeading">Stack</h1>
+		<div id="bodyContent">
+			<h3 id="siteSub">From OSDev Wiki</h3>
+			<div id="contentSub"></div>
+									<div id="jump-to-nav">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>			<!-- start content -->
+			<dl><dd><i>Stack can also refer to the TCP/IP stack in <a href="/Category:Networking" title="Category:Networking">Networking</a>. This article discuss the datastructure and stacks used in architectures.</i>
+</dd></dl>
+<div class="thumb tright"><div class="thumbinner" style="width:182px;"><a href="/Image:Stack.png" class="image" title="A normal stack, that grows upwards."><img alt="A normal stack, that grows upwards." src="/images/thumb/9/9f/Stack.png/180px-Stack.png" width="180" height="135" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify"><a href="/Image:Stack.png" class="internal" title="Enlarge"><img src="/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>A normal stack, that grows upwards.</div></div></div>
+<p>A <b>stack</b> is a datastructure. You can push and pop elements from and to it. Unlike a <a href="/index.php?title=FIFO&amp;action=edit" class="new" title="FIFO">FIFO</a> (first in, first out) the popped elements from a stack is the ones you pushed last. Because of that a stack is also called a LIFO (last in, first out).
+</p><p>In the <a href="/Category:X86" title="Category:X86">X86 architecture</a>, and many others, there is one stack used for code execution. It is used to store return pointers, when calling routines, but you can also store temporary data and local variables on it.
+</p><p><br />
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Stack_theory"><span class="tocnumber">1</span> <span class="toctext">Stack theory</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Stack_example_on_the_X86_architecture"><span class="tocnumber">1.1</span> <span class="toctext">Stack example on the X86 architecture</span></a></li>
+<li class="toclevel-2"><a href="#Setup_the_stack"><span class="tocnumber">1.2</span> <span class="toctext">Setup the stack</span></a></li>
+<li class="toclevel-2"><a href="#Security"><span class="tocnumber">1.3</span> <span class="toctext">Security</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Stack_trace"><span class="tocnumber">2</span> <span class="toctext">Stack trace</span></a></li>
+<li class="toclevel-1"><a href="#Unwinding_the_stack"><span class="tocnumber">3</span> <span class="toctext">Unwinding the stack</span></a></li>
+<li class="toclevel-1"><a href="#See_Also"><span class="tocnumber">4</span> <span class="toctext">See Also</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Articles"><span class="tocnumber">4.1</span> <span class="toctext">Articles</span></a></li>
+<li class="toclevel-2"><a href="#Threads"><span class="tocnumber">4.2</span> <span class="toctext">Threads</span></a></li>
+<li class="toclevel-2"><a href="#External_Links"><span class="tocnumber">4.3</span> <span class="toctext">External Links</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Stack_theory"></a><h2> <span class="mw-headline"> Stack theory </span></h2>
+<p>Many languages and architectures have a stack at its disposal. When return values are stored on it, the concept of stack frames emerges. A stack is divided into a number of stack frames. Each stack frame contains the local/temporary data for the routine, parameters and a return value to the former routine (the caller).
+</p>
+<a name="Stack_example_on_the_X86_architecture"></a><h3> <span class="mw-headline"> Stack example on the X86 architecture </span></h3>
+<p>On the X86 architecture the stack grows downwards. The stack frames have a certain structure regarding the calling convention. The CDECL calling convention is the most widely used. It is most likely used by your compiler. Two registers are used:
+</p>
+<ul><li> <b><tt>ESP</tt>:</b> Extended Stack Pointer. 32 bit value containing the <i>top of stack</i> address (more accurately the bottom of stack on X86!)
+</li><li> <b><tt>EBP</tt>:</b> Extended Base Pointer. 32 bit value defining the current stack frame, when using CDECL calling convention. It points at the current local data. It can also access the routine parameters.
+</li></ul>
+<p>Take care when implementing your kernel. If you use <a href="/Segmentation" title="Segmentation">segmentation</a>, the <tt>DS</tt> segment should be configured to have it's base at the same address as SS does. Otherwise you may run into problems when passing pointers to local variables into functions, because <tt>normal GPRs</tt> can't access the stack the way you might think.
+</p><p>Here is an example stack. The elements are 4 byte words in protected mode:
+</p>
+<pre>Memory address:   Stack elements:
+
+               +----------------------------+
+ 0x105000      | Parameter 1 for routine 1  | \
+               +----------------------------+  |
+ 0x104FFC      | First callers return addr. |   &gt;  Stack frame 1
+               +----------------------------+  |
+ 0x104FF8      | First callers EBP          | /
+               +----------------------------+
+ 0x104FF4   +-&gt;| Parameter 2 for routine 2  | \  &lt;-- Routine 1's EBP
+            |  +----------------------------+  |
+ 0x104FF0   |  | Parameter 1 for routine 2  |  |
+            |  +----------------------------+  |
+ 0x104FEC   |  | Return address, routine 1  |  |
+            |  +----------------------------+  |
+ 0x104FE8   +--| EBP value for routine 1    |   &gt;  Stack frame 2
+               +----------------------------+  |
+ 0x104FE4   +-&gt;| Local data                 |  | &lt;-- Routine 2's EBP
+            |  +----------------------------+  |
+ 0x104FE0   |  | Local data                 |  |
+            |  +----------------------------+  |
+ 0x104FDC   |  | Local data                 | /
+            |  +----------------------------+
+ 0x104FD8   |  | Parameter 1 for routine 3  | \
+            |  +----------------------------+  |
+ 0x104FD4   |  | Return address, routine 2  |  |
+            |  +----------------------------+   &gt;  Stack frame 3
+ 0x104FD0   +--| EBP value for routine 2    |  |
+               +----------------------------+  |
+ 0x104FCC   +-&gt;| Local data                 | /  &lt;-- Routine 3's EBP
+            |  +----------------------------+
+ 0x104FC8   |  | Return address, routine 3  | \
+            |  +----------------------------+  |
+ 0x104FC4   +--| EBP value for routine 3    |  |
+               +----------------------------+   &gt;  Stack frame 4
+ 0x104FC0      | Local data                 |  | &lt;-- Current EBP
+               +----------------------------+  |
+ 0x104FBC      | Local data                 | /
+               +----------------------------+
+ 0x104FB8      |                            |    &lt;-- Current ESP
+                \/\/\/\/\/\/\/\/\/\/\/\/\/\/
+</pre>
+<p>The CDECL calling convention is described here:
+</p>
+<dl><dt> Caller's responsibilities
+</dt></dl>
+<ul><li> Push parameters in reverse order (last parameter pushed first)
+</li><li> Perform the call
+</li><li> Pop the parameters, use them, or simply increment ESP to remove them (stack clearing)
+</li><li> The return value is stored in EAX
+</li></ul>
+<dl><dt> Callee's responsibilities (callee is the routine being called)
+</dt></dl>
+<ul><li> Store caller's EBP on the stack
+</li><li> Save current ESP in EBP
+</li><li> Code, storing local data on the stack
+</li><li> For a fast exit load the old ESP from EBP, else pop local data elements
+</li><li> Pop the old EBP and return &ndash; store return value in EAX
+</li></ul>
+<p>It looks like this in assembly (NASM):
+</p>
+<pre>SECTION .text
+
+caller:
+    
+   &nbsp;; ...
+    
+   &nbsp;; Caller responsibilities:
+    PUSH  3        &nbsp;; push the parameters in reverse order
+    PUSH  2
+    CALL  callee   &nbsp;; perform the call
+    ADD   ESP, 8   &nbsp;; stack cleaning (remove the 2 words)
+    
+   &nbsp;; ... Use the return value in EAX ...
+    
+    
+callee:
+    
+   &nbsp;; Callee responsibilities:
+    PUSH  EBP      &nbsp;; store caller's EBP
+    MOV   EBP, ESP &nbsp;; save current stack pointer in EBP
+    
+   &nbsp;; ... Code, store return value in EAX ...
+    
+   &nbsp;; Callee responsibilities:
+    MOV   ESP, EBP &nbsp;; remove an unknown number of local data elements
+    POP   EBP      &nbsp;; restore caller's EBP
+    RET            &nbsp;; return
+</pre>
+<p>The GCC compiler does all this automatically, but if you have to call C/C++ methods from assembly or reverse, you have to know the convention. Now look at one stack frame (the callee's):
+</p>
+<pre>+-------------------------+
+| Parameter 3             |
++-------------------------+
+| Parameter 2             |
++-------------------------+
+| Parameter 1             |
++-------------------------+
+| Caller's return address |
++-------------------------+
+| Caller's EBP value      |
++-------------------------+
+| Local variable          | &lt;-- Current EBP
++-------------------------+
+| Local variable          |
++-------------------------+
+| Local variable          |
++-------------------------+
+| Temporary data          |
++-------------------------+
+| Temporary data          |
++-------------------------+
+|                         | &lt;-- Current ESP
++-------------------------+
+</pre>
+<p>Using <tt>EBP</tt> the callee can access both parameters and local variables:
+</p>
+<pre>MOV  EAX, [[EBP + 12]] &nbsp;; Load parameter 1 into EAX
+
+MOV  EAX, [[EBP + 16]] &nbsp;; Load parameter 2
+
+MOV  EAX, [[EBP + 4 * EBX + 12]] &nbsp;; Load parameter EBX (0-indexed)
+
+MOV  EAX, [[EBP]]      &nbsp;; Load local variable 1
+
+MOV  EAX, [[EBP - 4]]  &nbsp;; Load local variable 2
+</pre>
+<p>There are other calling conventions for X86 just mentioning a few: Pascal calling convention, fastcall convention, stdcall. Read more on Wikipedia, see the links below.
+</p>
+<a name="Setup_the_stack"></a><h3> <span class="mw-headline"> Setup the stack </span></h3>
+<p>When creating a kernel you have to manually setup the stack. It can be done by the <a href="/Bootloader" title="Bootloader">bootloader</a>, but it is good to know how anyway.
+</p><p>If you go from real mode to protected mode you have to setup the stack as well. This is because the <tt>SS</tt> segment might change, so <tt>ESP</tt> in protected mode does not point at the same location as <tt>SP</tt> in real mode did. If you switch a lot between real mode and protected mode it can be nice for them to share the stack. You have to find a smart solution for that yourself. It can be done.
+</p><p>In protected mode you setup the stack by just moving a new pointer value into the <tt>ESP</tt> register:
+</p>
+<pre>MOV  ESP, 0x105000 &nbsp;; Set the stack pointer
+</pre>
+<p>Remember that it grows downwards. You might allocate space for it in the kernel's <tt>.BSS</tt> section if it contains one:
+</p>
+<pre>SECTION .text
+
+setup_stack:
+    
+    MOV  ESP, stack_end &nbsp;; Set the stack pointer
+
+SECTION .bss
+
+stack_begin:
+    RESB 4096 &nbsp;; Reserve 4 KiB stack space
+stack_end:
+</pre>
+<p>If your kernel is booted by a multiboot compliant bootloader, like <a href="/GRUB" title="GRUB">GRUB</a>, you are provided a memory map. You can setup the stack by looking for free memory chunks of the appropriate size. You just have to ensure that you don't overwrite any important data or code, when setting the stack pointer.
+</p>
+<a name="Security"></a><h3> <span class="mw-headline"> Security </span></h3>
+<p>The stack is easy to use, but it has one problem. There is no "end", so it is vulnerable to a variation of the buffer overflow attack. The attacker pushes more elements that the stack is able to contain, so they are pushes outside the stack memory, overwriting code, which the attacker can execute.
+</p><p>In X86 protected mode it can be solved by allocating a <a href="/GDT" class="mw-redirect" title="GDT">GDT descriptor</a> solely for the stack, which defines its boundaries.
+</p>
+<a name="Stack_trace"></a><h2> <span class="mw-headline"> Stack trace </span></h2>
+<p>When debugging a stack trace is often shown and can be helpful. <a href="/Stack_Trace" title="Stack Trace">Stack Trace</a> describes how this can be done and provides sample code for X86 CDECL using the stack layout above.
+</p>
+<a name="Unwinding_the_stack"></a><h2> <span class="mw-headline"> Unwinding the stack </span></h2>
+<p>Unwinding the stack is complex. It is done when using exceptions, like in <a href="/C%2B%2B" title="C++">C++</a>. It is performed when an exception is thrown. The purpose of unwinding the stack is to call the destructor of local objects of the stack frames and to remove stack frames until an appropriate landing pad is found. The landing pad is the try..catch block in C++ or Java. The catch block has to match the exception, i.e. a RuntimeException object can't be caught as a String object.
+</p><p>The unwinding algorithm depends on the architecture. Normally this algorithm is provided in the language runtime library. When using GCC and C++ it is defined in the libsupc++ library linked with your application. However it doesn't happen, when creating a kernel. The libsupc++ library is also too bloated to use in kernel space.
+</p>
+<a name="See_Also"></a><h2> <span class="mw-headline"> See Also </span></h2>
+<a name="Articles"></a><h3> <span class="mw-headline"> Articles </span></h3>
+<a name="Threads"></a><h3> <span class="mw-headline"> Threads </span></h3>
+<a name="External_Links"></a><h3> <span class="mw-headline"> External Links </span></h3>
+<ul><li> <a href="http://wikipedia.org/wiki/x86_calling_conventions" class="extiw" title="wikipedia:x86_calling_conventions"> x86 calling conventions</a> on Wikipedia.
+</li><li> <a href="http://wikipedia.org/wiki/Stack_%28data_structure%29" class="extiw" title="wikipedia:Stack_(data_structure)"> Stack (data structure)</a> on Wikipedia.
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 36/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+-->
+
+<!-- Saved in parser cache with key wikidb:pcache:idhash:1704-0!1!0!!en!2!edit=0 and timestamp 20110815221647 -->
+<div class="printfooter">
+Retrieved from "<a href="http://wiki.osdev.org/Stack">http://wiki.osdev.org/Stack</a>"</div>
+			<div id="catlinks"><p class='catlinks'><a href="/Special:Categories" title="Special:Categories">Category</a>: <span dir='ltr'><a href="/Category:OS_theory" title="Category:OS theory">OS theory</a></span></p></div>			<!-- end content -->
+			<div class="visualClear"></div>
+		</div>
+	</div>
+		</div>
+		<div id="column-one">
+	<div id="p-cactions" class="portlet">
+		<h5>Views</h5>
+		<div class="pBody">
+			<ul>
+					 <li id="ca-nstab-main" class="selected"><a href="/Stack" title="View the content page [c]" accesskey="c">Page</a></li>
+					 <li id="ca-talk"><a href="/Talk:Stack" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+					 <li id="ca-viewsource"><a href="/index.php?title=Stack&amp;action=edit" title="This page is protected. You can view its source. [e]" accesskey="e">View source</a></li>
+					 <li id="ca-history"><a href="/index.php?title=Stack&amp;action=history" title="Past versions of this page. [h]" accesskey="h">History</a></li>
+				</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-personal">
+		<h5>Personal tools</h5>
+		<div class="pBody">
+			<ul>
+				<li id="pt-login"><a href="/index.php?title=Special:Userlogin&amp;returnto=Stack" title="You are encouraged to log in, it is not mandatory however. [o]" accesskey="o">Log in / create account</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-logo">
+		<a style="background-image: url(/skins/common/images/osdev.png);" href="/Main_Page" title="Visit the Main Page [z]" accesskey="z"></a>
+	</div>
+	<script type="text/javascript"> if (window.isMSIE55) fixalpha(); </script>
+		<div class='portlet' id='p-navigation'>
+		<h5>Navigation</h5>
+		<div class='pBody'>
+			<ul>
+				<li id="n-mainpage"><a href="/Main_Page" title="Visit the Main Page [z]" accesskey="z">Main Page</a></li>
+				<li id="n-portal"><a href="http://forum.osdev.org/" title="About the project, what you can do, where to find things">Forums</a></li>
+				<li id="n-FAQ"><a href="/Category:FAQ">FAQ</a></li>
+				<li id="n-OS-Projects"><a href="/Projects">OS Projects</a></li>
+				<li id="n-randompage"><a href="/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li>
+			</ul>
+		</div>
+	</div>
+		<div class='portlet' id='p-about'>
+		<h5>About</h5>
+		<div class='pBody'>
+			<ul>
+				<li id="n-This-site"><a href="/OSDevWiki:About">This site</a></li>
+				<li id="n-Joining"><a href="/OSDevWiki:Joining">Joining</a></li>
+				<li id="n-Editing-help"><a href="/OSDevWiki:Editing">Editing help</a></li>
+				<li id="n-recentchanges"><a href="/Special:Recentchanges" title="The list of recent changes in the wiki. [r]" accesskey="r">Recent changes</a></li>
+			</ul>
+		</div>
+	</div>
+		<div id="p-search" class="portlet">
+		<h5><label for="searchInput">Search</label></h5>
+		<div id="searchBody" class="pBody">
+			<form action="/Special:Search" id="searchform"><div>
+				<input id="searchInput" name="search" type="text" title="Search OSDev Wiki [f]" accesskey="f" value="" />
+				<input type='submit' name="go" class="searchButton" id="searchGoButton"	value="Go" title="Go to a page with this exact name if exists" />&nbsp;
+				<input type='submit' name="fulltext" class="searchButton" id="mw-searchButton" value="Search" title="Search the pages for this text" />
+			</div></form>
+		</div>
+	</div>
+	<div class="portlet" id="p-tb">
+		<h5>Toolbox</h5>
+		<div class="pBody">
+			<ul>
+				<li id="t-whatlinkshere"><a href="/Special:Whatlinkshere/Stack" title="List of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+				<li id="t-recentchangeslinked"><a href="/Special:Recentchangeslinked/Stack" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+<li id="t-upload"><a href="/Special:Upload" title="Upload files [u]" accesskey="u">Upload file</a></li>
+<li id="t-specialpages"><a href="/Special:Specialpages" title="List of all special pages [q]" accesskey="q">Special pages</a></li>
+				<li id="t-print"><a href="/index.php?title=Stack&amp;printable=yes" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>				<li id="t-permalink"><a href="/index.php?title=Stack&amp;oldid=8672" title="Permanent link to this version of the page">Permanent link</a></li>			</ul>
+		</div>
+	</div>
+		</div><!-- end of the left (by default at least) column -->
+			<div class="visualClear"></div>
+			<div id="footer">
+				<div id="f-poweredbyico"><a href="http://www.mediawiki.org/"><img src="/skins/common/images/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" /></a></div>
+			<ul id="f-list">
+				<li id="lastmod"> This page was last modified 15:34, 28 July 2009.</li>
+				<li id="viewcount">This page has been accessed 21,897 times.</li>
+				<li id="privacy"><a href="/OSDev_Wiki:Privacy_policy" title="OSDev Wiki:Privacy policy">Privacy policy</a></li>
+				<li id="about"><a href="/OSDev_Wiki:About" title="OSDev Wiki:About">About OSDev Wiki</a></li>
+				<li id="disclaimer"><a href="/OSDev_Wiki:General_disclaimer" title="OSDev Wiki:General disclaimer">Disclaimers</a></li>
+			</ul>
+		</div>
+		
+	
+		<script type="text/javascript">if (window.runOnloadHook) runOnloadHook();</script>
+</div>
+<!-- Served in 0.194 secs. --></body></html>

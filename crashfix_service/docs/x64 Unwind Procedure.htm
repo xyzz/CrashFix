@@ -1,0 +1,591 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="ctl00_Head1" xmlns="http://www.w3.org/1999/xhtml"><title>
+	
+  Unwind Procedure
+
+</title><meta http-equiv="content-type" content="text/html; charset=utf-8" /><meta name="DCS.dcsuri" content="/en-us/library/8ydc79k6(d=lightweight,l=en-us,v=VS.100).aspx" /><meta name="NormalizedUrl" content="http://msdn.microsoft.com/en-us/library/8ydc79k6(d=lightweight,l=en-us,v=VS.100).aspx" /><meta name="DCSext.ProductFamily" content="LIB_DG" /><meta name="DCSext.Product" content="VS_VC" /><meta name="DCSext.Title" content="Unwind Procedure" /><meta name="VotingContextUrl" content="http://msdn.microsoft.com/en-us/library/8ydc79k6(l=en-us,v=VS.100).aspx" /><meta name="MN" content="73E99E8B-12:06:31 AM" /><meta name="Search.ShortId" content="8ydc79k6" /><meta name="Ms.Locale" content="en-us" /><link href="http://i3.msdn.microsoft.com/Hash/63e03f8776b23ff4aa91ac335523c2ea.css" rel="stylesheet" type="text/css" xmlns="http://www.w3.org/1999/xhtml" /><link rel="canonical" href="http://msdn.microsoft.com/en-us/library/8ydc79k6.aspx" xmlns="http://www.w3.org/1999/xhtml" /><link rel="alternate" media="print" href="http://msdn.microsoft.com/en-us/library/8ydc79k6(d=printer).aspx" xmlns="http://www.w3.org/1999/xhtml" /><link rel="stylesheet" type="text/css" href="http://i3.msdn.microsoft.com/Hash/a15fcf392bf954133123e209735029c3.css" media="print" title="printonly" xmlns="http://www.w3.org/1999/xhtml" /></head>
+<body>
+
+   
+    <div class="MetricsContainer">
+    
+    <div class="WebtrendsContainer">
+      
+
+<script type="text/javascript" language="javascript">
+//<![CDATA[
+  var literalNormalizedUrl = '/en-us/library/8ydc79k6(d=lightweight,l=en-us,v=VS.100).aspx';
+  var wt_nvr_ru = 'WT_NVR_RU';
+  var wt_fpcdom = '.microsoft.com';
+  var wt_domlist = 'msdn.microsoft.com';
+  var wt_pathlist = '';
+  var wt_paramlist = 'DCSext.mtps_devcenter';
+  var wt_siteid = 'MSDN';
+  var gDomain = 'm.webtrends.com';
+  var gDcsId = 'dcsmgru7m99k7mqmgrhudo0k8_8c6m';
+  var gFpc = 'WT_FPC';
+  if (document.cookie.indexOf(gFpc + "=") == -1) {
+    document.write("<scr" + "ipt type='text/javascript' src='" + "http" + (window.location.protocol.indexOf('https:') == 0 ? 's' : '') + "://" + gDomain + "/" + gDcsId + "/wtid.js" + "'><\\/scr" + "ipt>");
+  }
+  var detectedLocale = 'en-us';
+  var wtsp = 'msdnlib_devtools_lang';
+  var gTrackEvents = '0';
+/*]]>*/
+</script>
+<noscript><div><img alt="DCSIMG" id="Img1" width="1" height="1" src="http://m.webtrends.com/dcsmgru7m99k7mqmgrhudo0k8_8c6m/njs.gif?dcsuri=/nojavascript&amp;WT.js=No" /></div></noscript>
+
+
+    </div>
+    
+    <div class="OmnitureContainer">
+      
+
+
+
+<script type="text/javascript">
+  var omni_guid = 'dd280a4f-df2e-41c7-b563-e245caaba559'; 
+</script>
+
+
+
+<noscript>
+    <a href="http://www.omniture.com" title="Web Analytics">
+        <img src="//msstonojsmsdn.112.2o7.net/b/ss/msstonojsmsdn/1/H.20.2--NS/0" height="1" width="1" border="0" alt="" /></a>
+</noscript>
+
+
+    </div>
+    
+  
+</div>
+  <script language="javascript" type="text/javascript" src="//js.microsoft.com/library/svy/sto/broker.js"></script>
+
+
+  <div class="header">
+    
+
+<table border="0" cellpadding="0" cellspacing="0" class="headerBar cl_lightweight_topnav_slice">
+		<tr>
+			<td class="leftSection cl_lightweight_header_leftSection_wave leftSectionImageClusterOverride">
+        <div class="tabContainer">
+          <a href="http://msdn.microsoft.com/en-us/default.aspx" title="Home" class=" headerTab">Home</a>
+          <a href="http://msdn.microsoft.com/en-us/library/default.aspx" title="Library" class="headerTabSelected cl_lightweight_selected_tab_repeatX ">Library</a>
+          <a href="http://msdn.microsoft.com/en-us/bb188199.aspx" title="Learn" class=" headerTab">Learn</a>
+          <a href="http://msdn.microsoft.com/en-us/aa570309.aspx" title="Downloads" class=" headerTab">Downloads</a>
+          <a href="http://msdn.microsoft.com/en-us/hh361695.aspx" title="Support" class=" headerTab">Support</a>
+          <a href="http://msdn.microsoft.com/en-us/aa497440.aspx" title="Community" class=" headerTab">Community</a>
+          
+        </div>
+      </td>
+			<td class="rightSection cl_lightweight_header_rightSection_wave rightSectionImageClusterOverride">
+        <div class="tabContainer">
+            
+            <a href="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=11&amp;ct=1322813191&amp;rver=6.0.5276.0&amp;wp=MCLBI&amp;wlcxt=msdn%24msdn%24msdn&amp;wreply=http:%2F%2Fmsdn.microsoft.com%2Fen-us%2Flibrary%2F8ydc79k6.aspx&amp;lc=1033&amp;cb=&amp;id=254354" title="Sign in" rel="nofollow">Sign in </a>
+            <span class="pipe">|</span>
+            <a href="http://msdn.microsoft.com/en-us/library/preferences/locale/?returnurl=%252fen-us%252flibrary%252f8ydc79k6.aspx" title="Россия - Pусский" rel="nofollow">Россия - Pусский </a>
+            <span class="pipe">|</span>
+            <a class="dispinline clip15x15" href="http://msdn.microsoft.com/en-us/library/preferences/experience/?returnurl=%252fen-us%252flibrary%252f8ydc79k6.aspx" title="Preferences" rel="nofollow"><img class="head_gear" src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" alt="" /></a>
+            <span class="pipe">|</span>
+            <a id="exportPrintLink" class="dispinline clip30x15 moveToDown" href="/en-us/library/8ydc79k6(d=printer).aspx" title="Print/Export"><img class="head_print_noarrow" src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" alt="" /></a>
+            
+            <div id="exportPrintLinkArrowDiv" class="exportPrintLinkArrow">
+            <a id="exportPrintLinkArrow" class="dispinline clip30x15 moveToDown" href="javascript:void(0);" title="Print/Export"><img class="head_print_arrow" src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" alt="" /></a>
+            </div>
+            
+        </div>
+			</td>
+	</tr>
+</table>
+
+  </div>
+    
+  <div class="contentPlaceHolder">
+    
+    
+    <script type="text/javascript" src="http://Ads.msn.com/library/dap.js"></script>
+    
+  <div class="navigation" id="Navigation" style="width:280px;padding-bottom:0px;">
+    <div class="searchcontainer">
+      
+<form id="SearchForm" action="http://social.msdn.microsoft.com/Search/en-us" method="get" style="margin: 0; padding: 0;" onsubmit="return checkSearchBox()">
+<div class="searchBoxContainer" style="">
+  <table class="searchBox" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td class="searchTextBoxTd">
+        <input id="SearchInput" type="text" maxlength="200" class="searchTextBox" name="query" />
+      </td>
+      <td class="searchButtonTd">
+          <input type="image" src="http://i.msdn.microsoft.com/Hash/0d0542f5f45cf9fc7273abd11cf5c0ee.gif" style="position: relative;" title="Search " />
+      </td>
+    </tr>
+  </table>
+</div>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+    if (!MTPS) var MTPS = {};
+    if (!MTPS.Watermarks) MTPS.Watermarks = {};
+    MTPS.Watermarks.SearchInput = {
+        "control": "SearchInput",
+        "defaultValue": "Search MSDN with Bing",
+        "defaultCSS": "searchTextBox",
+        "focusCSS": "searchTextBoxTrue"
+    };
+    function checkSearchBox() {
+        if (document.getElementById("SearchInput").value == MTPS.Watermarks.SearchInput.defaultValue) {
+            document.getElementById("SearchInput").value = "";
+        }
+    }
+ //]]>
+</script>
+
+
+    </div>
+    <div class="navcontainer">
+      
+<div class="nav">
+    
+    <div id="tocnav">
+        
+        <div class="toclevel0 ancestry">
+            
+            <div class="clip5x9 nav_root">
+                <img src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" class="cl_nav_bullet" alt="" />
+            </div>
+            
+            <div class="nav_div_currentroot">
+                <a href="http://msdn.microsoft.com/en-us/library/ms123401.aspx" id="ms310241_MSDN.10_en-us" title="MSDN Library">MSDN Library</a>
+            </div>
+            
+            <div class="clip5x9 nav_arrows">
+                <img src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" class="cl_nav_arrow" alt="" />
+            </div>
+            
+            <div class="nav_div_currentroot">
+                <a href="http://msdn.microsoft.com/en-us/library/aa187916.aspx" id="aa187916_MSDN.10_en-us" title="Development Tools and Languages">Development Tools and Languages</a>
+            </div>
+            
+            <div class="clip5x9 nav_arrows">
+                <img src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" class="cl_nav_arrow" alt="" />
+            </div>
+            
+            <div class="nav_div_currentroot">
+                <a href="http://msdn.microsoft.com/en-us/library/dd831853.aspx" id="aa187919_MSDN.10_en-us" title="Visual Studio 2010">Visual Studio 2010</a>
+            </div>
+            
+            <div class="clip5x9 nav_arrows">
+                <img src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" class="cl_nav_arrow" alt="" />
+            </div>
+            
+            <div class="nav_div_currentroot">
+                <a href="http://msdn.microsoft.com/en-us/library/52f3sw5c.aspx" id="dd429925_VS.100_en-us" title="Visual Studio">Visual Studio</a>
+            </div>
+            
+            <div class="clip5x9 nav_arrows">
+                <img src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" class="cl_nav_arrow" alt="" />
+            </div>
+            
+            <div class="nav_div_currentroot">
+                <a href="http://msdn.microsoft.com/en-us/library/ee822860.aspx" id="dd548131_VS.100_en-us" title="Visual Studio Languages">Visual Studio Languages</a>
+            </div>
+            
+            <div class="clip5x9 nav_arrows">
+                <img src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" class="cl_nav_arrow" alt="" />
+            </div>
+            
+            <div class="nav_div_currentroot">
+                <a href="http://msdn.microsoft.com/en-us/library/60k1461a.aspx" id="ms302012_VS.100_en-us" title="Visual C++">Visual C++</a>
+            </div>
+            
+            <div class="clip5x9 nav_arrows">
+                <img src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" class="cl_nav_arrow" alt="" />
+            </div>
+            
+            <div class="nav_div_currentroot">
+                <a href="http://msdn.microsoft.com/en-us/library/h2k70f3s.aspx" id="bb158255_VS.100_en-us" title="64-Bit Programming with Visual C++">64-Bit Programming with Visual C++</a>
+            </div>
+            
+            <div class="clip5x9 nav_arrows">
+                <img src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" class="cl_nav_arrow" alt="" />
+            </div>
+            
+            <div class="nav_div_currentroot">
+                <a href="http://msdn.microsoft.com/en-us/library/7kcdt6fy.aspx" id="dd807248_VS.100_en-us" title="x64 Software Conventions">x64 Software Conventions</a>
+            </div>
+            
+            <div class="clip13x9 nav_arrows">
+                <img src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" class="cl_nav_dots" alt="" />
+            </div>
+            
+            <div class="nav_div_currentroot">
+                <a href="http://msdn.microsoft.com/en-us/library/1eyas8tf.aspx" id="dd807252_VS.100_en-us" title="Exception Handling (x64)">Exception Handling (x64)</a>
+            </div>
+            
+        </div>
+        
+        <div class="toclevel1 children" style="border-bottom: 1px solid #bbbbbb;">
+            
+            <div class="clip13x9 nav_dots_current">
+                <img src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" class="cl_nav_dots" alt="" />
+            </div>
+            
+            <div>
+                <a href="http://msdn.microsoft.com/en-us/library/0kd71y96.aspx" id="dd807253_VS.100_en-us" title="Unwind Data for Exception Handling, Debugger Support">Unwind Data for Exception Handling, Debugger Support</a>
+            </div>
+            
+            <div class="clip13x9 nav_dots_current">
+                <img src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" class="cl_nav_dots" alt="" />
+            </div>
+            
+            <div class="toclevel1 current">
+                <a href="http://msdn.microsoft.com/en-us/library/8ydc79k6.aspx" title="Unwind Procedure">Unwind Procedure</a>
+            </div>
+            
+            <div class="clip13x9 nav_dots_current">
+                <img src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" class="cl_nav_dots" alt="" />
+            </div>
+            
+            <div>
+                <a href="http://msdn.microsoft.com/en-us/library/b6sf5kbd.aspx" title="Language Specific Handler">Language Specific Handler</a>
+            </div>
+            
+            <div class="clip13x9 nav_dots_current">
+                <img src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" class="cl_nav_dots" alt="" />
+            </div>
+            
+            <div>
+                <a href="http://msdn.microsoft.com/en-us/library/ms235241.aspx" id="dd807254_VS.100_en-us" title="Unwind Helpers for MASM">Unwind Helpers for MASM</a>
+            </div>
+            
+            <div class="clip13x9 nav_dots_current">
+                <img src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" class="cl_nav_dots" alt="" />
+            </div>
+            
+            <div>
+                <a href="http://msdn.microsoft.com/en-us/library/ssa62fwe.aspx" title="Unwind Data Definitions in C">Unwind Data Definitions in C</a>
+            </div>
+            
+        </div>
+        
+    </div>
+    <img src="http://i.msdn.microsoft.com/Hash/030c41d9079671d09a62d8e2c1db6973.gif" alt="Separator" class="communityContentNavigationSeparator cl_lt_cc_line_top" />
+    
+    <div class="communityContentNavigation">
+        <div class="communityContentNavigationHeader">
+            Community Content</div>
+        
+        <div class="communityContentNavigationPost">
+            <div class="communityContentNavigationAvatarContainer">
+                <a class="communityContentNavigationLinkAvatar" href="#CommunityContent" title="User"><img alt="Avatar" class="cl_default_avatar" src="http://i.msdn.microsoft.com/Hash/030c41d9079671d09a62d8e2c1db6973.gif"></img></a>
+            </div>
+            
+            <div class="communityContentNavigationLinkAbstractAdvertisement">
+                <ul>
+                    <li>
+                        Add code samples and tips to enhance this topic.</li>
+                </ul>
+            </div>
+            
+        </div>
+        
+        <div class="communityContentNavigationMoreLink">
+            <a href="#CommunityContent" title="More...">More...</a></div>
+    </div>
+    
+</div>
+
+<div style="border-top: 1px solid #bbbbbb; float: left; width: 100%; height: 0px;     margin-top: 17px;">
+    <img src="http://i.msdn.microsoft.com/Hash/030c41d9079671d09a62d8e2c1db6973.gif" alt="Separator" class="communityContentNavigationSeparator cl_lt_cc_line_top" />
+</div>
+
+<script type="text/javascript"> 
+  //<![CDATA[
+  if (!MTPS) var MTPS = {};
+  MTPS.TopicNodes= {
+  
+            "_last": ''
+    };
+  //]]>
+</script>
+
+    </div>
+    
+    <div class="leftAdsContainer">
+        
+<div id="AdContainerad384b4e-97b9-4e20-a5c2-e121c5ffc74b" class="AdContainer" style="width:180px; height:167px;">
+  <div class="AdsControlBar">
+    Advertisement
+    <div style="clear:both; height:0px"></div>
+  </div>
+  <div id="AdPanelad384b4e-97b9-4e20-a5c2-e121c5ffc74b"></div>
+  <script type="text/javascript">
+    //<![CDATA[
+    (function(){
+      var windowOnload = window.onload || function(){};
+      window.onload = function(){
+        windowOnload();
+        _dapUtils.brLanguage = "en-us";
+        dapMgr.enableACB("AdPanelad384b4e-97b9-4e20-a5c2-e121c5ffc74b", false);
+        dapMgr.renderAd("AdPanelad384b4e-97b9-4e20-a5c2-e121c5ffc74b", "&AP=1087&PG=CMSVSD", 180, 150);
+      }
+    })();
+    //]]>
+  </script>
+  
+  <div style="clear:both; height:0px"></div>
+</div>
+
+    </div>
+    <div style="clear:both"></div>
+    
+  </div>
+  <div id="tocResizeContainer" style="visibility:hidden">
+  <a href="#" class="tocResize" id="TocResize" style="left:280px">
+    <img id="ResizeImageIncrease" class="cl_nav_resize_open" src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" title="Expand" alt="Expand" />
+      <img id="ResizeImageReset" class="cl_nav_resize_close" src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" style="display:none" title="Minimize" alt="Minimize" />
+  </a>
+  </div>
+  <div class="content">
+    <img class="TOC_Fade_Top cl_lw_toc_fade_top" src="http://i.msdn.microsoft.com/Hash/030c41d9079671d09a62d8e2c1db6973.gif" alt="" />
+    
+
+<div class="clip117x31 logo">
+  <a href="http://msdn.microsoft.com/en-us/default.aspx">
+    <img src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" class="msdn_body_logo" alt="MSDN" title="MSDN" />
+  </a>
+</div>
+
+    <div class="topicContainer" style="">
+      
+<div class="topic" xmlns="http://www.w3.org/1999/xhtml">
+  <h1 class="title">Unwind Procedure</h1>
+  <div class="lw_vs">
+    <div id="curversion">
+      <strong>
+            Visual Studio 2010</strong>
+    </div>
+    <div id="versionclick" style="visibility:hidden">
+      <div id="vsseperator" class="cl_lw_vs_seperator"></div>
+      <div id="versionclick_c1"></div>
+      <div id="versionclick_c2">
+        <div class="">
+          <a id="vsLink" href="javascript:;">
+                    Other Versions
+                </a>
+        </div>
+        <div class="cl_vs_arrow clip10x10">
+          <img class="cl_lw_vs_arrow" id="vsArrow" alt="" src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" />
+        </div>
+      </div>
+      <div id="versionclick_c3"></div>
+    </div>
+    <ul id="vsPanel">
+      <li>
+        <a href="/en-us/library/8ydc79k6(v=VS.90).aspx" title="">Visual Studio 2008</a>
+      </li>
+      <li>
+        <a href="/en-us/library/8ydc79k6(v=VS.80).aspx" title="">Visual Studio 2005</a>
+      </li>
+    </ul>
+  </div>
+  <div style="clear:both;"></div>
+  
+  <div id="mainSection">
+    <div id="mainBody">
+      <p>
+        
+      </p> <div class="introduction"><p>The unwind code array is sorted into descending order. When an exception occurs, the complete context is stored by the operating system in a context record. The exception dispatch logic is then invoked, which repeatedly executes the following steps to find an exception handler.</p><ol><li><p>Use the current RIP stored in the context record to search for a RUNTIME_FUNCTION table entry that describes the current function (or function portion, in the case of chained UNWIND_INFO entries).</p></li><li><p>If no function table entry is found, then it is in a leaf function, and RSP will directly address the return pointer. The return pointer at [RSP] is stored in the updated context, the simulated RSP is incremented by 8, and step 1 is repeated.</p></li><li><p>If a function table entry is found, RIP can lie within three regions a) in an epilog, b) in the prolog, or c) in code that may be covered by an exception handler.</p><ul><li><p>Case a) If the RIP is within an epilog, then control is leaving the function, there can be no exception handler associated with this exception for this function, and the effects of the epilog must be continued to compute the context of the caller function. To determine if the RIP is within an epilog, the code stream from RIP on is examined. If that code stream can be matched to the trailing portion of a legitimate epilog, then it is in an epilog, and the remaining portion of the epilog is simulated, with the context record updated as each instruction is processed. After this, step 1 is repeated.</p></li><li><p>Case b) If the RIP lies within the prologue, then control has not entered the function, there can be no exception handler associated with this exception for this function, and the effects of the prolog must be undone to compute the context of the caller function. The RIP is within the prolog if the distance from the function start to the RIP is less than or equal to the prolog size encoded in the unwind info. The effects of the prolog are unwound by scanning forward through the unwind codes array for the first entry with an offset less than or equal to the offset of the RIP from the function start, then undoing the effect of all remaining items in the unwind code array. Step 1 is then repeated.</p></li><li><p>Case c) If the RIP is not within a prolog or epilog and the function has an exception handler (UNW_FLAG_EHANDLER is set), then the language specific handler is called. The handler scans its data and calls filter functions as appropriate. The language specific handler can return that the exception was handled or that the search is to be continued. It can also initiate an unwind directly.</p></li></ul></li><li><p>If the language specific handler returns a handled status, then execution is continued using the original context record.</p></li><li><p>If there is no language specific handler or the handler returns a "continue search" status, then the context record must be unwound to the state of the caller. This is accomplished by processing all of the unwind code array elements, undoing the effect of each. Step 1 is then repeated. </p></li></ol><p>When chained unwind info is involved, these basic steps are still followed. The only difference is that, while walking the unwind code array to unwind a prolog’s effects, once the end of the array is reached, it is then linked to the parent unwind info and the entire unwind code array found there is walked. This linking continues until arriving at an unwind info without the UNW_CHAINED_INFO flag and finish walking its unwind code array.</p><p>The smallest set of unwind data is 8 bytes. This would represent a function that only allocated 128 bytes of stack or less, and possibly saved one nonvolatile register. This is also the size of a chained unwind info structure for a zero-length prolog with no unwind codes.</p></div><div xmlns=""><script type="text/javascript">if (!MTPS) var MTPS = {};if (!MTPS.LocalizedStrings) MTPS.LocalizedStrings = {}; 
+              MTPS.LocalizedStrings.ExpandButtonTooltip = 'Expand'; 
+              MTPS.LocalizedStrings.CollapseButtonTooltip = 'Collapse';</script><div class="LW_CollapsibleArea_TitleDiv"><div><a href="javascript:void(0)" class="LW_CollapsibleArea_TitleAhref" title="Collapse"><img src="http://i.msdn.microsoft.com/Hash/030c41d9079671d09a62d8e2c1db6973.gif" class="cl_CollapsibleArea_expanding LW_CollapsibleArea_Img" /><span class="LW_CollapsibleArea_Title">See Also</span></a><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div></div><div class="sectionblock"><a id="seeAlsoToggle" xmlns="http://www.w3.org/1999/xhtml">
+  
+</a>
+<h4 class="subHeading" xmlns="http://www.w3.org/1999/xhtml">Reference</h4>
+<div class="seeAlsoStyle" xmlns="http://www.w3.org/1999/xhtml">
+  <span>
+    <a href="http://msdn.microsoft.com/en-us/library/1eyas8tf.aspx">Exception Handling (x64)</a>
+  </span>
+</div></div></div></div>
+  </div>
+</div>
+    </div>
+    
+    <div class="topicEndLine">
+    </div>
+    <div id="CommunityContent" class="CommunityContent">
+      
+<div class="CommunityContentContainer">
+    <div id="CommunityContentHeader" class="CommunityContentHeader">
+      <div class="CommunityContentHeaderTitleContainer">
+        <span class="CommunityContentHeaderTitle h1">Community Content</span>
+          
+        <a href="http://msdn.microsoft.com/en-us/library/community/add/8ydc79k6.aspx" title="Add" rel="nofollow">Add</a>
+          
+        </div>
+        <div class="CommunityContentFaq">
+            <a href="/en-us/library/community-edits.rss?topic=8ydc79k6|en-us|VS.100" title="Annotations" rel="nofollow"><img class="cl_rss_button" alt="Annotations" src="http://i.msdn.microsoft.com/Hash/030c41d9079671d09a62d8e2c1db6973.gif" /></a>
+            <a href="/en-us/library/community-msdnwikifaq.aspx" title="FAQ" rel="nofollow">FAQ</a>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+    
+    
+
+</div>
+    </div>
+    
+  </div>
+  
+  <div style="clear:both; width:100%; height:0px"></div>
+  <div class="bottomAdsContainer">
+    
+<div id="AdContainerf6b4addc-0646-4850-bf4b-6f41cdf469e6" class="AdContainer" style="width:728px; height:107px;">
+  <div class="AdsControlBar">
+    Advertisement
+    <div style="clear:both; height:0px"></div>
+  </div>
+  <div id="AdPanelf6b4addc-0646-4850-bf4b-6f41cdf469e6"></div>
+  <script type="text/javascript">
+    //<![CDATA[
+    (function(){
+      var windowOnload = window.onload || function(){};
+      window.onload = function(){
+        windowOnload();
+        _dapUtils.brLanguage = "en-us";
+        dapMgr.enableACB("AdPanelf6b4addc-0646-4850-bf4b-6f41cdf469e6", false);
+        dapMgr.renderAd("AdPanelf6b4addc-0646-4850-bf4b-6f41cdf469e6", "&AP=1390&PG=CMSVSB", 728, 90);
+      }
+    })();
+    //]]>
+  </script>
+  
+  <div style="clear:both; height:0px"></div>
+</div>
+
+  </div>
+  <div style="clear:both"></div>
+  
+  </div>
+  <div class="footer">
+    
+
+<div id="footer" class="footerContainer cl_footer_slice">
+  <div class="footerLogoContainer">
+    <div class="footerContent">
+    <div class="copyright">
+      © 2011 Microsoft. All rights reserved.</div>
+    <div class="footerLogo cl_footer_logo"></div>
+    <a href="/cc300389.aspx">Terms of Use</a><span class="pipe"> | </span>
+    <a href="http://www.microsoft.com/library/toolbar/3.0/trademarks/en-us.mspx">Trademarks</a><span class="pipe"> | </span>
+    <a href="http://www.microsoft.com/info/privacy.mspx">Privacy Statement</a>
+    <span class="pipe">| </span>
+    <span class="FeedbacklinkDisabled" id="FeedbacklinkDisabled">Feedback</span>
+    <a id="Feedbacklink" title="Feedback" class="FeedbackLink" href="http://social.msdn.microsoft.com/Forums/en-US/libraryfeedback/threads">
+      Feedback
+        <span class="FeedbackButton clip20x21" id="FeedbackButton">
+          <img id="feedBackImg" class="cl_footer_feedback_icon" src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" alt="Feedback" />
+        </span>
+      </a>
+    
+  <div id="FeedbackContainer" class="FeedbackContainer">
+    <form method="post" action="/en-us/library/feedback/add/8ydc79k6.aspx">
+    <div class="FeedbackTitleContainer">
+        <div class="FeedbackTitle">
+            Feedback</div>
+        <div class="FeedbackCancel">
+            <a href="javascript:;" onclick="document.getElementById('FeedbackContainer').style.display = 'none';">x</a>
+            </div>
+    </div>
+    <div class="FeedbackData">
+        <div class="FeedbackInfoText">
+            Tell us about your experience...
+        </div>
+        <div class="QuestionText">
+            Did the page load quickly?
+        </div>
+        <div class="AnswerText">
+            
+            <span>
+                Yes<span>
+                    <input id="searchBox" name="searchBox" type="radio" value="1" /></span></span>
+            
+            <span>
+                No<span>
+                    <input id="searchBox" name="searchBox" type="radio" value="0" /></span></span>
+            
+        </div>
+        <div class="QuestionText">
+            Do you like the page design?
+        </div>
+        <div class="AnswerText">
+            
+            <span>
+                Yes<span>
+                    <input id="tabbedCode" name="tabbedCode" type="radio" value="1" /></span></span>
+            
+            <span>
+                No<span>
+                    <input id="tabbedCode" name="tabbedCode" type="radio" value="0" /></span></span>
+            
+        </div>
+        <div class="QuestionText">
+            How useful is this topic?
+        </div>
+        <div class="FeedbackGraphicHolder clip269x23">            
+                <img alt="" src="http://i3.msdn.microsoft.com/Hash/c764fa3d6b8a84bd40aa131355215c98.png" class="cl_online_scale FeedbackSiderGraphic" />
+        </div>        
+            <div class="RadioButtonHolder"><div class="RateRadioOne">
+                    <input id="topicUseful" name="topicUseful" title="Really disliked it" type="radio" value="1" />
+                </div>
+               <div class="RateRadio">
+                    <input id="topicUseful" name="topicUseful" title="Disliked it" type="radio" value="2" />
+                </div>
+               <div class="RateRadio">
+                    <input id="topicUseful" name="topicUseful" title="OK" type="radio" value="3" />
+                </div>
+               <div class="RateRadio">
+                    <input id="topicUseful" name="topicUseful" title="Good" type="radio" value="4" />
+                </div>
+               <div class="RateRadioLast">
+                    <input id="topicUseful" name="topicUseful" title="Really Good" type="radio" value="5" />
+                </div>
+               
+            </div>            
+        <div class="QuestionText">
+            Tell us more
+        </div>
+        <div class="FeedbackTextAreaContainer">
+            <textarea id="feedbackText" data-maxlength="4000" name="feedbackText" cols="25" rows="5" class="FeedbackTextArea"></textarea>
+            
+            <textarea id="feedbackDescription" name="feedbackDescription" cols="25" rows="10" style="display:none;">Enter description here.</textarea>
+            <input type="hidden" id="feedbackPriority" name="feedbackPriority" value="" />
+            <input type="hidden" id="feedbackSourceUrl" name="feedbackSourceUrl" value="" />
+            <input type="hidden" id="ClientIP" name="ClientIP" value="" />
+            <input type="hidden" id="ClientOS" name="ClientOS" value="" />
+            <input type="hidden" id="ClientBrowser" name="ClientBrowser" value="" />
+            <input type="hidden" id="ClientTime" name="ClientTime" value="" />
+            <input type="hidden" id="ClientTimeZone" name="ClientTimeZone" value="" />
+            
+            
+        </div>
+        <div>
+            <input type="submit" value="Send" class="FeedbackSubmit" onclick="document.getElementById('feedbackDescription').value='';document.getElementById('feedBackVersion').value = '-1';" />
+        </div>
+    </div>
+    <input type="hidden" id="returnUrl" name="returnUrl" value="http://msdn.microsoft.com/en-us/library/8ydc79k6.aspx" />
+    
+    
+    <input type="hidden" id="feedBackVersion" name="feedBackVersion" value="1" />
+    
+  </form> 
+</div>
+
+    </div>
+  </div>
+</div>
+
+  </div>
+ 
+<script type="text/javascript" src="http://i2.msdn.microsoft.com/Hash/81fa5011609368de2721c9685bd5ee53.js" xmlns="http://www.w3.org/1999/xhtml"></script></body>
+</html>

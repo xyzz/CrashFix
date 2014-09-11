@@ -1,0 +1,393 @@
+
+ 
+
+
+
+ 
+ 
+ 
+
+
+
+ 
+ 
+ <!DOCTYPE html>
+<html>
+<head>
+ <link rel="icon" type="image/vnd.microsoft.icon" href="http://www.gstatic.com/codesite/ph/images/phosting.ico">
+ 
+ 
+ <link rel="canonical" href="http://code.google.com/p/pdbparser/wiki/PDBHeadersFormat" />
+ 
+ <script type="text/javascript">
+ 
+ 
+ 
+ 
+ var codesite_token = null;
+ 
+ 
+ var CS_env = {"token":null,"assetHostPath":"http://www.gstatic.com/codesite/ph","domainName":null,"assetVersionPath":"http://www.gstatic.com/codesite/ph/18339216115563546213","projectName":"pdbparser","projectHomeUrl":"/p/pdbparser","absoluteBaseUrl":"http://code.google.com","relativeBaseUrl":"","urlPrefix":"p","loggedInUserEmail":null};
+ </script>
+ 
+ 
+ <title>PDBHeadersFormat - 
+ pdbparser -
+ 
+ PDB-stream (#1) layout and format description of PDB headers. - 
+ Parsing library for PDB file format (debugging information) - Google Project Hosting
+ </title>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+ <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
+ 
+ <meta name="ROBOTS" content="NOARCHIVE">
+ 
+ <link type="text/css" rel="stylesheet" href="http://www.gstatic.com/codesite/ph/18339216115563546213/css/ph_core.css">
+ 
+ <link type="text/css" rel="stylesheet" href="http://www.gstatic.com/codesite/ph/18339216115563546213/css/ph_detail.css" >
+ 
+ 
+ 
+ <link type="application/atom+xml" rel="alternate" href="/feeds/p/pdbparser/svnchanges/basic?path=/wiki/PDBHeadersFormat.wiki">
+ 
+ 
+<!--[if IE]>
+ <link type="text/css" rel="stylesheet" href="http://www.gstatic.com/codesite/ph/18339216115563546213/css/d_ie.css" >
+<![endif]-->
+ <style type="text/css">
+ .menuIcon.off { background: no-repeat url(http://www.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 -42px }
+ .menuIcon.on { background: no-repeat url(http://www.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 -28px }
+ .menuIcon.down { background: no-repeat url(http://www.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 0; }
+ 
+ 
+ #maincol {
+ padding-top: 0;
+ padding-bottom: 0;
+ }
+
+ </style>
+</head>
+<body class="t6">
+ <script type="text/javascript">
+ var _gaq = _gaq || [];
+ _gaq.push(
+ ['siteTracker._setAccount', 'UA-18071-1'],
+ ['siteTracker._trackPageview']);
+ 
+ (function() {
+ var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+ (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+ })();
+ </script>
+<div class="headbg">
+ <div id="gaia">
+ 
+
+ <span>
+ 
+ <a href="#" id="projects-dropdown" onclick="return false;"><u>My favorites</u> <small>&#9660;</small></a>
+ | <a href="https://www.google.com/accounts/ServiceLogin?service=code&amp;ltmpl=phosting&amp;continue=http%3A%2F%2Fcode.google.com%2Fp%2Fpdbparser%2Fwiki%2FPDBHeadersFormat&amp;followup=http%3A%2F%2Fcode.google.com%2Fp%2Fpdbparser%2Fwiki%2FPDBHeadersFormat" onclick="_CS_click('/gb/ph/signin');"><u>Sign in</u></a>
+ 
+ </span>
+
+ </div>
+ <div class="gbh" style="left: 0pt;"></div>
+ <div class="gbh" style="right: 0pt;"></div>
+ 
+ 
+ <div style="height: 1px"></div>
+<!--[if lte IE 7]>
+<div style="text-align:center;">
+Your version of Internet Explorer is not supported. Try a browser that
+contributes to open source, such as <a href="http://www.firefox.com">Firefox</a>,
+<a href="http://www.google.com/chrome">Google Chrome</a>, or
+<a href="http://code.google.com/chrome/chromeframe/">Google Chrome Frame</a>.
+</div>
+<![endif]-->
+
+
+
+
+ <table style="padding:0px; margin: 0px 0px 10px 0px; width:100%" cellpadding="0" cellspacing="0">
+ <tr style="height: 58px;">
+ 
+ <td id="plogo">
+ <a href="/p/pdbparser/">
+ 
+ <img src="http://www.gstatic.com/codesite/ph/images/defaultlogo.png" alt="Logo">
+ 
+ </a>
+ </td>
+ 
+ <td style="padding-left: 0.5em">
+ 
+ <div id="pname">
+ <a href="/p/pdbparser/">pdbparser</a>
+ </div>
+ 
+ <div id="psum">
+ <a id="project_summary_link" href="/p/pdbparser/" >Parsing library for PDB file format (debugging information)</a>
+ 
+ </div>
+ 
+ 
+ </td>
+ <td style="white-space:nowrap;text-align:right; vertical-align:bottom;">
+ 
+ <form action="/hosting/search">
+ <input size="30" name="q" value="" type="text">
+ <input type="submit" name="projectsearch" value="Search projects" >
+ </form>
+ 
+ </tr>
+ </table>
+
+</div>
+
+ 
+<div id="mt" class="gtb"> 
+ <a href="/p/pdbparser/" class="tab ">Project&nbsp;Home</a>
+ 
+ 
+ 
+ 
+ <a href="/p/pdbparser/downloads/list" class="tab ">Downloads</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/pdbparser/w/list" class="tab active">Wiki</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/pdbparser/issues/list"
+ class="tab ">Issues</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/pdbparser/source/checkout"
+ class="tab ">Source</a>
+ 
+ 
+ 
+ 
+ 
+ <div class=gtbc></div>
+</div>
+<table cellspacing="0" cellpadding="0" width="100%" align="center" border="0" class="st">
+ <tr>
+ 
+ 
+ 
+ <td class="subt">
+ <div class="issueDetail">
+<div class="isf">
+ 
+ <span class="inIssueList"> 
+ <span>Search</span>
+ <form action="/p/pdbparser/w/list" method="GET" style="display:inline">
+ <select id="can" name="can" >
+ <option disabled="disabled">Search within:</option>
+ 
+ <option value="1" >&nbsp;All wiki pages</option>
+ <option value="3" >&nbsp;Featured pages</option>
+ <option value="2" selected="selected">&nbsp;Current pages</option>
+ 
+ 
+ <option value="4" >&nbsp;Deprecated pages</option>
+ 
+ </select>
+ <span>for</span>
+ <span id="qq"><input type="text" size="38" id="searchq" name="q" value=""
+ autocomplete="off" ></span>
+ 
+ 
+ <input type="submit" value="Search" >
+ </form>
+ </span>
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+</div>
+</div>
+
+ </td>
+ 
+ 
+ 
+ 
+ 
+ 
+ <td align="right" valign="top" class="bevel-right"></td>
+ </tr>
+</table>
+
+
+<script type="text/javascript">
+ var cancelBubble = false;
+ function _go(url) { document.location = url; }
+</script>
+<div id="maincol"
+ 
+>
+
+ 
+<!-- IE -->
+
+
+
+
+
+
+
+ <style type="text/css">
+ .delcom { background: #e8e8e8 }
+ .commentcontent {
+ margin: 2em;
+ padding: 0px 10px;
+ width: 66em;
+ }
+ .artifactcomment {
+ border-top: 3px solid #c3d9ff;
+ }
+ #commentform {
+ border-top: 3px solid #c3d9ff;
+ }
+ </style>
+
+<div id="wikipage">
+<table>
+ <tr>
+ 
+ 
+ <td style="vertical-align:top; padding-left:5px">
+ 
+ <div id="wikiheader">
+ 
+ <span style="font-size:120%;font-weight:bold">PDBHeadersFormat</span>
+ &nbsp;
+ <div> 
+ 
+ <i>PDB-stream (#1) layout and format description of PDB headers.</i>
+ 
+ 
+ <br/>
+ 
+ <a class="label" style="padding-top: 2px"
+ href="/p/pdbparser/w/list?q=label:Phase-Implementation"
+ title="Developers&#39; guide"
+ >Phase-Implementation</a>, 
+ 
+ <a class="label" style="padding-top: 2px"
+ href="/p/pdbparser/w/list?q=label:File-Format"
+ title=""
+ >File-Format</a>, 
+ 
+ <a class="label" style="padding-top: 2px"
+ href="/p/pdbparser/w/list?q=label:FS-Layout"
+ title=""
+ >FS-Layout</a>
+ 
+ 
+ 
+ <div id="wikiauthor" style="float:right">
+ Updated <span title="Fri Jul  9 07:19:42 2010">
+ Jul 9, 2010</span>
+ 
+ by <a style="white-space: nowrap" href="/u/xgreatx/">xgreatx</a>
+ 
+ </div>
+ </div>
+ </div>
+ 
+ <div id="wikicontent">
+ <div class="vt" id="wikimaincol">
+ <h1><a name="Stream_content"></a>Stream content<a href="#Stream_content" class="section_anchor"></a></h1><p>PDB stream (for PDB Format v7.0) contains the header with the following fields: <ul><li>Offset 0x00  : <tt>DWORD impv</tt>: not used </li><li>Offset 0x04  : <tt>DWORD sig</tt> : time stamp-based old-style signature (not used) </li><li>Offset 0x08  : <tt>DWORD age</tt> : PDB file age (number of PDB recompilations since PDB was created or completely rebuilt) </li><li>Offset 0x0c  : <tt>GUID sig70</tt> : GUID signature (new-style).  </li></ul>Total length: 0x10 (16) bytes. </p><p>Among with Age used as unique PDB identifier in a set of PDB with the same names. Used to distinguish PDBs for different versions of the same file in symbol server and symbol store. </p><h1><a name="Symbol_store_FS_layout"></a>Symbol store FS layout<a href="#Symbol_store_FS_layout" class="section_anchor"></a></h1><p>Files in symbol store are saved in the path based on the following template: <tt>%PathToSymbolStore%\filename.exe\SIGNATUREAGE\filename.pdb</tt> or filename.pd<i> (CAB-compressed PDB) Where SIGNATUREAGE is a string concatenated from GUID signature and PDB age (without spaces or other delimeters). For example, assume we got PDB with full path B:\Symbols\win32k.pdb\16B8ACEDB77D4682A3C71E78E31A81152\win32k.pdb. Symbol store base is B:\Symbols Signature is 16B8ACEDB77D4682A3C71E78E31A8115 PDB age is 2 (note: without leading zeroes, although age is a DWORD) </i></p><p>See also: <tt>PdbGetImageSignatureAndPath</tt> (retrieves PDB file path and signature-age string) <tt>SymDownloadFromServerPdb</tt> (downloads PDB from symbol server and saves in local symbol store; arguments: PDB signature (string), symbol server URL, local symbol store path) </p><p>Sample HTTP request sent to symbol server: </p><pre class="prettyprint">GET /win32k.pdb/16B8ACEDB77D4682A3C71E78E31A81152/win32k.pd_ HTTP/1.1
+User-Agent: Microsoft-Symbol-Server/6.6.0007.5
+Host: msdl.microsoft.com
+Connection: keep-alive
+Cache-Control: no-cache
+Cookie: A=I&amp;I=AxUFAAAAAAA/BwAAiyuzHeFC9Wr/2d6GgxRHGg!!&amp;M=1; MC1=GUID=9cd0ed4ebbb93448869ee604aac421da&amp;HASH=4eed&amp;LV=20102&amp;V=3</pre><h1><a name="Symbol_server_FS_layout"></a>Symbol server FS layout<a href="#Symbol_server_FS_layout" class="section_anchor"></a></h1><p><tt>http://symbol.server/filename.pdb/SIGNATUREAGE/filename.pdb</tt> or <tt>filename.pd_</tt> (compressed). SIGNATUREAGE part is the same as the corresponding part of PDB path from local symbol store. </p>
+ </div>
+ </div>
+ </td><tr>
+</table>
+ </div>
+
+
+ 
+ 
+ 
+ 
+ <br>
+ <div class="artifactcomment">
+ <span class="indicator">&#9658;</span> <a href="https://www.google.com/accounts/ServiceLogin?service=code&amp;ltmpl=phosting&amp;continue=http%3A%2F%2Fcode.google.com%2Fp%2Fpdbparser%2Fwiki%2FPDBHeadersFormat&amp;followup=http%3A%2F%2Fcode.google.com%2Fp%2Fpdbparser%2Fwiki%2FPDBHeadersFormat"
+ >Sign in</a> to add a comment
+ </div>
+ 
+ 
+ 
+ 
+ <form name="delcom" action="../w/delComment.do" method="POST">
+ <input type="hidden" name="sequence_num" value="" >
+ <input type="hidden" name="create_time" value="" >
+ <input type="hidden" name="mode" value="" >
+ <input type="hidden" name="pagename" value="PDBHeadersFormat" >
+ <input type="hidden" name="token" value="" >
+ </form>
+
+
+
+ <script src="http://www.gstatic.com/codesite/ph/18339216115563546213/js/prettify/prettify.js"></script>
+ <script type="text/javascript">
+ prettyPrint();
+ </script>
+
+<script type="text/javascript" src="http://www.gstatic.com/codesite/ph/18339216115563546213/js/dit_scripts.js"></script>
+
+
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js">
+</script>
+
+  
+ 
+ 
+ <script type="text/javascript" src="http://www.gstatic.com/codesite/ph/18339216115563546213/js/ph_core.js"></script>
+ 
+ 
+ 
+ 
+ <script type="text/javascript" src="/js/codesite_product_dictionary_ph.pack.04102009.js"></script>
+</div> 
+<div id="footer" dir="ltr">
+ <div class="text">
+ &copy;2011 Google -
+ <a href="/projecthosting/terms.html">Terms</a> -
+ <a href="http://www.google.com/privacy.html">Privacy</a> -
+ <a href="/p/support/">Project Hosting Help</a>
+ </div>
+</div>
+ <div class="hostedBy" style="margin-top: -20px;">
+ <span style="vertical-align: top;">Powered by <a href="http://code.google.com/projecthosting/">Google Project Hosting</a></span>
+ </div>
+ 
+ 
+
+
+ 
+ </body>
+</html>
+
+

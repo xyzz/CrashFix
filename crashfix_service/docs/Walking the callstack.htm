@@ -1,0 +1,2011 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+
+<html>
+
+<head>
+	<title>Walking the callstack - CodeProject</title> 
+	<link type="text/css" rel="stylesheet" href="/App_Themes/Std/CSS/CodeProject.min.css?dt=2.3.110720.3">
+
+	
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+<meta name="Description" content="This article describes the (documented) way to walk a callstack for any thread (own, other and remote). It has an abstraction layer, so the calling app does not need to know the internals.; Author: Jochen Kalmbach [MVP VC++]; Section: Threads, Processes &amp; IPC; Chapter: General Programming" >
+<meta name="Keywords" content="VC6, VC7, VC7.1, VC8.0, Win2K, WinXP, Win2003, VS.NET2003, VS2005, Dev, Intermediate,Threads, Processes &amp; IPC,General Programming,Free source code, tutorials" >
+<meta name="Author" content="Jochen Kalmbach [MVP VC++]" >
+<meta name="Rating" content="General" >
+<meta name="Robots" content="index, follow" >
+<meta name="Revisit-After" content="1 days" >
+<meta name="google-site-verification" content="RP2bNCUeOmNkkJesEnU8X3UyTbqIcCKP0CmdwU8in5k" >
+<meta name="msapplication-navbutton-color" content="#FF9900" />
+<meta name="application-name" content="The Code Project" />
+<meta name="msapplication-tooltip" content="Your Development Resource." />
+<meta name="msapplication-starturl" content="http://www.codeproject.com/?pinned=true" />
+<meta name="msapplication-task" content="name=Homepage;action-uri=http://www.codeproject.com/;icon-uri=http://www.codeproject.com/favico.ico" />
+<meta name="msapplication-task" content="name=Latest Articles;action-uri=http://www.codeproject.com/script/articles/Latest.aspx;icon-uri=http://www.codeproject.com/favico.ico" />
+<meta name="msapplication-task" content="name=Questions and Answers;action-uri=http://www.codeproject.com/script/Answers/;icon-uri=http://www.codeproject.com/favico.ico" />
+<meta name="msapplication-task" content="name=The Lounge;action-uri=http://www.codeproject.com/Lounge.aspx;icon-uri=http://www.codeproject.com/favico.ico" />
+<link rel="dns-prefetch" href="//ajax.aspnetcdn.com" /> 
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - All topics" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=1" >
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - MFC / C++" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=2" >
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - C#" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=3" >
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - ASP.NET" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=4" >
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - .NET" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=5" >
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - VB.NET" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=6" >
+<link rel="alternate" type="application/rss+xml" title="CodeProject Lounge Postings" href="http://www.codeproject.com/webservices/LoungeRSS.aspx" >
+<link rel="search" type="application/opensearchdescription+xml" title="CodeProject" href="http://www.codeproject.com/info/OpenSearch.xml" >
+
+	<base target="_top">
+	<link rel="icon" href="/favicon.ico" type="image/ico" >
+<link rel="shortcut icon" href="/favicon.ico"  type="image/ico" >
+<link rel="apple-touch-icon" href="/images/FavIcon-Apple.png" type="image/png" >
+<script type="text/javascript" language="Javascript">//<![CDATA[
+if(top!=self)top.location.href=location.href; if(typeof(DemoUrl)!="undefined")document.write(unescape('%3Cme')+'ta http'+'-equiv="re' +'fresh" con'+'tent="1;url='+DemoUrl+unescape('"%3CE'));
+function SelfCheck(){ return window.confirm("You are about to reply to your own message. Is this really what you want?");}
+var Selected = "-1";
+function Pin(elm){
+ CloseMsg(Selected);
+ Selected=''
+ var wrk=elm.parentNode; if(wrk)wrk=wrk.children[0];
+ var fc=elm?elm.firstChild:null;
+ if (wrk&&!wrk.pinned) {
+  OpenMsg(wrk.name, true);wrk.pinned=true;fc.src='/script/forums/images/pinned.gif';fc.title='Pinned. Click to unpin'
+ } else {
+  wrk.pinned=false;CloseMsg(wrk.name); fc.src='/script/forums/images/pin.gif';fc.title='Click to pin message'
+ }
+ return false;
+}
+function CloseMsg(msgId) {
+ if(!msgId||msgId==''||msgId<0)return;
+ var lnk=document.getElementsByName(msgId);
+ if(lnk&&lnk.length>0&&lnk[0].pinned)return;
+ var hed=document.getElementById('F' + msgId.toString() + '_h0');
+ if(hed) hed.className = hed.className.replace("Sel", "UnSel");
+ var bdy=document.getElementById('F' + msgId.toString() + '_h1');
+ if(bdy) bdy.style.display = 'none';
+}
+function OpenMsg(msgId, keep) {
+ if(!msgId||msgId==''||msgId<0)return;
+ var bdy=document.getElementById('F' + msgId.toString() + '_h1');
+ if(bdy){
+  var lnk=document.getElementsByName(msgId);
+  if(lnk&&lnk.length>0&&lnk[0].pinned)keep=true;
+  if(keep&&bdy.style.display!='none')return;
+  if(bdy.style.display=='none') bdy.style.display='';
+  else bdy.style.display = 'none';
+ }
+ var hed=document.getElementById('F' + msgId.toString() + '_h0');
+ if (hed) hed.className = hed.className.replace('UnSel', 'Sel');
+ if(bdy&&hed&&bdy.style.display!='none'){
+  var webkitWeird=document.documentElement.scrollTop < document.body.scrollTop;
+  if (!webkitWeird)document.body.scrollTop = getRealPos(hed, 'Top') - document.body.clientHeight/10;
+  EnsureMessageVisible(msgId, true);
+ }
+}
+function EnsureMessageVisible(msgID, bShowTop) {
+	var webkitWeird = document.documentElement.scrollTop < document.body.scrollTop;
+	var msgHeader = document.getElementById('F' + msgID + '_h0');
+	var msgBody = document.getElementById('F' + msgID + '_h1');
+	if (!msgBody || !msgHeader) return;
+	var scrollContainer = document.documentElement;
+	var top = getRealPos(msgHeader, 'Top');
+	var bottom = getRealPos(msgBody, 'Top') + msgBody.offsetHeight;
+	var scrollTop = webkitWeird? scrollTop = document.body.scrollTop:document.documentElement.scrollTop;
+	if (scrollTop > top && !bShowTop) scrollTop = top - scrollContainer.clientHeight / 10;
+	if (scrollTop + scrollContainer.clientHeight < bottom) scrollTop = bottom - scrollContainer.clientHeight;
+	if (scrollTop > top && bShowTop) scrollTop = top - scrollContainer.clientHeight / 10;
+	$(scrollContainer).stop().animate({'scrollTop' : scrollTop}, 'fast');
+}
+function getRealPos(i,which) {
+	iPos = 0;
+	while (i!=null)  {
+		iPos += i['offset' + which];
+		i = i.offsetParent;
+	}
+	return iPos;
+}
+var switchCallback;
+function SwitchMessage(e, msgId) {
+  if (msgId) msgId=msgId.toString();
+  else {
+    if(!e)e=window.event;
+    var target=e.target?e.target:e.srcElement;
+    while(target&&target.className!='message-link')target=target.parentNode;
+    if(!target||target.className!='message-link')return;
+    if(target.pinned){/*Selected='';*/return false;}
+    msgId=target.name;
+  }
+  CloseMsg(Selected)
+  if(Selected==msgId) Selected='';
+  else { OpenMsg(msgId, false); Selected=msgId;}
+  if (e){if(e.preventDefault)e.preventDefault;else e.returnValue=false;}
+    if(switchCallback)switchCallback(null, msgId)
+  return false;
+}
+
+
+//]]>
+</script>
+
+</head>	
+
+<body class="">
+
+
+<a href="#Main"><img alt="Click here to Skip to main content" class="access-link" src="/Images/t.gif" /></a>
+
+
+<div class="page-background">
+	<div id="A" class="container-content">
+
+		
+		
+
+		
+
+		
+		
+
+<div class="container nav-memberbar clearfix">
+<div class="member-stats float-left">7,966,963 members and growing! (31,563 online)</div>
+<div class="float-left"></div>
+<div class="float-right">
+
+
+
+
+	<script type="text/javascript">//<!--
+	function doSubmit(secure)
+	{
+		if (secure)
+			document.subForm.action = "https://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx"
+		else
+			document.subForm.action = "/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx"
+		document.subForm.submit();
+		return true;
+	}//-->
+	</script>
+
+	<a name="SignUp"></a>
+	<form name="subForm" id="subForm" action="/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx" method="post" class="tight">
+
+	
+	<input id="FormName" name="FormName" value="MenuBarForm" type="hidden" />
+
+	Email <input class="small-text" type="text" name="Email" id="Email" style="width:150px" />
+	Password <input class="small-text" type="password" name="Password" id="Password" style="width:60px" />
+	<input type="submit" value="Sign in" class="button" onclick="return doSubmit(false);" />
+	
+	<input type="image"  src="/images/secure.png" class="align-bottom" title="Sign on securely" 
+		onclick="return doSubmit(true);" />
+	<script type="text/javascript">
+function Join(){document.location.href='http://www.codeproject.com/script/Membership/Modify.aspx';return false;}
+document.write('<input type="button" class="button" onclick="return Join();" value="Join"');
+document.write('<input type="hidden" name="fld_quicksign" value="true" />');
+</script>
+	<span class="nowrap">
+		<input type="checkbox" checked = "checked" name="RememberMeCheck" id="RememberMeCheck" value="1"/>
+		<label for="RememberMeCheck">Remember&nbsp;me?</label>
+	</span>&nbsp;
+	<a id="ctl00_MemberMenu_SendPassword" href="/script/Membership/SendPassword.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Lost password?</a>
+	</form>
+
+</div>
+
+</div>
+		
+
+		
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
+		<tr>
+			<td class="header"><a href="/"><img id="ctl00_Logo" title="The Code Project" src="/App_Themes/Std/Img/logo225x90.gif" alt="Home" style="border-width:0px;" /></a></td>
+			<td class="header" align="right">
+				<div class="lqm_ad" width="728px" height="90px" lqm_channel="1" lqm_publisher="495" lqm_zone="77" lqm_format="8" lqm_tags='VC6,VC7,VC7.1,VC8.0,Win2K,WinXP,Win2003,VS.NET2003,VS2005,Dev,Intermediate'></div>
+			</td>
+		</tr></table>
+
+		<table cellpadding="0" cellspacing="0" class="contrast1-background extended"><tr><td nowrap="nowrap">
+			
+
+<div class="navbar clearfix">
+<ul id="nav">
+
+<li><a id="ctl00_TopNavBar_Home" class="down" href="http://www.codeproject.com">Home</a>
+
+
+<li><a id="ctl00_TopNavBar_Art" class="down selected" href="/script/Articles/Latest.aspx">Articles</a>
+
+	<ul>
+		<li><a id="ctl00_TopNavBar_ArtTopicList" class="fly last" onmouseover="ShowMap(this, &#39;siteMap&#39;);" href="/script/Content/SiteMap.aspx">Chapters and Sections</a><ul id="ctl00_TopNavBar_MapFlyout"><li>
+				<div id="siteMap" class="tooltip-flyout">
+					<img src="/images/animated.gif" style="margin:150px;width:100px;height:100px;" />
+				</div>
+			</li></ul>
+		</li>
+		<li><a id="ctl00_TopNavBar_ArtSearch" class="fly break" href="/search.aspx">Search</a></li>
+		<li><a id="ctl00_TopNavBar_ArtLatestArts" class="fly" href="/script/Articles/Latest.aspx?at=1,3,7">Latest Articles</a></li>
+		<li><a id="ctl00_TopNavBar_ArtLatestTips" class="fly" href="/script/Articles/Latest.aspx?at=6,8">Latest Tips/Tricks</a></li>
+		<li><a id="ctl00_TopNavBar_ArtTop" class="fly" href="/script/Articles/TopArticles.aspx?ta_so=4">Top Articles</a></li>
+		<li><a id="ctl00_TopNavBar_ArtBeginner" class="fly" href="/search.aspx?aidlst=152&amp;sa_us=True">Beginner Articles</a></li>
+		<li id="ctl00_TopNavBar_VideosLink">
+			<a id="ctl00_TopNavBar_ArtVideoArticles" class="fly" href="/script/Articles/VideoArticleList.aspx">Video Articles</a>
+		</li>
+		<li><a id="ctl00_TopNavBar_ArtBlogArticles" class="fly break" href="/script/Articles/BlogArticleList.aspx">Technical Blogs</a></li>
+		<li><a id="ctl00_TopNavBar_ArtPostArticle" class="fly" href="/script/Articles/Submit.aspx">Post an Article</a></li>
+		<li><a id="ctl00_TopNavBar_ArtPostTipTrick" class="fly" href="/Tips/post.aspx">Post Tip & Trick</a></li>
+		<li><a id="ctl00_TopNavBar_ArtPostBlog" class="fly break" href="/script/Articles/BlogFeed.aspx">Post your Blog</a></li>
+		<li><a id="ctl00_TopNavBar_ArtGuide" class="fly" href="/info/Submit.aspx">Posting/Update Guidelines</a></li>
+		<li><a id="ctl00_TopNavBar_ArtCompetition" class="fly last" href="/script/Awards/CurrentCompetitions.aspx?cmpTpId=1">Article Competition</a></li>
+	</ul>
+
+</li>
+
+
+
+<li><a id="ctl00_TopNavBar_Answers" href="/script/Answers/List.aspx?tab=active">Questions & Answers</a>
+	<ul>
+		<li id="ctl00_TopNavBar_AQL"><a id="ctl00_TopNavBar_ArticleQuestion" class="fly highlight" href="#_comments">Ask a Question about this article</a></li>
+
+		<li class="heading">Quick Answers</li>
+		<li><a id="ctl00_TopNavBar_QAAsk" class="fly" href="/Questions/ask.aspx">Ask a Question</a></li>
+
+		
+		<li><a id="ctl00_TopNavBar_QAUnanswered" class="fly" href="/script/Answers/List.aspx?tab=unanswered">View Unanswered Questions</a></li>
+		<li><a id="ctl00_TopNavBar_QALatest" class="fly" href="/script/Answers/List.aspx?tab=active">View All Questions...</a></li>
+		
+				<li><a id="ctl00_TopNavBar_QATR_ctl00_Tag" class="fly" href="/script/Answers/List.aspx?tab=active&amp;tags=81" style="padding-left:30px">C# questions</a></li>
+			
+				<li><a id="ctl00_TopNavBar_QATR_ctl01_Tag" class="fly" href="/script/Answers/List.aspx?tab=active&amp;tags=85" style="padding-left:30px">ASP.NET questions</a></li>
+			
+				<li><a id="ctl00_TopNavBar_QATR_ctl02_Tag" class="fly" href="/script/Answers/List.aspx?tab=active&amp;tags=842" style="padding-left:30px">VB.NET questions</a></li>
+			
+				<li><a id="ctl00_TopNavBar_QATR_ctl03_Tag" class="fly" href="/script/Answers/List.aspx?tab=active&amp;tags=78" style="padding-left:30px">C++ questions</a></li>
+			
+				<li><a id="ctl00_TopNavBar_QATR_ctl04_Tag" class="fly" href="/script/Answers/List.aspx?tab=active&amp;tags=69" style="padding-left:30px">C#3.0 questions</a></li>
+			
+		<li class="heading">Programming Discussions</li>
+		<li><a id="ctl00_TopNavBar_MessageBoardsAll" class="fly" href="/script/Forums/List.aspx">All Message Boards...</a></li>
+		<li><a class="fly" style="padding-left:30px" href="/Forums/1580997/Application-Lifecycle.aspx">Application Lifecycle<span class="fly-menu">&gt;</span></a>
+<ul><li><a class="fly" href="/Forums/369270/Design-and-Architecture.aspx">Design and Architecture</a></li>
+<li><a class="fly" href="/Forums/1533717/Running-a-Business.aspx">Running a Business</a></li>
+<li><a class="fly" href="/Forums/1533716/Sales-Marketing.aspx">Sales / Marketing</a></li>
+<li><a class="fly" href="/Forums/1651/Collaboration-Beta-Testing.aspx">Collaboration / Beta Testing</a></li>
+<li><a class="fly" href="/Forums/3304/Work-Training-Issues.aspx">Work &amp; Training Issues</a></li>
+</ul></li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1627782/Free-Tools.aspx">Free Tools</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/12076/ASP-NET.aspx">ASP.NET</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1580226/JavaScript.aspx">JavaScript</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1647/C-Cplusplus-MFC.aspx">C / C++ / MFC<span class="fly-menu">&gt;</span></a>
+<ul><li><a class="fly" href="/Forums/4486/ATL-WTL-STL.aspx">ATL /  WTL / STL</a></li>
+<li><a class="fly" href="/Forums/3785/Managed-Cplusplus-CLI.aspx">Managed C++/CLI</a></li>
+</ul></li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1649/Csharp.aspx">C#</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1725/Database.aspx">Database</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/186301/Hardware-Devices.aspx">Hardware &amp; Devices<span class="fly-menu">&gt;</span></a>
+<ul><li><a class="fly" href="/Forums/1644/System-Admin.aspx">System Admin</a></li>
+</ul></li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1606152/Hosting-and-Servers.aspx">Hosting and Servers</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1643/Java.aspx">Java</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1650/NET-Framework.aspx">.NET Framework</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/13695/Mobile.aspx">Mobile</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1540733/Sharepoint.aspx">Sharepoint</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1004257/Silverlight-WPF.aspx">Silverlight / WPF</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1646/Visual-Basic.aspx">Visual Basic</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1640/Web-Development.aspx">Web Development<span class="fly-menu">&gt;</span></a>
+<ul><li><a class="fly" href="/Forums/1580227/CSS.aspx">CSS</a></li>
+<li><a class="fly" href="/Forums/1213656/PHP.aspx">PHP</a></li>
+</ul></li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1645/Site-Bugs-Suggestions.aspx">Site Bugs / Suggestions</a>
+</li>
+
+
+		<li class="heading">Other Languages<span class="fly-menu">&gt;</span>
+		<ul>
+		<li><a class="fly" href="/Forums/1580229/Hindi.aspx">General Indian Topics</a></li>
+		<li><a class="fly" href="/Forums/1580230/Chinese.aspx">General Chinese Topics</a></li>
+		</ul></li>
+	
+	</ul>
+
+</li>
+
+
+<li><a id="ctl00_TopNavBar_Zones" href="/Zones/index.aspx">Learning Zones</a>
+
+	<ul>
+		<!--<li class="heading">Zones</li>-->
+		<li><a href="/Zones/SqlServer/" class="fly">The SQL Zone</a></li><li><a href="/Zones/WhitePapers/" class="fly">WhitePapers / Webcasts</a></li><li><a href="/Zones/Commerce/" class="fly">The Commerce Zone</a></li><li><a href="/Zones/Mobile/" class="fly">The Mobile Zone</a></li><li><a href="/Zones/Cloud/" class="fly">The Cloud Zone</a></li><li><a href="/Zones/Hardware/" class="fly">The Hardware Zone</a></li><li><a href="/Zones/Parallelism/" class="fly">The Parallelism Zone</a></li><li><a href="/Zones/WPF-Silverlight/" class="fly">The WPF / Silverlight Zone</a></li><li><a href="/Zones/Flex-Flash/" class="fly break">The Flex / Flash Zone</a></li>
+		<li><a id="ctl00_TopNavBar_Solutions" class="fly last" href="/kb/Solution-Center/">Solutions Center</a></li>
+	</ul>
+
+</li>
+
+
+
+
+
+
+
+
+
+
+<li><a id="ctl00_TopNavBar_Features" href="/Feature/">Features</a>
+
+	<ul>
+		<li><a id="ctl00_TopNavBar_WhosWho" class="fly" href="/script/Membership/Profiles.aspx">Who's Who</a></li>
+		<li><a id="ctl00_TopNavBar_MVPs" class="fly" href="/script/Awards/MVPWinners.aspx">CodeProject MVPs</a></li>
+		<li><a id="ctl00_TopNavBar_Companies" class="fly break" href="/script/Membership/Profiles.aspx?mgtid=1&amp;mgm=True">Company Listings</a></li>
+		<li><a id="ctl00_TopNavBar_Catalog" class="fly" href="/script/Catalog/List.aspx">Component & Service Catalog</a></li>
+		<li><a id="ctl00_TopNavBar_Comps" class="fly" href="/script/Awards/CurrentCompetitions.aspx?cmpTpId=1&amp;awsac=true">Competitions</a></li>
+		<li><a id="ctl00_TopNavBar_News" class="fly" href="/script/News/List.aspx">News</a></li>
+		<li><a id="ctl00_TopNavBar_Insider" class="fly" href="/Feature/Insider/">Daily Insider</a></li>
+		<li><a id="ctl00_TopNavBar_Newsletters" class="fly" href="/script/Mailouts/Archive.aspx?mtpid=1">Newsletter archive</a></li>
+		<li><a id="ctl00_TopNavBar_PressRelease" class="fly" href="/script/PressReleases/Preview.aspx">Press Releases</a></li>
+		<li><a id="ctl00_TopNavBar_Surveys" class="fly" href="/script/Surveys/List.aspx">Surveys</a></li>
+		<li><a id="ctl00_TopNavBar_Stuff" class="fly" href="/Info/Stuff.aspx">CodeProject Stuff</a></li>
+		<li><a id="ctl00_TopNavBar_AddIn" class="fly last" href="/Services/Addins/">CodeProject VS Addin </a></li>
+	</ul>
+
+</li>
+
+
+<li><a id="ctl00_TopNavBar_Help" href="/KB/FAQs/">Help!</a>
+
+	<ul>
+		<li><a id="ctl00_TopNavBar_HelpWhatIs" class="fly" href="/info/guide.aspx">What is 'The Code Project'?</a></li>
+		<li><a id="ctl00_TopNavBar_HelpGeneral" class="fly" href="/KB/FAQs/">General FAQ</a></li>
+		<li><a id="ctl00_TopNavBar_HelpPostQuestion" class="fly" href="/Questions/ask.aspx">Post a Question</a></li>
+		<li><a id="ctl00_TopNavBar_HelpBugs" class="fly" href="/Forums/1645/Site-Bugs-Suggestions.aspx">Bugs and Suggestions</a></li>
+		<li><a id="ctl00_TopNavBar_HelpSiteMap" class="fly" href="/script/Content/SiteMap.aspx">Site Directory</a></li>
+		<li><a id="ctl00_TopNavBar_HelpAdvertise" class="fly" href="/info/MediaKit.aspx">Advertise with us</a></li>
+		<li><a id="ctl00_TopNavBar_HelpAboutUs" class="fly last" href="/info/about.aspx">About Us</a></li>
+	</ul>
+
+</li>
+
+
+<li style="margin-left:10px">
+<a id="ctl00_TopNavBar_Lounge" class="simple" href="/Lounge.aspx">The Lounge</a>
+
+	<ul>
+		<li><a id="ctl00_TopNavBar_LoungeLnk" class="fly" href="/Lounge.aspx">The Lounge  </a></li>
+		<li><a id="ctl00_TopNavBar_CleverLnk" class="fly" href="/feature/CleverCode.aspx">Clever Code</a></li>
+		<li><a id="ctl00_TopNavBar_ShameLnk" class="fly" href="/feature/HallOfSHame.aspx">Hall of Shame</a></li>
+		<li><a id="ctl00_TopNavBar_SoapBoxLnk" class="fly" href="/Forums/1536756/The-Soapbox-2-0.aspx">The Soapbox</a></li>
+		
+	</ul>
+
+</li>
+
+</ul>
+
+</div>
+
+<script type="text/javascript">
+
+function ShowMap(prnt, elmId) {
+	var map = $('#' + elmId);
+	
+	if (!prnt.populated && !prnt.populating) {
+		prnt.populating = true;
+		map.css( { 'height': '400px', 'width': '400px' });
+		map.load("/script/content/ajax/SiteMap.aspx", function() { prnt.populated = true; });
+		prnt.populated = true;
+		prnt.populating = false;
+	}
+
+	if (prnt.populated) {
+		var width = Math.min((($(window).width()-map.offset().left) * 0.9), 1000);
+		var height = Math.min((($(window).height()-map.offset().top) * 0.9), 700);
+		map.css('width', width + 'px');
+		map.css('height', height + 'px');
+		map.css('overflow', 'auto');
+		map.css('margin', '0');
+	}
+}
+
+</script>
+		</td><td align="right">
+			
+
+<div class="search-bar">
+
+<form method="get" action="/search.aspx" name="Search" class="tight">
+
+
+<table border="0" cellspacing="0" cellpadding="0" class="search"><tr><td><input TabIndex="2" class="search " id="sb_tb" value="" name="q" /></td><td><input type="image" src="/images/search.gif" /></td></tr></table>
+
+<div class="hover-container">
+	<div id="SearchFilter" class="search-advanced popup small-text align-left">
+	<b>Search within:<br /></b>
+		
+		<input type="radio" id="sb_kw" name="sbo" value="kw" checked="true"><label for="sb_kw">Articles</label><br>
+<input type="radio" id="sb_qa" name="sbo" value="qa"><label for="sb_qa">Quick Answers</label><br>
+<input type="radio" id="sb_fm" name="sbo" value="fm"><label for="sb_fm">Messages</label><br>
+<input type="radio" id="sb_ctlk" name="sbo" value="ctlk"><label for="sb_ctlk">Product Catalog</label><br>
+
+
+		
+		
+	</div>
+</div>
+</form>
+
+</div>
+		</td></tr></table>
+		
+
+		
+		<div class="container-article hreview-aggregate">
+		
+			
+			<div class="container-header">
+				<div id="ctl00_Header" class="header">
+
+					<a name="Main"></a>
+
+					
+					<a name="_articleTop" id="_articleTop"></a>
+					
+
+<div class="clearfix hover-container">
+
+	<div class="container">
+		
+		<div class="breadcrumb float-left"><a href="/script/Content/SiteMap.aspx"><span class="sitemap-anchor" onmouseover="ShowMap(this,'map');"><img width="16px" height="16px" src="/images/sitemap16.png" border="0" alt="Site map" style="vertical-align:middle" /><div id="map" class="tooltip-flyout"><img src="/images/animated.gif" style="margin:150px;width:100px;height:100px;border:0;" /></div></span></a> &#187; <a href="/Chapters/6/General-Programming.aspx">General Programming</a> &#187; <a href="/KB/threads/">Threads, Processes & IPC</a> &#187; <a href="/KB/threads/#General">General</a></div>
+	</div>
+
+	
+	<div id="ctl00_TitleArea_InfoArea" class="float-right">
+		
+
+<div class="infobox">
+	<table class="tight small-text" cellpadding="0" cellspacing="1">
+	<tr><td>Licence&nbsp;</td><td><a href="http://www.opensource.org/licenses/bsd-license.php" title="The BSD License">BSD</a></td></tr>
+	
+	<tr><td>First Posted&nbsp;</td><td nowrap="nowrap"><b>27 Jul 2005</b></td></tr>
+	<tr><td>Views&nbsp;</td><td><b>333,954</b></td></tr>
+	
+	<tr><td>Downloads&nbsp;</td><td><b>3,088</b></td></tr>
+		
+	
+
+	
+	
+	</table>
+</div>	
+	</div>
+
+	
+	<div class="item">
+	<h1 id="ctl00_TitleArea_ArticleTitle" class="fn">Walking the callstack</h1>
+	</div>
+
+	
+	<div class="author">
+		By <b><a href="/script/Membership/View.aspx?mid=38383">Jochen Kalmbach [MVP VC++]</a></b> | 
+		14 Nov 2005 
+		
+
+		
+		
+	</div>
+	
+	<div class="tags">
+	<span id="ctl00_TitleArea_TagsList_TagWrp" class="tags">
+	
+	
+	
+	<span id="ctl00_TitleArea_TagsList_VisibleTags"><span class="t"><a href="/search.aspx?aidlst=4">VC6</a></span><span class="t"><a href="/search.aspx?aidlst=5">VC7</a></span><span class="t"><a href="/search.aspx?aidlst=7">VC7.1</a></span><span class="t"><a href="/search.aspx?aidlst=9">VC8.0</a></span><span class="t"><a href="/search.aspx?aidlst=23">Win2K</a></span><span class="t"><a href="/search.aspx?aidlst=24">WinXP</a></span><span class="t"><a href="/search.aspx?aidlst=26">Win2003</a></span><span class="t"><a href="/search.aspx?aidlst=38">VS.NET2003</a></span><span class="t"><a href="/search.aspx?aidlst=39">VS2005</a></span><span class="t"><a href="/search.aspx?aidlst=118">Dev</a></span></span><acronym id="ctl00_TitleArea_TagsList_HiddenTags" title="plus: Intermediate">, +</acronym> 
+
+	
+	
+</span>
+
+	</div>
+
+	
+	<div class="abstract summary"><span id="ctl00_TitleArea_ArticleDescr">This article describes the (documented) way to walk a callstack for any thread (own, other and remote). It has an abstraction layer, so the calling app does not need to know the internals.</span></div>
+</div>
+
+
+
+					
+
+				</div>
+
+				<div id="ctl00_HeadSide" class="header-sidebar">
+					<div class="align-left" style="height:24px">
+						
+
+
+&nbsp;
+
+
+
+
+
+
+
+
+
+
+					</div>
+
+					
+
+<div class="bold pad-top">See Also</div>
+<ul class="outdent small-text" style="margin-left:5px">
+	<li><a id="ctl00_SeeAlso_LikeThis" href="/search.aspx?q=Walking++callstack">More like this</a></li>
+	<li><a id="ctl00_SeeAlso_ByAuthor" href="/script/Articles/MemberArticles.aspx?amid=38383">More by this author</a></li>
+</ul>
+
+				</div>
+
+			</div>
+			
+
+			
+			<div id="ctl00_Nav" class="container-nav">
+				<div id="ctl00_TabContainer" class="tabs-container clearfix">
+
+					
+					<div class="float-right action-links"> 
+						<a id="ctl00_ActionLinks_PrintLnk" class="tooltip" href="/KB/threads/StackWalker.aspx?display=Print">
+	<img src="/script/Content/Images/print.gif" 
+		width="24px" height="24px" style="vertical-align:middle;border:0">
+	<div class="speech-bubble-container-up">
+		<div class="speech-bubble-up">Print Article</div>
+		<div class="speech-bubble-pointer-up">
+			<div class="speech-bubble-pointer-up-inner"></div>
+		</div>
+	</div>
+</a>
+
+<span id="SBI"><img src="/images/share_drop24.png" id="ctl00_ActionLinks_AddTo_Img" width="37" height="24" alt="add" style="vertical-align:middle" />
+</span>
+<div id="ATD" class="list-socialbookmark"></div> 
+ 
+
+<span class="tooltip">
+	 
+	<div class="speech-bubble-container-up">
+		<div class="speech-bubble-up">Add to your CodeProject bookmarks</div>
+		<div class="speech-bubble-pointer-up">
+			<div class="speech-bubble-pointer-up-inner"></div>
+		</div>
+	</div>
+</span>
+
+<a id="discussAnch" href="#_comments" class="tooltip anchorLink">
+	
+	<img src="/script/Content/Images/discuss.gif" 
+		width="24px" height="24px" alt="Discuss" style="vertical-align:middle;border:0" />
+	<div class="speech-bubble-container-up">
+		<div class="speech-bubble-up">Discuss this article</div>
+		<div class="speech-bubble-pointer-up">
+			<div class="speech-bubble-pointer-up-inner"></div>
+		</div>
+	</div>
+</a>
+<span id="ctl00_ActionLinks_cmtcnt" class="subdue small-text align-middle" style="margin-left:-4px">325</span>
+
+
+
+
+					</div>
+
+					<div class="float-left">
+						
+						
+
+<div class="tabs float-left"><table cellpadding="0" cellspacing="0"><tr>
+	<td class="tab-selected">Article</td><td class="tab-unselected"><a href="/script/Articles/ViewDownloads.aspx?aid=11132">Browse Code</a></td><td class="tab-unselected"><a href="/script/Articles/ListVersions.aspx?aid=11132">Revisions</a></td>
+</tr></table></div>	
+
+
+						
+						<div class="float-left" style="margin-left:15px">
+							<div id="ctl00_CurRat" class="tooltip" name="CurRat_11132">
+								
+<table cellpadding="0" cellspacing="0" class="small-text">
+<tr>
+	
+	<td class="nowrap">
+
+		<div class="nowrap rating-stars" style="height:24px;width:120px;position:relative;">
+	<div class="clipped align-left float-left" style="height:24px;width:119px;">
+		<img src="/script/Ratings/Images/stars-fill.png" style="border-width:0px;" />
+	</div><div class="clipped" style="height:24px;width:1px;position:relative;">
+		<img src="/script/Ratings/Images/stars-empty.png" style="border-width:0px;position:absolute;top:0;right:0;" />
+	</div>
+</div>
+
+		
+	</td>
+	
+	<td id="ctl00_ArticleRating_VR" class="nowrap">
+		&nbsp;<span id="ctl00_ArticleRating_VotesR">&nbsp;<span class="rating">4.96</span> (<span class="count">103 votes</span>)</span>
+		
+	</td>
+
+</tr>
+
+</table>
+
+								<div id="ctl00_RB" class="speech-bubble-container-up">
+									<div class="speech-bubble-up" style="width:150px !important">
+										            
+<div>
+<table class="feature" width="100%" height="50px" title="Voting Distribution. Recent data only" cellpadding="0" cellspacing="0"><tr><td class="chart-column rating-ignore-vote" title="Outside deviation limits - not included in score."><img src="/script/Ratings/Images/pollcol.gif" width="20pxpx" height="1px" border="0px" alt="1 vote, 1.0%" title="1 vote, 1.0%" /><br /><span title="1 vote">1</span></td>
+<td class="chart-column rating-ignore-vote" title="Outside deviation limits - not included in score."><img src="/script/Ratings/Images/pollcol.gif" width="20pxpx" height="1px" border="0px" alt="2 votes, 2.0%" title="2 votes, 2.0%" /><br /><span title="2 votes">2</span></td>
+<td class="chart-column rating-ignore-vote" title="Outside deviation limits - not included in score."><img src="/script/Ratings/Images/pollcol.gif" width="20pxpx" height="1px" border="0px" alt="1 vote, 1.0%" title="1 vote, 1.0%" /><br /><span title="1 vote">3</span></td>
+<td class="chart-column"><img src="/script/Ratings/Images/pollcol.gif" width="20pxpx" height="4px" border="0px" alt="8 votes, 7.8%" title="8 votes, 7.8%" /><br /><span title="8 votes">4</span></td>
+<td class="chart-column"><img src="/script/Ratings/Images/pollcol.gif" width="20pxpx" height="50px" border="0px" alt="90 votes, 88.2%" title="90 votes, 88.2%" /><br /><span title="90 votes">5</span></td>
+</tr></table><div class="small-text align-center">4.96/5 - 103 votes</div><div class="small-text align-center subdue">4 removed</div><div class="small-text align-center subdue">μ 4.89, σ<sub>a</sub> 1.13 [<a href="/KB/FAQs/RatingReputationFAQ.aspx#noisefilter">?</a>]</div>
+</div>
+									</div>
+									<div class="speech-bubble-pointer-up">
+										<div class="speech-bubble-pointer-up-inner"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+				
+			</div>
+			
+
+			
+			<div class="container-text">
+
+				<div id="AT" class="text">
+					
+					
+					
+					
+
+					   
+
+						
+							
+			
+					<form name="aspnetForm" method="post" action="/KB/threads/StackWalker.aspx" id="aspnetForm" style="margin:0;padding:0">
+<div>
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMjExOTQzNjk4Mw9kFgJmD2QWAgIFD2QWCAIRD2QWAgIBD2QWBmYPDxYCHgtOYXZpZ2F0ZVVybAUyL3NjcmlwdC9BcnRpY2xlcy9BZG1pbi9FZGl0b3JDaG9pY2UuYXNweD9haWQ9MTExMzJkZAICDw8WAh8ABTgvc2NyaXB0L0F3YXJkcy9BZG1pbi9Bd2FyZE9iamVjdC5hc3B4P29iaWQ9MTExMzImb2J0aWQ9MmRkAgoPDxYCHwAFLy9zY3JpcHQvQXJ0aWNsZXMvQWRtaW4vUXVldWVFZGl0LmFzcHg/YWlkPTExMTMyZGQCEw9kFgQCAQ9kFgICAQ9kFgZmDw8WAh8ABSovS0IvdGhyZWFkcy9TdGFja1dhbGtlci5hc3B4P2Rpc3BsYXk9UHJpbnRkZAIEDxYCHglpbm5lcmh0bWwFAzMyNWQCBQ8PFgIfAAUmL3NjcmlwdC9BcnRpY2xlcy9SZXBvcnQuYXNweD9haWQ9MTExMzJkZAIDDxYCHgdWaXNpYmxlaGQCFQ9kFgICDQ9kFgYCAg8WAh4GYWN0aW9uBRwvS0IvdGhyZWFkcy9TdGFja1dhbGtlci5hc3B4FggCAQ9kFgICAQ8WAh8CaGQCAw9kFgICAg9kFgICAQ8QZGQWAGQCCQ8WAh4LXyFJdGVtQ291bnQCAWQCCw9kFgICAQ8WAh4EVGV4dAVDPGEgIGhyZWY9Ii9LQi90aHJlYWRzL1N0YWNrV2Fsa2VyLmFzcHgjX2FydGljbGVUb3AiPkFydGljbGUgVG9wPC9hPmQCCg8PFgQfBQUJUGVybWFsaW5rHwAFHC9LQi90aHJlYWRzL1N0YWNrV2Fsa2VyLmFzcHhkZAIYDxYCHwUFLENvcHlyaWdodCAyMDA1IGJ5IEpvY2hlbiBLYWxtYmFjaCBbTVZQIFZDKytdZAIXD2QWAgIHDw8WAh8CaGRkZPKH+S7hG1lcWOQGu9ziMzsYLziw" />
+</div>
+
+
+						<!-- Article Text Start -->
+						<div id="contentdiv">
+						
+
+
+
+<!-- Article Starts -->
+
+<UL class=download>
+<LI><A href="/KB/threads/StackWalker/StackWalker.zip">Download demo project with source - 64.2 Kb</A> </LI></UL>
+<P><IMG height=300 alt="Sample Image - StackWalker.gif" src="/KB/threads/StackWalker/StackWalker.gif" width=600></P>
+<H2>Introduction</H2>
+<P>In some cases you need to display the callstack of the current thread or your are just interested in the callstack of other threads / processes. Therefore I wrote this project.</P>
+<P>The goal for this project was the following:</P>
+<UL>
+<LI>Simple interface to generate a callstack 
+<LI>C++ based to allow overwrites of several methods 
+<LI>Hiding the implementation details (API) from the class' interface 
+<LI>Support of x86, x64 and IA64 architecture 
+<LI>Default output to debugger-output window (but can be customized) 
+<LI>Support of user-provided read-memory-function 
+<LI>Support of the widest range of development-IDEs (VC5-VC8) 
+<LI>Most portable solution to walk the callstack </LI></UL>
+<H2>Background</H2>
+<P>To walk the callstack there is a documented interface: <A href="http://msdn.microsoft.com/library/en-us/debug/base/stackwalk64.asp" target=_blank><CODE>StackWalk64</CODE></A>. Starting with Win9x/W2K, this interface is in the <I>dbghelp.dll</I> library (on NT, it is in <I>imagehlp.dll</I>). But the function name (<CODE>StackWalk64</CODE>) has changed starting with W2K (before it was called <CODE>StackWalk</CODE> (without the <CODE><span class="code-digit">64</span></CODE>))! This project only supports the newer Xxx64-funtions. If you need to use it on older systems, you can download the <A href="http://www.microsoft.com/downloads/release.asp?releaseid=30682" target=_blank>redistributable for NT/W9x</A>.</P>
+<P>The latest <I>dbghelp.dll</I> can always be downloaded with the <A href="http://www.microsoft.com/whdc/devtools/debugging/" target=_blank>Debugging Tools for Windows</A>. This also contains the <I>symsrv.dll</I> which enables the use of the public Microsoft symbols-server (can be used to retrieve debugging information for system-files; see below).</P>
+<H2>Using the code</H2>
+<P>The usage of the class is very simple. For example if you want to display the callstack of the current thread, just instantiate a <CODE>StackWalk</CODE> object and call the <CODE>ShowCallstack</CODE> member:</P><PRE><span class="code-preprocessor">#include</span><span class="code-preprocessor"> <span class="code-keyword">&lt;</span><span class="code-leadattribute">windows.h</span><span class="code-keyword">&gt;</span></span>
+<span class="code-preprocessor">#include</span><span class="code-preprocessor"> <span class="code-string">&quot;</span><span class="code-string">StackWalker.h&quot;</span></span>
+
+<span class="code-keyword">void</span> Func5() { StackWalker sw; sw.ShowCallstack(); }
+<span class="code-keyword">void</span> Func4() { Func5(); }
+<span class="code-keyword">void</span> Func3() { Func4(); }
+<span class="code-keyword">void</span> Func2() { Func3(); }
+<span class="code-keyword">void</span> Func1() { Func2(); }
+
+<span class="code-keyword">int</span> main()
+{
+  Func1();
+  <span class="code-keyword">return</span> <span class="code-digit">0</span>;
+}</PRE>
+<P>This produces the following output in the debugger-output window:</P><PRE lang=text>[...] (output stripped)
+d:\privat\Articles\stackwalker\stackwalker.cpp (736): StackWalker::ShowCallstack
+d:\privat\Articles\stackwalker\main.cpp (4): Func5
+d:\privat\Articles\stackwalker\main.cpp (5): Func4
+d:\privat\Articles\stackwalker\main.cpp (6): Func3
+d:\privat\Articles\stackwalker\main.cpp (7): Func2
+d:\privat\Articles\stackwalker\main.cpp (8): Func1
+d:\privat\Articles\stackwalker\main.cpp (13): main
+f:\vs70builds\3077\vc\crtbld\crt\src\crt0.c (259): mainCRTStartup
+77E614C7 (kernel32): (filename not available): _BaseProcessStart@4</PRE>
+<P>You can now double-click on a line and the IDE will automatically jump to the desired file/line.</P>
+<H3>Providing own output-mechanism</H3>
+<P>If you want to direct the output to a file or want to use some other output-mechanism, you simply need to derive from the <CODE>StackWalker</CODE> class. You have two options to do this: only overwrite the <CODE>OnOutput</CODE> method or overwrite each <CODE>OnXxx</CODE>-function. The first solution (<CODE>OnOutput</CODE>) is very easy and uses the default-implementation of the other <CODE>OnXxx</CODE>-functions (which should be enough for most of the cases). To output also to the console, you need to do the following:</P><PRE><span class="code-keyword">class</span> MyStackWalker : <span class="code-keyword">public</span> StackWalker
+{
+<span class="code-keyword">public</span>:
+  MyStackWalker() : StackWalker() {}
+<span class="code-keyword">protected</span>:
+  <span class="code-keyword">virtual</span> <span class="code-keyword">void</span> OnOutput(LPCSTR szText)
+    { printf(szText); StackWalker::OnOutput(szText); }
+};</PRE>
+<H3>Retrieving detailed callstack info</H3>
+<P>If you want detailed info about the callstack (like loaded-modules, addresses, errors, ...) you can overwrite the corresponding methods. The following methods are provided:</P><PRE><span class="code-keyword">class</span> StackWalker
+{
+<span class="code-keyword">protected</span>:
+  <span class="code-keyword">virtual</span> <span class="code-keyword">void</span> OnSymInit(LPCSTR szSearchPath, DWORD symOptions, LPCSTR szUserName);
+  <span class="code-keyword">virtual</span> <span class="code-keyword">void</span> OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size,
+    DWORD result, LPCSTR symType, LPCSTR pdbName, ULONGLONG fileVersion);
+  <span class="code-keyword">virtual</span> <span class="code-keyword">void</span> OnCallstackEntry(CallstackEntryType eType, CallstackEntry &amp;entry);
+  <span class="code-keyword">virtual</span> <span class="code-keyword">void</span> OnDbgHelpErr(LPCSTR szFuncName, DWORD gle, DWORD64 addr);
+};</PRE>
+<P>These methods are called during the generation of the callstack.</P>
+<H3>Various kinds of callstacks</H3>
+<P>In the constructor of the class, you need to specify if you want to generate callstacks for the current process or for another process. The following constructors are available:</P><PRE><span class="code-keyword">class</span> StackWalker
+{
+<span class="code-keyword">public</span>:
+  StackWalker(
+    <span class="code-keyword">int</span> options = OptionsAll,
+    LPCSTR szSymPath = NULL,
+    DWORD dwProcessId = GetCurrentProcessId(),
+    HANDLE hProcess = GetCurrentProcess()
+    );
+  <span class="code-comment">//</span><span class="code-comment"> Just for other processes with</span>
+  <span class="code-comment">//</span><span class="code-comment"> default-values for options and symPath</span>
+  StackWalker(
+    DWORD dwProcessId,
+    HANDLE hProcess
+    );
+};</PRE>
+<P>To do the actual stack-walking you need to call the following functions:</P><PRE><span class="code-keyword">class</span> StackWalker
+{
+<span class="code-keyword">public</span>:
+  BOOL ShowCallstack(
+    HANDLE hThread = GetCurrentThread(),
+    CONTEXT *context = NULL,
+    PReadProcessMemoryRoutine readMemoryFunction = NULL,
+    LPVOID pUserData = NULL
+    );
+};</PRE>
+<H3>Displaying the callstack of an exception</H3>
+<P>With this <CODE>StackWalker</CODE> you can also display the callstack inside an exception handler. You only need to write a filter-function which does the stack-walking:</P><PRE><span class="code-comment">//</span><span class="code-comment"> The exception filter function:</span>
+LONG WINAPI ExpFilter(EXCEPTION_POINTERS* pExp, DWORD dwExpCode)
+{
+  StackWalker sw;
+  sw.ShowCallstack(GetCurrentThread(), pExp-<span class="code-keyword">&gt;</span>ContextRecord);
+  <span class="code-keyword">return</span> EXCEPTION_EXECUTE_HANDLER;
+}
+
+<span class="code-comment">//</span><span class="code-comment"> This is how to catch an exception:</span>
+<span class="code-keyword">__try</span>
+{
+  <span class="code-comment">//</span><span class="code-comment"> do some ugly stuff...</span>
+}
+<span class="code-keyword">__except</span> (ExpFilter(GetExceptionInformation(), GetExceptionCode()))
+{
+}</PRE>
+<H2>Points of Interest</H2>
+<H3>Context and callstack</H3>
+<P>To walk the callstack of a given thread, you need at least two facts:</P>
+<UL>
+<LI><B>The context of the thread</B> 
+<P>The context is used to retrieve the current <I>Instruction Pointer</I> and the values for the <I>Stack Pointer (SP)</I> and sometimes the <I>Frame Pointer (FP)</I>. The difference between SP and FP is in short: SP points to the latest address on the stack. FP is used to reference the arguments for a function. See also <A href="http://www.embeddedrelated.com/usenet/embedded/show/31646-1.php" target=_blank>Difference Between Stack Pointer and Frame Pointer</A>. But only the SP is essential for the processor. The FP is only used by the compiler. You can also disable the usage of FP (see: <A href="http://msdn.microsoft.com/library/en-us/vccore/html/_core_.2f.oy.asp" target=_blank>/Oy (Frame-Pointer Omission)</A>).</P>
+<LI><B>The callstack</B> 
+<P>The callstack is a memory-region which contains all the data/addresses of the callers. This data must be used to retrieve the callstack (as the name says). The most important part is: this data-region <B>must not change</B> until the stack-walking is finished! This is also the reason why the thread must be in the <I>Suspended</I> state to retrieve a valid callstack. If you want to do a stack-walking for the current thread, then you must not change the callstack memory after the addresses which are declared in the context record.</P></LI></UL>
+<H3>Initializing the <A href="http://msdn.microsoft.com/library/en-us/debug/base/stackframe64_str.asp" target=_blank><CODE>STACKFRAME64</CODE></A>-structure</H3>
+<P>To successfully walk the callstack with <A href="http://msdn.microsoft.com/library/en-us/debug/base/stackwalk64.asp" target=_blank><CODE>StackWalk64</CODE></A>, you need to initialize the <A href="http://msdn.microsoft.com/library/en-us/debug/base/stackframe64_str.asp" target=_blank><CODE>STACKFRAME64</CODE></A>-structure with <I>meaningful</I> values. In the documentation of <A href="http://msdn.microsoft.com/library/en-us/debug/base/stackwalk64.asp" target=_blank><CODE>StackWalk64</CODE></A> there is only a small note about this structure:</P>
+<UL>
+<LI><I>The first call to this function will fail if the <CODE>AddrPC</CODE> and <CODE>AddrFrame</CODE> members of the <CODE>STACKFRAME64</CODE> structure passed in the <CODE>StackFrame</CODE> parameter are not initialized.</I> </LI></UL>
+<P>According to this documentation, most programs only initialize <CODE>AddrPC</CODE> and <CODE>AddrFrame</CODE>; and this had worked until the newest <I>dbhhelp.dll</I> (v5.6.3.7). Now, you also need to initialize <CODE>AddrStack</CODE>. After having some trouble with this (and other problems) I talked to the dbghelp-team and got the following answer (2005-08-02; my own comments are written in <I>italics</I>!):</P>
+<UL>
+<LI><CODE>AddrStack</CODE> should always be set to the stack pointer value for all platforms. You can certainly publish that <CODE>AddrStack</CODE> should be set. You're also welcome to say that new releases of dbghelp are now requiring this. 
+<LI>Given a current dbghelp, your code should: 
+<OL>
+<LI>Always use <A href="http://msdn.microsoft.com/library/en-us/debug/base/stackwalk64.asp" target=_blank><CODE>StackWalk64</CODE></A> 
+<LI>Always set <CODE>AddrPC</CODE> to the current instruction pointer (<I><CODE lang=asm>Eip</CODE> on x86, <CODE lang=asm>Rip</CODE> on x64 and <CODE lang=asm>StIIP</CODE> on IA64</I>) 
+<LI>Always set <CODE>AddrStack</CODE> to the current stack pointer (<I><CODE lang=asm>Esp</CODE> on x86, <CODE lang=asm>Rsp</CODE> on x64 and <CODE lang=asm>IntSp</CODE> on IA64</I>) 
+<LI>Set <CODE>AddrFrame</CODE> to the current frame pointer when meaningful. On x86 this is <CODE lang=asm>Ebp</CODE>, on x64 you can use <CODE lang=asm>Rbp</CODE> (<I>but is not used by VC2005B2; instead it uses <CODE lang=asm>Rdi</CODE>!</I>) and on IA64 you can use <CODE lang=asm>RsBSP</CODE>. <A href="http://msdn.microsoft.com/library/en-us/debug/base/stackwalk64.asp" target=_blank><CODE>StackWalk64</CODE></A> will ignore the value when it isn't needed for unwinding. 
+<LI>Set <CODE>AddrBStore</CODE> to <CODE>RsBSP</CODE> for IA64. </LI></OL></LI></UL>
+<H3>Walking the callstack of the current thread</H3>
+<P>On x86 systems (prior to XP), there is no direct supported function to retrieve the context of the current thread. The recommended way is to throw an exception and catch it. Now you will have a valid context-record. The default way of capturing the context of the current thread is by doing some inline-assembler to retrieve <CODE lang=asm>EIP</CODE>, <CODE lang=asm>ESP</CODE> and <CODE lang=asm>EBP</CODE>. If you want to use the <I>documented</I> way, then you need to define <CODE>CURRENT_THREAD_VIA_EXCEPTION</CODE> for the project. But you should be aware of the fact, that <CODE>GET_CURRENT_CONTEXT</CODE> is a macro which internally uses <A href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vccelng/htm/key_s-z_4.asp" target=_blank><CODE lang=mc++><span class="code-keyword">__try</span> <span class="code-keyword">__except</span></CODE></A>. Your function must be able to contain these statements.</P>
+<P>Starting with XP and on x64 and IA64 systems, there is a documented function to retrieve the context of the current thread: <A href="http://msdn.microsoft.com/library/en-us/debug/base/rtlcapturecontext.asp" target=_blank><CODE>RtlCaptureContext</CODE></A>.</P>
+<P>To do a stack-walking of the current thread, you simply need to do:</P><PRE>  StackWalker sw;
+  sw.ShowCallstack();</PRE>
+<H3>Walking the callstack of other threads in the same process</H3>
+<P>To walk the callstack of another thread inside the same process, you need to suspend the target thread (so the callstack will not change during the stack-walking). But you should be aware that suspending a thread in the same process might lead to dead-locks! (See: <A href="http://blog.kalmbachnet.de/?postid=6" target=_blank>Why you never should call Suspend/TerminateThread (Part I</A>, <A href="http://blog.kalmbachnet.de/?postid=16" target=_blank>Part II</A>, <A href="http://blog.kalmbachnet.de/?postid=17" target=_blank>Part III</A>))</P>
+<P>If you have the handle to the thread, you can do the following to retrieve the callstack:</P><PRE>  MyStackWalker sw;
+  sw.ShowCallstack(hThread);</PRE>
+<P>For a complete sample to retrieve the callstack of another thread, you can take a look at the demo-project.</P>
+<H3>Walking the callstack of other threads in other processes</H3>
+<P>The approach is almost the same as for walking the callstack for the current process. You only need to provide the <CODE>ProcessID</CODE> and a handle to the process (<CODE>hProcess</CODE>). Then you also need to suspend the thread to do the stack-walking. A complete sample to retrieve the callstack of another process is in the demo-project.</P>
+<H3>Reusing the <CODE>StackWalk</CODE> instance</H3>
+<P>It is no problem to reuse the <CODE>StackWalk</CODE> instance, as long as you want to do the stack-walking for the same process. If you want to do a lot of stack-walking it is recommended to reuse the instance. The reason is simple: if you create a new instance, then the symbol-files must be re-loaded for each instance. And this is really time-consuming. Also it is not allowed to access the <CODE>StackWalk</CODE> functions from different threads (the <I>dbghelp.dll</I> is <B>not</B> thread-safe!). Therefore it makes no sense to create more than one instance...</P>
+<H3>Symbol-Search-Path</H3>
+<P>By default, a symbol-search path (<CODE>SymBuildPath</CODE> and <CODE>SymUseSymSrv</CODE>) is provided to the <I>dbghelp.dll</I>. This path contains the following directories:</P>
+<UL>
+<LI>The optional provided <CODE>szSymPath</CODE>. If this parameter is provided, the option <CODE>SymBuildPath</CODE> is automatically set. Each path must be separated with a ";" 
+<LI>The current directory 
+<LI>The directory of the EXE 
+<LI>The environment variable <CODE>_NT_SYMBOL_PATH</CODE> 
+<LI>The environment variable <CODE>_NT_ALTERNATE_SYMBOL_PATH</CODE> 
+<LI>The environment variable <CODE>SYSTEMROOT</CODE> 
+<LI>The environment variable <CODE>SYSTEMROOT</CODE> appended with "<I>\system32</I>" 
+<LI>The public Microsoft symbol-server: <I>SRV*%SYSTEMDRIVE%\websymbols*http://msdl.microsoft.com/download/symbols</I> </LI></UL>
+<H3>Symbol-Server</H3>
+<P>If you want to use the public symbols for the OS-files from the <A href="http://support.microsoft.com/?kbid=311503" target=_blank>Microsoft-Symbol-Server</A>, you either need the <A href="http://www.microsoft.com/whdc/devtools/debugging/" target=_blank>Debugging Tools for Windows</A> (then <I>symsrv.dll</I> and the latest <I>dbghelp.dll</I> will be found automatically) or you need to redistribute "<I>dbghelp.dll</I>" <B>and</B> "<I>smysrv.dll</I>" from this package!</P>
+<H3>Loading the modules and symbols</H3>
+<P>To successfully walk the callstack of a thread, <I>dbghelp.dll</I> requires that the modules are known by the library. Therefore you need to "register" each module of the process via <A href="http://msdn.microsoft.com/library/en-us/debug/base/symloadmodule64.asp" target=_blank><CODE>SymLoadModule64</CODE></A>. To accomplish this you need to enumerate the modules of the given process.</P>
+<P>Starting with Win9x and W2K, it is possible to use the <A href="http://msdn.microsoft.com/library/en-us/perfmon/base/tool_help_library.asp" target=_blank>ToolHelp32-API</A>. You need to make a <A href="http://msdn.microsoft.com/library/en-us/perfmon/base/createtoolhelp32snapshot.asp" target=_blank>snapshot (<CODE>CreateToolhelp32Snapshot</CODE>)</A> of the process and then you can enumerate the modules via <A href="http://msdn.microsoft.com/library/en-us/perfmon/base/module32first.asp" target=_blank><CODE>Module32First</CODE></A> and <A href="http://msdn.microsoft.com/library/en-us/perfmon/base/module32next.asp" target=_blank><CODE>Module32Next</CODE></A>. Normally the ToolHelp functions are located in the <I>kernel32.dll</I> but on Win9x it is located in a separate DLL: <I>tlhelp32.dll</I>. Therefore we need to check the functions in both DLLs.</P>
+<P>If you have NT4, then the <A href="http://msdn.microsoft.com/library/en-us/perfmon/base/tool_help_library.asp" target=_blank>ToolHelp32-API</A> is not available. But in NT4 you can use the PSAPI. To enumerate all modules you need to call <A href="" target=_blank><CODE>EnumProcessModules</CODE></A>, but you only get the handles to the modules. To feed <A href="http://msdn.microsoft.com/library/en-us/debug/base/symloadmodule64.asp" target=_blank><CODE>SymLoadModule64</CODE></A> you also need to query the <CODE>ModuleBaseAddr</CODE>, <CODE>SizeOfImage</CODE> (via <A href="http://msdn.microsoft.com/library/en-us/perfmon/base/getmoduleinformation.asp" target=_blank><CODE>GetModuleInformation</CODE></A>), <CODE>ModuleBaseName</CODE> (via <A href="http://msdn.microsoft.com/library/en-us/perfmon/base/getmodulebasename.asp" target=_blank><CODE>GetModuleBaseName</CODE></A>) and <CODE>ModuleFileName(Path)</CODE> (via <A href="http://msdn.microsoft.com/library/en-us/perfmon/base/getmodulefilenameex.asp" target=_blank><CODE>GetModuleFileNameEx</CODE></A>).</P>
+<H3><I>dbghelp.dll</I></H3>
+<P>There are a couple of issues with <I>dbghelp.dll</I>.</P>
+<UL>
+<LI>The first is, there are two "teams" at Microsoft which redistribute the <I>dbghelp.dll</I>. One team is the <I>OS-team</I>, the other is the <I>Debugging-Tools-Team</I> (I don't know the real names...). In general you can say: The <I>dbghelp.dll</I> provided with the <A href="http://www.microsoft.com/whdc/devtools/debugging/" target=_blank>Debugging Tools for Windows</A> is the most recent version. One problem of this two teams is the different versioning of the <I>dbghelp.dll</I>. For example, for XP-SP1 the version is <I>5.1.2600.1106</I> dated <I>2002-08-29</I>. The version <I>6.0.0017.0</I> which was redistributed from the <I>debug-team</I> is dated <I>2002-04-31</I>. So there is at least a conflict in the date (the newer version is older). And it is even harder to decide which version is "better" (or has more functionality). 
+<LI>Starting with Me/W2K, the <I>dbghelp.dll</I>-file in the <I>system32</I> is protected by the <A href="http://support.microsoft.com/?kbid=222193" target=_blank>System File Protection</A>. So if you want to use a newer <I>dbghelp.dll</I> you need to redistribute the version from the <A href="http://www.microsoft.com/whdc/devtools/debugging/" target=_blank>Debugging Tools for Windows</A> (put it in the same directory as your EXE). This leads to a problem on W2K if you want to walk the callstack for an app which was built using VC7 or later. The VC7 compiler generates a new PDB-format (called <A href="http://msdn.microsoft.com/library/en-us/diasdk/html/vsoriDebugInterfaceAccessSDK.asp" target=_blank>DIA</A>). This PDB-format cannot be read with the <I>dbghelp.dll</I> which is installed with the OS. Therefore you will not get very useful callstacks (or at least with no debugging info like filename, line, function name, ...). To overcome this problem, you need to redistribute a newer <I>dbghelp.dll</I>. 
+<LI>The <I>dbghelp.dll</I> version <I>6.5.3.7</I> has a <I>bug</I> or at least a <I>documentation change</I> of the <A href="http://msdn.microsoft.com/library/en-us/debug/base/stackwalk64.asp" target=_blank><CODE>StackWalk64</CODE></A> function. In the documentation you can read: 
+<P><I>The first call to this function will fail if the <CODE>AddrPC</CODE> and <CODE>AddrFrame</CODE> members of the <CODE>STACKFRAME64</CODE> structure passed in the <CODE>StackFrame</CODE> parameter are not initialized.</I></P>
+<P>and</P>
+<P><I>[The <CODE>ContextRecord</CODE>] parameter is required only when the <CODE>MachineType</CODE> parameter is not <CODE>IMAGE_FILE_MACHINE_I386</CODE>.</I></P>
+<P><B>But this is not true anymore.</B> Now the callstack on x86-systems cannot be retrieved if you pass <CODE>NULL</CODE> as <I><CODE>ContextRecord</CODE></I>. From my point of view this is a major documentation change. Now you either need to initialize the <CODE>AddrStack</CODE> as well, or provide a valid <I><CODE>ContextRecord</CODE></I> which contains the <CODE lang=asm>EIP</CODE>, <CODE lang=asm>EBP</CODE> and <CODE lang=asm>ESP</CODE> registers!</P>
+<LI>See also comments in the <I>Initializing the STACKFRAME64-structure</I> chapter... </LI></UL>
+<H3>Options</H3>
+<P>To do some kind of modification of the behaviour, you can optionally specify some options. Here is the list of the available options:</P><PRE>  <span class="code-keyword">typedef</span> <span class="code-keyword">enum</span> StackWalkOptions
+  {
+    <span class="code-comment">//</span><span class="code-comment"> No addition info will be retrived</span>
+    <span class="code-comment">//</span><span class="code-comment"> (only the address is available)</span>
+    RetrieveNone = <span class="code-digit">0</span>,
+
+    <span class="code-comment">//</span><span class="code-comment"> Try to get the symbol-name</span>
+    RetrieveSymbol = <span class="code-digit">1</span>,
+
+    <span class="code-comment">//</span><span class="code-comment"> Try to get the line for this symbol</span>
+    RetrieveLine = <span class="code-digit">2</span>,
+
+    <span class="code-comment">//</span><span class="code-comment"> Try to retrieve the module-infos</span>
+    RetrieveModuleInfo = <span class="code-digit">4</span>,
+
+    <span class="code-comment">//</span><span class="code-comment"> Also retrieve the version for the DLL/EXE</span>
+    RetrieveFileVersion = <span class="code-digit">8</span>,
+
+    <span class="code-comment">//</span><span class="code-comment"> Contains all the abouve</span>
+    RetrieveVerbose = 0xF,
+
+    <span class="code-comment">//</span><span class="code-comment"> Generate a &quot;good&quot; symbol-search-path</span>
+    SymBuildPath = 0x10,
+
+    <span class="code-comment">//</span><span class="code-comment"> Also use the public Microsoft-Symbol-Server</span>
+    SymUseSymSrv = 0x20,
+
+    <span class="code-comment">//</span><span class="code-comment"> Contains all the abouve &quot;Sym&quot;-options</span>
+    SymAll = 0x30,
+
+    <span class="code-comment">//</span><span class="code-comment"> Contains all options (default)</span>
+    OptionsAll = 0x3F
+  } StackWalkOptions;</PRE>
+<H2>Known issues</H2>
+<UL>
+<LI>NT/Win9x: This project only support the <CODE>StackWalk64</CODE> function. If you need to use it on NT4/Win9x, you need to <A href="http://www.microsoft.com/downloads/release.asp?releaseid=30682" target=_blank>redistribute the <I>dbghelp.dll</I></A> for this platform. 
+<LI>Currently only supports ANSI-names in callbacks (of course, the project can be compiled with UNICODE...). 
+<LI>To open a remote thread I used "<CODE>OpenThread</CODE>" which is not available on NT4/W9x. To have an example of doing this in NT4/Win9x please refer to <A href="http://www.codeproject.com/win32/Remote.asp" target=_blank>Remote Library</A>. 
+<LI>Walking mixed-mode callstacks (managed/unmanaged) does only return the unmanaged functions. </LI></UL>
+<H2>History</H2>
+<UL>
+<LI><B>2005-07-27</B> 
+<UL>
+<LI>First public release. 
+<LI>Supports x86, x64 and IA64. </LI></UL>
+<LI><B>2005-07-28</B> 
+<UL>
+<LI>Changed the description, so it does not make the impression that this is <I>the only</I> documented way to walk the callstack... 
+<LI><CODE>ShowCallstack(hThread, ...)</CODE> now accepts a <CODE>NULL</CODE> <CODE>CONTEXT</CODE> (this forces to capture the context of this thread); it also was simplified (now only one function for all situations). 
+<LI>Added chapters: <I>Symbol-Search-Path</I>, <I>Loading the modules and symbols</I> and <I>dbghelp.dll</I>. </LI></UL>
+<LI><B>2005-08-01</B> 
+<UL>
+<LI>Added VC7.0 project/solution files. 
+<LI>Added more comment to the <CODE>GET_CURRENT_CONTEXT</CODE> define regarding the use of <CODE>RtlCaptureContext</CODE> function. 
+<LI>Problem with uninitialized <CODE>cnt</CODE> variable solved. 
+<LI>Workaround for wrongly defined <CODE>GetFileVersionInfoSize</CODE> and <CODE>GetFileVersionInfo</CODE> (on older PSDK-Version (VC7 and before), the first parameter was declared as <CODE>LPTSTR</CODE> instead of <CODE>LPCTSTR</CODE>). 
+<LI>Changed the used <CODE>ContextFlags</CODE> parameter from <CODE>CONTEX_ALL</CODE> to <CODE>CONTEXT_FULL</CODE> (this also works correctly and is supported in older PSDK-versions). 
+<LI>Now compiles on VC5/6 without installing a newer Platform-SDK (all missing declarations are now embedded). 
+<LI>Added VC6 project/solution files. 
+<LI>Added a <CODE>pUserData</CODE> member to the <CODE>ShowCallstack</CODE> function and the <CODE>PReadProcessMemoryRoutine</CODE> declaration (to pass some user-defined data, which can be used in the <CODE>readMemoryFunction</CODE>-callback). </LI></UL>
+<LI><B>2005-08-02</B> 
+<UL>
+<LI><CODE>OnSymInit</CODE> now also outputs the OS-version by default. 
+<LI>Added example for doing an exception-callstack-walking in <I>main.cpp</I> (thanks to <A href="http://www.codeproject.com/script/profile/whos_who.asp?id=536268" target=_blank>owillebo</A>). 
+<LI>Correction in article about <A href="http://msdn.microsoft.com/library/en-us/debug/base/rtlcapturecontext.asp" target=_blank><CODE>RtlCaptureContext</CODE></A>. This function is also available starting with XP (thanks to <A href="http://www.codeproject.com/script/profile/whos_who.asp?id=1773366" target=_blank>Dan Moulding</A>). 
+<LI>Added chapters: <I>Initializing the STACKFRAME64-structure</I>, <I>Displaying the callstack of an exception</I>. </LI></UL>
+<LI><B>2005-08-05</B> 
+<UL>
+<LI>Removed some <A href="http://www.gimpel.com/" target=_blank>Lint</A> issues... thanks to Okko Willeboordse! 
+<LI>Removed all warnings with <I>/analyze</I> switch from VC8. </LI></UL>
+<LI><B>2005-09-06</B> 
+<UL>
+<LI>Fixed a small bug regarding VC5/6 and old PSDK version (<CODE>OSVERSIONINFOEX</CODE> is not present). </LI></UL>
+<LI><B>2005-11-07</B> 
+<UL>
+<LI>Detects an "endless-callstack" and terminates the stackwalking. 
+<LI>Usage of <A href="http://msdn.microsoft.com/library/en-us/debug/base/rtlcapturecontext.asp" target=_blank><CODE>RtlCaptureContext</CODE></A> only on x64 and IA64 platforms. </LI></UL></LI></UL>
+
+
+
+
+
+
+						</div>
+						<!-- Article Text End -->
+
+						
+						
+						<h2>License</h2>
+						<div id="LicenseTerms"><p>This article, along with any associated source code and files, is licensed under <a href="http://www.opensource.org/licenses/bsd-license.php" rel="license">The BSD License</a></p></div>
+						
+
+						
+						<h2 id="ctl00_AboutHeading">About the Author</h2>
+
+						<div class="float-right">
+						<div class="lqm_ad" width="300px" height="250px" lqm_channel="1" lqm_publisher="495" lqm_zone="77" lqm_format="6" lqm_tags='VC6,VC7,VC7.1,VC8.0,Win2K,WinXP,Win2003,VS.NET2003,VS2005,Dev,Intermediate'></div>
+						</div>
+
+						
+						
+   
+<table cellpadding="0" cellspacing="5" border="0">
+<tr valign="top">
+<td id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberPhotoTable" valign="top" style="width:155px;">
+	<b><a id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberProfileLink" href="/Members/Jochen-Kalmbach-MVP-VC">Jochen Kalmbach [MVP VC++]</a></b><br /><br />
+	<center><img id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberPhoto" src="/script/Membership/ProfileImages/{8A5C9C89-8B4F-49C0-A0DF-11D985EDDB02}.jpg" style="border-width:0px;" /></center>
+
+	<div class="small-text">
+		<span id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberJobTitle">Software Developer (Senior)</span><br />
+		<span id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberCompany"></span><br />
+		<span id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberLocation"><img src="/script/Geo/Images/DE.gif" alt="Germany" width="16px" height="11px" /> Germany</span><br />
+		<br />
+		<span id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberType">Member</span><br />
+		
+
+		
+	</div>
+</td>
+
+<td>
+	1982: My first computer (VC20)<br />
+1984: Finished to build my first own computer (Z80)<br />
+1993: Mission-Volunteer in Papua New Guinea<br />
+1998: Dipl. Inform. (FH)<br />
+... working, working, working....<br />	
+</td>
+</tr>
+</table><br />
+						
+						
+
+						<div class="clearfix"></div>
+
+						
+						<div id="ctl00_RateArticleRow" class="clearfix voting-bar">
+						<div class="float-left" style="padding-top:8px"><a  href="/KB/threads/StackWalker.aspx#_articleTop">Article Top</a></div>
+						<div class="float-right align-right"><div id="ctl00_RateArticle_RateItemWrapper" class="container-rating small-text" name="RateItem_11132">
+
+	<table width="100%" cellpadding="0" cellspacing="0" class="small-text">
+	<tr>
+		
+	
+		<td class="voteTbl" style="white-space:nowrap" align="right">
+			<table class="small-text">
+			<tr class="">
+				<td id="ctl00_RateArticle_SignIn" nowrap="nowrap">
+					<a href="#SignUp">Sign Up</a> to vote for this article
+				</td>
+
+				
+				
+				
+				
+				
+			</tr>
+			</table>
+			<span id="ctl00_RateArticle_ErrorMessage" class="error"></span>
+		</td>
+	</tr>
+	</table>
+	<div class="hover-container">
+		<div id="ctl00_RateArticle_RCD" class="rating-comment align-left float-right">
+			Add a reason or comment to your vote: <a href="#" id="clear-rate_ctl00_RateArticle_RCD" 
+				title="close">x</a><br />
+			<textarea class="RateComment" rows="5" cols="60" style="width:98%;"></textarea>
+			<span id="ctl00_RateArticle_CommentReq" class="subdue">Votes of 3 or less require a comment</span>
+		</div>
+	</div>
+</div>
+</div>
+						</div>
+						
+
+					</form>
+
+					
+					<div style="margin:auto;padding:0px 10px;white-space:nowrap;overflow:hidden;width:468px;height:60px">		  
+						<div class="lqm_ad" width="468px" height="60px" lqm_channel="1" lqm_publisher="495" lqm_zone="77" lqm_format="1" lqm_tags='VC6,VC7,VC7.1,VC8.0,Win2K,WinXP,Win2003,VS.NET2003,VS2005,Dev,Intermediate'></div>
+					</div>
+					
+
+					
+					
+					<h2>Comments and Discussions</h2>
+					<a name="_comments" id="_comments">&nbsp;</a><div id="_MessageBoard" onclick="return SwitchMessage(event, null)">
+<table id="ForumTable" class="box forum" cellpadding="0" cellspacing="0">
+<tr>
+<td class="forum-header1 highlight"><b>You must <a href="/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx%3ffid%3d202364">Sign In</a> to use this message board.</b> (<a href="https://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx%3ffid%3d202364">secure sign-in</a>)</td>
+</tr><tr>
+<td><table width="100%" border="0" cellpadding="3px" cellspacing="0">
+<tr class="forum-header1">
+<td style="white-space:nowrap;"><img src="/Images/info-16.gif" alt="FAQ" style="border-width:0;width:16px;height:16px;vertical-align:middle;" />&nbsp;<a href="/KB/FAQs/MessageBoardsFAQ.aspx"><b>FAQ</b></a>&nbsp;</td><td colspan="2" style="white-space:nowrap;text-align:right;"><form action="/Search.aspx?fid=0" method="get" style="margin:0;padding:0;">
+<input type="hidden" name="fid" value="202364" /><input type="text" class="Frm_Input" name="qf" />&nbsp;<input type="submit" value="Search" class="button" />
+</form></td>
+</tr><tr class="forum-header2">
+<td colspan="3" style="width:100%;"><div style="text-align:right;">
+<form action="/script/Forums/SetOptions.aspx?floc=%2fKB%2fthreads%2fStackWalker.aspx&amp;fid=202364" method="get" style="margin:0;padding:0;">
+<input type="hidden" name="fid" value="202364" /><input type="hidden" name="currentQS" value="?floc=%2fKB%2fthreads%2fStackWalker.aspx&amp;fid=202364" /><input type="hidden" name="floc" value="/KB/threads/StackWalker.aspx" /><input type="checkbox" name="prof" id="prof" style="vertical-align:middle;" /><label for="prof">Profile popups</label>&nbsp;&nbsp;&nbsp;&nbsp;Noise level<select size="1" class="Frm_DropDown" name="noise">
+<option value="1">Very High</option><option value="2">High</option><option selected value="3">Medium</option><option value="4">Low</option><option value="5">Very Low</option>
+</select>&nbsp;&nbsp;Layout<select size="1" class="Frm_DropDown" name="view">
+<option selected value="Quick">Normal</option><option value="Topic">Expand Posts only</option><option value="Expanded">Expand Posts & Replies</option><option value="Thread">Thread View</option><option value="Normal">No Javascript</option><option value="Preview">No JS + Preview</option>
+</select>&nbsp;&nbsp;Per page<select size="1" class="Frm_DropDown" name="mpp">
+<option value="10">10</option><option selected value="25">25</option><option value="50">50</option>
+</select>&nbsp;&nbsp;&nbsp;<input type="submit" value="Update" name="SetOpt" class="button" />
+</form>
+</div></td>
+</tr>
+</table></td>
+</tr><tr>
+<td><a name="xx0xx"></a><table border="0" cellpadding="2px" cellspacing="0" width="100%">
+<tr class="forum-navbar">
+<td>&nbsp;</td><td> <a href="/KB/threads/StackWalker.aspx?fid=202364">Refresh</a></td><td style="text-align:right;white-space:nowrap;"><span class="subdue">First</span> <span class="subdue">Prev</span><a class="toolbar" name="Frm_HoverNL" href="/KB/threads/StackWalker.aspx?fid=202364&amp;fr=26#xx0xx">Next</a></td>
+</tr>
+</table></td>
+</tr><tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%" class="fixed-layout blank-background">
+<tr>
+<td><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="5px" alt="" /></td>
+</tr><tr class="MsgHd Rt HdUnSel " id="F3945121_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx3945121xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_question.gif" alt="Question" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3945121" parent="0" href="/Messages/3945121/Random-lockups-after-a-few-thousand-calls.aspx">Random lockups after a few (thousand) calls</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=5513612">TTTTToby</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">7:21 1 Jul '11 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3945121_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">First many thanks for an excellent article, very helpful and informative.  Having studied ShowCallstack I took the guts of it and split it in two - the first half in one function to record a stack trace (for debugging purposes, primarily during memory allocation), the second half to decode these traces when necessary.<br />
+&nbsp;<br />
+Oddly enough the first few (thousand) calls would work fine but inevitably the application would hang after an indeterminate number of calls during the call to:<br />
+<pre><span class="code-keyword">this</span>-<span class="code-keyword">&gt;</span>m_sw-<span class="code-keyword">&gt;</span>pSW(imageType, <span class="code-keyword">this</span>-<span class="code-keyword">&gt;</span>m_hProcess, hThread, &amp;s, &amp;c, myReadProcMem, <span class="code-keyword">this</span>-<span class="code-keyword">&gt;</span>m_sw-<span class="code-keyword">&gt;</span>pSFTA, <span class="code-keyword">this</span>-<span class="code-keyword">&gt;</span>m_sw-<span class="code-keyword">&gt;</span>pSGMB, NULL)</pre>
+Breaking the application (Visual Studio 2005 on Win7) shows a callstack dominated by ntdll & dbghelp.dll calls seeming to indicate some sort of evil loop.  No exception is generated, no crash observed, the application is simply dead.<br />
+The application I am working with is a single thread, mostly vanilla C, but none-the-less complicated application that implements its own tasking using setjmp/longjmp calls.  It does exectue in one Windows thread however.<br />
+&nbsp;<br />
+As a pragmatic solution I removed this and replaced it with <br />
+<pre><span class="code-keyword">typedef</span> USHORT (WINAPI *t_CaptureStackBackTrace)(ULONG, ULONG,PVOID*, PULONG);
+t_CaptureStackBackTrace s_pfn = <span class="code-digit">0</span>;
+<span class="code-keyword">const</span> HMODULE hNtDll = ::GetModuleHandle(<span class="code-string">"</span><span class="code-string">ntdll.dll"</span>);
+s_pfn = <span class="code-keyword">reinterpret_cast</span><span class="code-keyword">&lt;</span>t_CaptureStackBackTrace<span class="code-keyword">&gt;</span>( ::GetProcAddress(hNtDll, <span class="code-string">"</span><span class="code-string">RtlCaptureStackBackTrace"</span>));
+s_pfn(Skip, Limit, Stack, <span class="code-digit">0</span>);
+</pre>
+This works fine, also with your symbol lookup code.<br />
+&nbsp;<br />
+Does anyone have any idea how the original code can hang?  Google didn't show up anything in particular about the StackWalk64 function being buggy/prone to lockups so I assume I broke something while hacking your code about.  <br />
+&nbsp;<br />
+If you have excess time/fancy the challenge then I can provide my hack, but perhaps this note helps someone else.<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3945121" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3945121/Random-lockups-after-a-few-thousand-calls.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3945121" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F3945142_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="34px" class="Frm_MsgIndent"><a name="xx3945142xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_answer.gif" alt="Answer" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3945142" parent="3945121" href="/Messages/3945142/Re-Random-lockups-after-a-few-thousand-calls.aspx">Re: Random lockups after a few (thousand) calls</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=38383">Jochen Kalmbach [MVP VC++]</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">7:49 1 Jul '11 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3945142_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:34px;"><img src="/script/Forums/Images/t.gif" height="1px" width="34px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Have you used the latest version from codeplex?<br />
+<a href="http://stackwalker.codeplex.com/">http://stackwalker.codeplex.com/</a>[<a href="http://stackwalker.codeplex.com/" target="_blank" title="New Window">^</a>]<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3945121" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3945142/Re-Random-lockups-after-a-few-thousand-calls.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3945142" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd Rt HdUnSel " id="F3896609_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx3896609xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3896609" parent="0" href="/Messages/3896609/Using-rtlCaptureStackBacktrace-instead-of-Stackwal.aspx">Using rtlCaptureStackBacktrace instead of Stackwalk64</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=887440">daHavy</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">3:02 18 May '11 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3896609_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Hi Jochen,<br />
+&nbsp;<br />
+i'm using your source to build a Memory leak detector similar to one MemLeakAnalyse you build in a different project.<br />
+But Stackwalk64 is way to slow...and then there is rltCaptureStackBacktrace() which promises a similar operation. Were working with a LOT of memory allocations so that could be prohibitive.<br />
+I've tinkered around a bit and came to notice that the returned addresses are similar to those returned by Stackwalk64.. Therefore my opinion is that I could use<br />
+it as an alternative. But once it comes to resolving the addresses to functions, filenames, etc... SymGetSymFromAddr64 is aborting with error 126 (Module not loaded).<br />
+&nbsp;<br />
+Unfortunately there not much documentation about rtlCaptureStackBacktrace so im quite at an end here. <br />
+Maybe you have some ideas why this is happening? Is there some basic compatibility problem I might have missed?<br />
+&nbsp;<br />
+Best regards,<br />
+&nbsp;<br />
+Fabian<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3896609" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3896609/Using-rtlCaptureStackBacktrace-instead-of-Stackwal.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3896609" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F3896639_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="34px" class="Frm_MsgIndent"><a name="xx3896639xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3896639" parent="3896609" href="/Messages/3896639/Re-Using-rtlCaptureStackBacktrace-instead-of-Stack.aspx">Re: Using rtlCaptureStackBacktrace instead of Stackwalk64</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=38383">Jochen Kalmbach [MVP VC++]</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">3:27 18 May '11 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3896639_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:34px;"><img src="/script/Forums/Images/t.gif" height="1px" width="34px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">You should not walk the callstack at runtime (during the allocation of the memory)! This is way too slow!<br />
+&nbsp;<br />
+Have you ever looked at the source of my leakfinder???<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3896609" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3896639/Re-Using-rtlCaptureStackBacktrace-instead-of-Stack.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3896639" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F3897880_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="52px" class="Frm_MsgIndent"><a name="xx3897880xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3897880" parent="3896639" href="/Messages/3897880/Re-Using-rtlCaptureStackBacktrace-instead-of-Stack.aspx">Re: Using rtlCaptureStackBacktrace instead of Stackwalk64</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=887440">daHavy</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">2:19 19 May '11 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3897880_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:52px;"><img src="/script/Forums/Images/t.gif" height="1px" width="52px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">It is just a test because rtlCaptureStackBacktrace is fast. <br />
+Also I dont want to do stack copies because they must be copied to a different process via IPC and only the source code location is needed. <br />
+&nbsp;<br />
+It works like this:<br />
+When new or delete is called, I wrote some code that uses either rtlCaptureStackBacktrace or a slightly modified version of the Stackwalker to capture the previous return addresses and save those attached to the address of each allocated memory block.  <br />
+Then, shortly before the program finishes, it is suspended in order resolve all the addresses associated to the leaks.<br />
+&nbsp;<br />
+I resolve the symbol information just as you do in the ShowCallstack, but without calling the stackwalk64() again, instead  inserting the previously recorded addresses. <br />
+This works expectedly as long as I used Stackwalk64 earlier to fetch those addresses. It is done by saving the s.AddrPC.Offset in each iteration of the loop. Everything else is discarded so my conclusion was that the address is all that is needed to find out source location.<br />
+&nbsp;<br />
+But using addresses rtlCaptureStackBacktrace, the SymGetSymFromAddr64() errors with the 126 "module not loaded" code. I have manually inspected the returned addresses and could match the values from Stackwalk64.<br />
+&nbsp;<br />
+Obviously SymGetSymFromAddr64 relies on Stackwalk64 to initialize the modules where those symbols live...Given everything else is the same. Now my question is whether there is some possible workaround, like manually loading symbols at some point.<br />
+&nbsp;<br />
+Is there any reason not to use rltCaptureStackBacktrace, except that it is undocumented. What are its problems?<br />
+&nbsp;<br />
+<br />
+Lastly, awesome work and thanks for giving us the sources.<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3896609" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3897880/Re-Using-rtlCaptureStackBacktrace-instead-of-Stack.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3897880" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F3897891_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="70px" class="Frm_MsgIndent"><a name="xx3897891xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3897891" parent="3897880" href="/Messages/3897891/Re-Using-rtlCaptureStackBacktrace-instead-of-Stack.aspx">Re: Using rtlCaptureStackBacktrace instead of Stackwalk64</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=38383">Jochen Kalmbach [MVP VC++]</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">2:21 19 May '11 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3897891_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:70px;"><img src="/script/Forums/Images/t.gif" height="1px" width="70px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">You can manually load the symbols... there is no need to use StackWalk64.<br />
+Also I do not see any problems with CaptureStackBacktrace.<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3896609" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3897891/Re-Using-rtlCaptureStackBacktrace-instead-of-Stack.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3897891" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F3901489_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="88px" class="Frm_MsgIndent"><a name="xx3901489xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3901489" parent="3897891" href="/Messages/3901489/Re-Using-rtlCaptureStackBacktrace-instead-of-Stack.aspx">Re: Using rtlCaptureStackBacktrace instead of Stackwalk64 [modified]</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=887440">daHavy</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">2:44 23 May '11 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3901489_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:88px;"><img src="/script/Forums/Images/t.gif" height="1px" width="88px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Okay, I have it working..Many thanks for your dedication again.<br />
+<div class="signature"><br />
+<div class="modified">modified on Monday, May 23, 2011 8:33 AM</div></div><br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3896609" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3901489/Re-Using-rtlCaptureStackBacktrace-instead-of-Stack.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3901489" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd Rt HdUnSel " id="F3862450_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx3862450xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3862450" parent="0" href="/Messages/3862450/My-vote-of-4.aspx">My vote of 4</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=7088123">into_the_wild</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">17:51 19 Apr '11 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3862450_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Very good example for making debugging tool<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3862450" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3862450/My-vote-of-4.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3862450" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd Rt HdUnSel " id="F3804541_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx3804541xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3804541" parent="0" href="/Messages/3804541/My-vote-of-5.aspx">My vote of 5</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=5404273">wangtaosuper</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">22:49 10 Mar '11 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3804541_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">very good<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3804541" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3804541/My-vote-of-5.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3804541" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd Rt HdUnSel " id="F3783056_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx3783056xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_question.gif" alt="Question" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3783056" parent="0" href="/Messages/3783056/Rsp-or-Rbp.aspx">Rsp or Rbp?</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=1086893">Member 1086893</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">5:16 24 Feb '11 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3783056_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">You mention: <br />
+Set AddrFrame to the current frame pointer when meaningful. On x64 you can use Rbp (but is not used by VC2005B2; instead it uses Rdi!).<br />
+&nbsp;<br />
+But you set:<br />
+s.AddrFrame.Offset = c.Rsp;<br />
+&nbsp;<br />
+So which is correct? Rsp or Rbp?<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3783056" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3783056/Rsp-or-Rbp.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3783056" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd Rt HdUnSel " id="F3772884_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx3772884xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3772884" parent="0" href="/Messages/3772884/Trace-not-working-on-some-systems.aspx">Trace not working on some systems</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=7681277">Member 7681277</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">0:11 17 Feb '11 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3772884_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Hi<br />
+&nbsp;<br />
+Trace works on one system but not the other. Working on windows 7 machine with dbghlp 6.1.7600. Not working on XP SP3 with 5.1.2600.5512 dbghlp. The XP machine is also much slower than the windows 7 PC.<br />
+&nbsp;<br />
+Both using same version of Visual studio. Both have debug enabled.<br />
+&nbsp;<br />
+Could this problem be fixed by updating the dbghlp on the XP machine?<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3772884" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3772884/Trace-not-working-on-some-systems.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3772884" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd Rt HdUnSel " id="F3624745_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx3624745xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_question.gif" alt="Question" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3624745" parent="0" href="/Messages/3624745/DbgHelp-dll-per-platform.aspx">DbgHelp.dll per platform?</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=170717">TomBoy</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">1:39 8 Oct '10 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3624745_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">I've stumbled in some annoying problem...<br />
+&nbsp;<br />
+Well anyways, I have two systems<br />
+* WindowsXP x86 for testing builds, which has some old dbghelp.dll which was not capable of reading DIA symbols from PDB file<br />
+* Windows7 x64 for development with Visual Studio and latest dbghelp.dll<br />
+&nbsp;<br />
+Anyways, at first I saw that when I've ran exe on WindowsXP, it wasn't capable of resolving symbols, I then noticed that symbols format for the pdb file was DIA, after some googling,<br />
+I understood that this is a new pdb format, so it's only natural that old dbghelp.dll wasn't capable of reading it.<br />
+&nbsp;<br />
+I've copied dbghelp.dll from Windows7 to WindowsXP next to executable, hoping that this will resolve my issues, alas - I then got error - bad windows image. My first clue that Windows7 dbghelp.dll was compiled for x64 system, so it shouldn't have worked on x86 system.<br />
+&nbsp;<br />
+I then got latest dbghelp.dll for x86 system, and it worked for WindowsXP, but when I run executable with dbghelp.dll (for x86) on Windows7 x64, it kinda works, I am getting a callstack, but when StackWalker outputs info about other modules, I am getting this:<br />
+&nbsp;<br />
+C:\Windows\syswow64\MSCTF.dll:MSCTF.dll (753B0000), size: 835584 (result: 0), Sy<br />
+Type: '-unknown-', PDB: '╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠<br />
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠<br />
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠<br />
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠<br />
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠<br />
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠<br />
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠<br />
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠<br />
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠<br />
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠<br />
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠<br />
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠<br />
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠<br />
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠<br />
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠<br />
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠<br />
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠<br />
+╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠\', fileVersion: 6.1.7600.16385<br />
+&nbsp;<br />
+dbghelp.dll for x86 has version 6.12.2.633<br />
+Is this a bug?<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3624745" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3624745/DbgHelp-dll-per-platform.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3624745" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F3624797_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="34px" class="Frm_MsgIndent"><a name="xx3624797xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_answer.gif" alt="Answer" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3624797" parent="3624745" href="/Messages/3624797/Re-DbgHelp-dll-per-platform.aspx">Re: DbgHelp.dll per platform?</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=38383">Jochen Kalmbach [MVP VC++]</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">2:23 8 Oct '10 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3624797_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:34px;"><img src="/script/Forums/Images/t.gif" height="1px" width="34px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">You must not copy the dbghelp.dll from one OS to an other! You must use the redistrbutable from the latest PSDK!<br />
+Also, do you use the latest version of the stackwalker?<br />
+See: <br />
+<a href="http://blog.kalmbachnet.de/Files/Leakfinder_rc11.zip">http://blog.kalmbachnet.de/Files/Leakfinder_rc11.zip</a>[<a href="http://blog.kalmbachnet.de/Files/Leakfinder_rc11.zip" target="_blank" title="New Window">^</a>]<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3624745" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3624797/Re-DbgHelp-dll-per-platform.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3624797" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F3624905_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="52px" class="Frm_MsgIndent"><a name="xx3624905xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3624905" parent="3624797" href="/Messages/3624905/Re-DbgHelp-dll-per-platform.aspx">Re: DbgHelp.dll per platform?</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=170717">TomBoy</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">3:39 8 Oct '10 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3624905_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:52px;"><img src="/script/Forums/Images/t.gif" height="1px" width="52px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Thx, for quick response.<br />
+&nbsp;<br />
+I am using StackWalker from http://stackwalker.codeplex.com/ 2009-11-01.<br />
+&nbsp;<br />
+Thanks for the link <img src="/script/Forums/Images/smiley_smile.gif" align="top" alt="Smile | :)" /> <br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3624745" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3624905/Re-DbgHelp-dll-per-platform.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3624905" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd Rt HdUnSel " id="F3622281_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx3622281xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3622281" parent="0" href="/Messages/3622281/Callstack-doesnt-show-up-if-I-change-pdb-files-nam.aspx">Callstack doesn't show up, if I change pdb file's name</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=170717">TomBoy</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">4:22 6 Oct '10 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3622281_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Hi Jochen, <br />
+first of all, thanks for this amazing code! <img src="/script/Forums/Images/smiley_smile.gif" align="top" alt="Smile | :)" /> <br />
+&nbsp;<br />
+Anyways, here is my problem... Let's take your project at http://stackwalker.codeplex.com, it works great and the callstack is always outputed.<br />
+But if I for example rename:<br />
+StackWalker.exe ---> Test.exe<br />
+StackWalker.pdb ---> Test.pdb<br />
+&nbsp;<br />
+And launch Test.exe, the program will fail to output callstack, but if I would have:<br />
+Test.exe and Stalkwalker.pdb, it will work... It seems, somewhere in executable, it's written that pdb file is always StackWalker.pdb... or something like that.<br />
+&nbsp;<br />
+This really seems like a simple problem, but I still failed to find a solution for this.<br />
+&nbsp;<br />
+Please help<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3622281" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3622281/Callstack-doesnt-show-up-if-I-change-pdb-files-nam.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3622281" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F3622294_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="34px" class="Frm_MsgIndent"><a name="xx3622294xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3622294" parent="3622281" href="/Messages/3622294/Re-Callstack-doesnt-show-up-if-I-change-pdb-files-.aspx">Re: Callstack doesn't show up, if I change pdb file's name</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=38383">Jochen Kalmbach [MVP VC++]</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">4:27 6 Oct '10 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3622294_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:34px;"><img src="/script/Forums/Images/t.gif" height="1px" width="34px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">There is a simple solution: Do not rename the exe.<br />
+It don't know any other solution.<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3622281" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3622294/Re-Callstack-doesnt-show-up-if-I-change-pdb-files-.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3622294" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F3622654_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="52px" class="Frm_MsgIndent"><a name="xx3622654xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3622654" parent="3622294" href="/Messages/3622654/Re-Callstack-doesnt-show-up-if-I-change-pdb-files-.aspx">Re: Callstack doesn't show up, if I change pdb file's name</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=170717">TomBoy</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">9:25 6 Oct '10 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3622654_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:52px;"><img src="/script/Forums/Images/t.gif" height="1px" width="52px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Ah snap... I was hoping that the answer will be different, thx <img src="/script/Forums/Images/smiley_smile.gif" align="top" alt="Smile | :)" /> <br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3622281" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3622654/Re-Callstack-doesnt-show-up-if-I-change-pdb-files-.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3622654" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd Rt HdUnSel " id="F3586004_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx3586004xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_question.gif" alt="Question" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3586004" parent="0" href="/Messages/3586004/Where-can-I-get-such-a-useful-tool-for-WinCE-appli.aspx">Where can I get such a useful tool for WinCE applications?</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=83813">joshua0137</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">4:57 2 Sep '10 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3586004_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">as the title.<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3586004" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3586004/Where-can-I-get-such-a-useful-tool-for-WinCE-appli.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3586004" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F3586217_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="34px" class="Frm_MsgIndent"><a name="xx3586217xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_answer.gif" alt="Answer" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3586217" parent="3586004" href="/Messages/3586217/Re-Where-can-I-get-such-a-useful-tool-for-WinCE-ap.aspx">Re: Where can I get such a useful tool for WinCE applications?</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=38383">Jochen Kalmbach [MVP VC++]</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">6:46 2 Sep '10 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3586217_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:34px;"><img src="/script/Forums/Images/t.gif" height="1px" width="34px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">dbghelp.dll is not available under CE...<br />
+&nbsp;<br />
+Why do you need this?<br />
+See also:<br />
+<a href="http://blogs.msdn.com/b/ce_base/archive/2006/01/11/511883.aspx">http://blogs.msdn.com/b/ce_base/archive/2006/01/11/511883.aspx</a>[<a href="http://blogs.msdn.com/b/ce_base/archive/2006/01/11/511883.aspx" target="_blank" title="New Window">^</a>]<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3586004" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3586217/Re-Where-can-I-get-such-a-useful-tool-for-WinCE-ap.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3586217" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F3590118_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="52px" class="Frm_MsgIndent"><a name="xx3590118xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3590118" parent="3586217" href="/Messages/3590118/Re-Where-can-I-get-such-a-useful-tool-for-WinCE-ap.aspx">Re: Where can I get such a useful tool for WinCE applications?</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=83813">joshua0137</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">3:17 7 Sep '10 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3590118_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:52px;"><img src="/script/Forums/Images/t.gif" height="1px" width="52px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">thanks for your advices.<br />
+i use it to analyse application crashes in pc. so i want to do the same work in arm.<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3586004" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3590118/Re-Where-can-I-get-such-a-useful-tool-for-WinCE-ap.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3590118" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd Rt HdUnSel " id="F3575311_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx3575311xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3575311" parent="0" href="/Messages/3575311/My-vote-of-5.aspx">My vote of 5</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=312116">Ajay Vijayvargiya</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">2:40 24 Aug '10 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3575311_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Excellente!<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3575311" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3575311/My-vote-of-5.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3575311" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd Rt HdUnSel " id="F3538704_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx3538704xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3538704" parent="0" href="/Messages/3538704/Program-hangs-in-call_stacks-Ctor-in-release-mode.aspx">Program hangs in call_stack's C'tor in release mode</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=7311710">goldman.gal</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">4:36 19 Jul '10 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3538704_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Hi,<br />
+&nbsp;<br />
+I am using the call stack code, and it works great in VS2005 in debug mode.<br />
+&nbsp;<br />
+When I run the same code in release mode, the program hangs in call_stack's C'tor, and never gets out of it...<br />
+&nbsp;<br />
+My application has one executable (no threads) and many dlls in different folders.<br />
+&nbsp;<br />
+Is there something I am doing wrong?<br />
+&nbsp;<br />
+Thanks,<br />
+Gal<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3538704" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3538704/Program-hangs-in-call_stacks-Ctor-in-release-mode.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3538704" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd Rt HdUnSel " id="F3510011_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx3510011xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3510011" parent="0" href="/Messages/3510011/A-suggestion-to-refactor-ShowCallstack.aspx">A suggestion to refactor ShowCallstack()</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=709593">kingsimba0511</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">1:31 21 Jun '10 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3510011_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">I want to use it to report memory leak. I add a record as hash_map&lt;void*, string&gt; in functions malloc() and and remove it in free(). When the program exits, anything left in the hash_map will be memory leaks.<br />
+&nbsp;<br />
+But ShowCallstack() is too slow to be used in every malloc(). I think it's better to split ShowCallstack() into two steps.<br />
+1. GetCallstackInfo(). It returns a structure called CallstackInfo. It only contains the minimum amount of information used to reconstruct the stack. (maybe an array of CONTEXT).<br />
+2. OutputCallStackInfo(). It can format the CallstackInfo into a string.<br />
+&nbsp;<br />
+If the first step is fast enough, then it can be used to detect memory leak.<br />
+<div class="signature">- Currahee! We stand alone together.</div><br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3510011" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3510011/A-suggestion-to-refactor-ShowCallstack.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3510011" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F3510044_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="34px" class="Frm_MsgIndent"><a name="xx3510044xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3510044" parent="3510011" href="/Messages/3510044/Re-A-suggestion-to-refactor-ShowCallstack.aspx">Re: A suggestion to refactor ShowCallstack()</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=38383">Jochen Kalmbach [MVP VC++]</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">2:04 21 Jun '10 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3510044_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:34px;"><img src="/script/Forums/Images/t.gif" height="1px" width="34px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">That is exactly what i do in my LeakFinder <img src="/script/Forums/Images/smiley_wink.gif" align="top" alt="Wink | ;)" /> <br />
+For more info see.<br />
+The latest version can be found here:<br />
+<a href="http://blog.kalmbachnet.de/files/LeakFinder-RC9.zip">http://blog.kalmbachnet.de/files/LeakFinder-RC9.zip</a>[<a href="http://blog.kalmbachnet.de/files/LeakFinder-RC9.zip" target="_blank" title="New Window">^</a>]<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3510011" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3510044/Re-A-suggestion-to-refactor-ShowCallstack.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3510044" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd LoVote Rt HdUnSel " id="F3501358_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx3501358xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3501358" parent="0" href="/Messages/3501358/Thanks.aspx">Thanks</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td style="width:20px;white-space:nowrap;"><img border="0" src="/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=7236833">Inktpatronen</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">13:35 11 Jun '10 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3501358_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Thanks for this new version. Works fine<br />
+<div class="signature">Inktknal <a href="http://www.inktknal.com/printer-brother.php">Brother</a> printer</div><br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fthreads%2fStackWalker.aspx">Sign In</a>·<a class="toolbar" href="/KB/threads/StackWalker.aspx?fid=202364&amp;tid=3501358" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3501358/Thanks.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3501358" style="white-space:nowrap;">1.00/5 (1 vote) </span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr>
+<td><img src="/script/Forums/Images/t.gif" border="0" width="1px" height="5px" alt="" /></td>
+</tr>
+</table></td>
+</tr><tr>
+<td><table width="100%" cellpadding="2px" cellspacing="0">
+<tr class="forum-footer">
+<td>Last Visit: 1:15 21 Jul '11  &nbsp; &nbsp; Last Update: 1:55 21 Jul '11 </td><td style="text-align:right;white-space:nowrap;"><input id="_mbnUrl" type="hidden" value="/KB/threads/StackWalker.aspx?fid=202364&amp;fr=26" /><b>1</b><a class="toolbar" name="Frm_HoverNL" href="/KB/threads/StackWalker.aspx?fid=202364&amp;fr=26#xx0xx">2</a><a class="toolbar" name="Frm_HoverNL" href="/KB/threads/StackWalker.aspx?fid=202364&amp;fr=51#xx0xx">3</a><a class="toolbar" name="Frm_HoverNL" href="/KB/threads/StackWalker.aspx?fid=202364&amp;fr=76#xx0xx">4</a><a class="toolbar" name="Frm_HoverNL" href="/KB/threads/StackWalker.aspx?fid=202364&amp;fr=101#xx0xx">5</a><a class="toolbar" name="Frm_HoverNL" href="/KB/threads/StackWalker.aspx?fid=202364&amp;fr=126#xx0xx">6</a><a class="toolbar" name="Frm_HoverNL" href="/KB/threads/StackWalker.aspx?fid=202364&amp;fr=151#xx0xx">7</a><a class="toolbar" name="Frm_HoverNL" href="/KB/threads/StackWalker.aspx?fid=202364&amp;fr=176#xx0xx">8</a><a class="toolbar" name="Frm_HoverNL" href="/KB/threads/StackWalker.aspx?fid=202364&amp;fr=201#xx0xx">9</a><a class="toolbar" name="Frm_HoverNL" href="/KB/threads/StackWalker.aspx?fid=202364&amp;fr=226#xx0xx">10</a><a class="toolbar" name="Frm_HoverNL" href="/KB/threads/StackWalker.aspx?fid=202364&amp;fr=251#xx0xx">11</a> <a class="toolbar" name="Frm_HoverNL" href="/KB/threads/StackWalker.aspx?fid=202364&amp;fr=26#xx0xx">Next »</a></td>
+</tr>
+</table></td>
+</tr>
+</table>
+</div><p class="small-text"><img align="top" src="/script/Forums/Images/msg_general.gif" width="16px" height="16px" alt="General" /> General &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_news.gif" width="16px" height="16px" alt="News" /> News &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_idea.gif" width="16px" height="16px" alt="Suggestion" /> Suggestion &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_question.gif" width="16px" height="16px" alt="Question" /> Question &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_bug.gif" width="16px" height="16px" alt="Bug" /> Bug &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_answer.gif" width="16px" height="16px" alt="Answer" /> Answer &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_joke.gif" width="16px" height="16px" alt="Joke" /> Joke &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_rant.gif" width="16px" height="16px" alt="Rant" /> Rant &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_admin.gif" width="16px" height="16px" alt="Admin" /> Admin &nbsp;&nbsp; </p><p class="small-text">Use Ctrl+Left/Right to switch messages, Ctrl+Up/Down to switch threads, Ctrl+Shift+Left/Right to switch pages.</p>
+
+					
+					<div class="theme1-background" style="height:2px"></div>
+
+					<div class="extended tiny-text">
+						<div class="row">
+							<div class="float-left">
+								<a id="ctl00_PermaLink" href="/KB/threads/StackWalker.aspx">Permalink</a> | 
+								<a id="ctl00_AdvertiseLink" href="/info/MediaKit.aspx">Advertise </a> |
+								<a id="ctl00_PrivacyLink" href="/info/privacy.aspx">Privacy</a> |
+								<a id="ctl00_Mobile" href="/KB/threads/StackWalker.aspx?display=Mobile">Mobile</a>
+								<br />
+								
+								 |
+								Web24 |
+								2.3.110720.3
+								
+							</div>
+							<div class="float-right align-right">
+								Article Copyright 2005 by Jochen Kalmbach [MVP VC++]<br />Everything else
+								Copyright &copy; <a href="mailto:webmaster@codeproject.com">CodeProject</a>, 1999-2011<br />
+								<a id="ctl00_TermsOfUseLink" href="/info/TermsOfUse.aspx">Terms of Use</a>
+							</div>
+
+							
+
+
+<div class="page-width">
+Layout: <a id="ctl00_PageWidth_FixedT" title="Fixed width layout" href="/KB/threads/StackWalker.aspx?PageFlow=FixedWidth">fixed</a>
+|
+<a id="ctl00_PageWidth_FluidT" title="Fluid layout" href="/KB/threads/StackWalker.aspx?PageFlow=Fluid">fluid</a>
+</div>
+
+
+
+						</div>
+					</div>
+					
+
+				<br clear="all" />
+		
+				
+				</div>
+
+				<div id="ctl00_ContentSide" class="text-sidebar">
+					
+					
+
+					
+
+					
+
+					
+
+					
+
+<div class="announce ">
+<div class="announce-header">Announcements</div>
+<div class="announce-content">
+<table cellpadding="2">
+
+
+
+
+
+
+
+
+<tr valign="middle"><td><img id="ctl00_Announcements_News_ctl00_Img" src="/script/News/NewsImages/15945.png" alt="News" align="middle" style="height:24px;width:24px;border-width:0px;" /></td>
+<td><a id="ctl00_Announcements_News_ctl00_Link" href="http://www.codeproject.com/Competitions/494/HTML5-CSS3-Competition.aspx">Write An HTML5 / CSS3 Article Win an iPad2</a></td></tr>
+
+
+
+
+</table>
+</div>
+</div>
+
+							
+
+					<div style="margin:auto;width:150px"><div class="lqm_ad" width="150px" height="80px" lqm_channel="1" lqm_publisher="495" lqm_zone="77" lqm_format="21" lqm_tags='VC6,VC7,VC7.1,VC8.0,Win2K,WinXP,Win2003,VS.NET2003,VS2005,Dev,Intermediate'></div>
+					</div>
+	
+					<div style="margin:auto;width:160px;margin-top:10px"><div class="lqm_ad" width="160px" height="600px" lqm_channel="1" lqm_publisher="495" lqm_zone="77" lqm_format="18" lqm_tags='VC6,VC7,VC7.1,VC8.0,Win2K,WinXP,Win2003,VS.NET2003,VS2005,Dev,Intermediate'></div>
+					</div>
+				</div>
+
+			</div>
+			
+
+		</div>
+		
+
+	</div>
+</div>
+
+
+<div style="display:none;" id="lqm_AdTable">
+	
+</div>
+
+<script type="text/javascript" language="Javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script><script type='text/javascript'>//<![CDATA[
+if (typeof jQuery == 'undefined') {
+    document.write(unescape("%3Cscript src='/script/JS/jquery-1.4.2.min.js' type='text/javascript' %3E%3C/script%3E"));
+}//]]></script>
+<script type="text/javascript" language="Javascript" src="/script/Articles/JS/article.min.js?dt=2.3.110720.3"></script>
+<script type="text/javascript" language="Javascript" src="/Script/JS/m.min.js?dt=2.3.110720.3"></script>
+<script type="text/javascript" language="Javascript">//<![CDATA[
+var socialLinks = new social();
+socialLinks.PlaceholderId="ATD";socialLinks.ObjectId=11132;
+socialLinks.ObjectTypeId=2;
+socialLinks.addtoMethod=1;
+socialLinks.Horizontal=false;
+socialLinks.Showname=true;
+socialLinks.setupLinks("socialLinks", escape(document.location.href),escape(document.title), 100, 0, "small-text Bold", "AddTo");
+socialLinks.setupMenu();
+if($.LqmAds)$.LqmAds();
+var oSrchFlt = false, oSrchBox=false,srchBoxFoc=false;
+$(document).ready(function() {
+ InitWatermark('sb_tb', 'Search');
+ var sbar = $('#sb_tb'); 
+ var sfilter = $('#SearchFilter');
+ if (sbar && sfilter) {
+  sfilter.removeClass('popup'); sfilter.hide();
+  sbar.blur(function() { if (!oSrchFlt)sfilter.hide();srchBoxFoc=false; });
+  sbar.focus(function() { oSrchFlt=false;srchBoxFoc=true;sfilter.show(); });
+  sbar.mouseleave(function() { oSrchBox=false; });
+  sbar.mouseover(function() { oSrchBox=true; });
+  sfilter.mouseleave(function() { oSrchFlt=false; if (!srchBoxFoc&&!oSrchBox)sfilter.hide();});
+  sfilter.mouseover(function() { oSrchFlt=true; });
+ }
+});
+$(document).ready(function() { anchorAnimate(); });
+$("#ctl00_RateArticle_RateItemWrapper").removeClass("container-rating");$('#clear-rate_ctl00_RateArticle_RCD').click(function () { $('#ctl00_RateArticle_RCD').hide(); return false;});
+function ChkRtctl00_RateArticle(val, objId) {if (val<=3||true) {
+$('div[name=RateItem_' + objId + '] .rating-comment').css("display","");}
+else $('div[name=RateItem_' + objId + '] .rating-comment').css("display","none");}
+
+
+//]]>
+</script>
+
+
+
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-1735123-1']);
+	_gaq.push(['_trackPageview']);
+	_gaq.push(['_setDomainName', 'www.codeproject.com']);
+	_gaq.push(['_setSessionTimeout', '1200']); 
+
+	(function () {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+	})(); 
+</script>
+
+</body>
+</html>

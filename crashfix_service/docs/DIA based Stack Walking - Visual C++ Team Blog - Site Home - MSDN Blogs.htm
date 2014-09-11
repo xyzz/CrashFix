@@ -1,0 +1,903 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head><meta http-equiv="X-UA-Compatible" content="IE=9; IE=8" /><meta name="robots" content="index,follow" />
+<meta name="keywords" content="c++, visual c++, visual studio, vs2010, visualstudio, windows, windows7 .net dotnet" />
+<meta name="GENERATOR" content="Telligent Community 5.6.583.19431 (Build: 5.6.583.19431)" />
+<link rel="pingback" href="http://blogs.msdn.com/b/vcblog/pingback.aspx" />
+<link rel="alternate" type="application/rss+xml" title="Site Home (RSS 2.0)" href="http://blogs.msdn.com/rss.aspx"  />
+<link rel="alternate" type="application/rss+xml" title="vcblog&#39;s Comments (RSS 2.0)" href="/members/vcblog/comments/rss.aspx"  />
+<link rel="alternate" type="application/rss+xml" title="vcblog&#39;s Activities (RSS 2.0)" href="/members/vcblog/activities/rss.aspx"  />
+<link rel="alternate" type="application/rss+xml" title="Activities of People vcblog Follows (RSS 2.0)" href="/members/vcblog/activities/followersrss.aspx"  />
+<link rel="alternate" type="application/rss+xml" title="vcblog&#39;s Groups Activities (RSS 2.0)" href="/members/vcblog/activities/groupsrss.aspx"  />
+<link rel="alternate" type="application/rss+xml" title="Visual C++ Team Blog (RSS 2.0)" href="http://blogs.msdn.com/b/vcblog/rss.aspx"  />
+<link rel="alternate" type="application/atom+xml" title="Visual C++ Team Blog (Atom 1.0)" href="http://blogs.msdn.com/b/vcblog/atom.aspx"  />
+<link rel="alternate" type="application/rss+xml" title="Visual C++ Team Blog - All Comments (RSS 2.0)" href="http://blogs.msdn.com/b/vcblog/rsscomments.aspx"  />
+<link rel="alternate" type="application/rss+xml" title="DIA based Stack Walking - Comments for this post (RSS 2.0)" href="http://blogs.msdn.com/b/vcblog/rsscomments.aspx?WeblogPostID=9944234"  />
+
+            <link rel="stylesheet" href="/themes/generic/css/layout.css" type="text/css" media="screen" />
+        
+          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+          <link rel="shortcut icon" type="image/ico" href="/themes/MSDN2/favicon.ico" />
+          <link type="text/css" rel="stylesheet" href="/themes/MSDN2/css/screen.css" media="screen,print" />
+          <link type="text/css" rel="stylesheet" href="/themes/blogs/MSDN2/css/MSDNblogs.css" media="screen,print" />
+        
+          <link type="text/css" rel="stylesheet" href="/themes/MSDN2/css/DynamicStyle.aspx?PreviewKey=0" media="screen,print" />
+          <link type="text/css" rel="stylesheet" href="/themes/blogs/MSDN2/css/DynamicStyle.aspx?WeblogID=6569&PreviewKey=0" media="screen,print" />
+        
+          <!--[if lte IE 6]>
+              <link type="text/css" rel="stylesheet" href="/themes/MSDN2/css/ie6.css" media="screen,print" />
+          <![endif]-->
+          <link type="text/css" rel="stylesheet" href="/themes/MSDN2/css/print.css" media="print" />
+        <meta name="msvalidate.01" content="B717AD6FC29D3A844832AF011B5F9E4C" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blogs.msdn.com/b/vcblog/rsd.ashx" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" title="WLWManifest" href="http://blogs.msdn.com/b/vcblog/wlwmanifest.ashx" />
+<title>
+	DIA based Stack Walking - Visual C++ Team Blog - Site Home - MSDN Blogs
+</title></head>
+	<body spellcheck="true">
+		<form name="aspnetForm" method="post" action="/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input type="hidden" name="ctl00_content_ctl00_w_52320__938155_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha_answer" id="ctl00_content_ctl00_w_52320__938155_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha_answer" value="" />
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTM5OTAxNDYyNWRkvI787cXLvh9XHlDReEjVejxzcZ4=" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=Z2cQcTXWgTIacDQe5RRNWmFyimLHJt8vzSXe1uPSng4eqr0myJHiayeAq1crklEPpVKsHC4W0kCtInsSLWolE5Uo5p41&amp;t=634505611860851222" type="text/javascript"></script>
+
+
+<script src="/WebResource.axd?d=SOm_d8KPCvLZqYHrhruKr9DdER9uVeTCF1FNDrQsmkkW6AGoFUpVPsp_sTVI0yBnuCqmAGaw9mn1GN6KHTm-O-scKjBDPWhJUPaoE5GX-W_PceNeDrCYaZsBFYwMz8SJcVcGWXF1earb2kCelpGh_yHCFNurOjx3n2A7T22-FJOIrny2temFXRG8ehi8UGCKQTTzSM4cj0CEdSfmhseuKk27Fmk1&amp;t=634547080206241858" type="text/javascript"></script>
+<script src="/WebResource.axd?d=X_bemaoIL4hjGUz9ZLneLqw-9c9VLtsWZNcpFAvJZjyKqy0p35kk2J5MVTgZ0_e7dzVplzG4gPuhYGCSEZ9_2V48ALIbJSP67YqRe_uBJ_EZoaemm2d7CXOUW-nZ8_pxnmZG0zD-4rwjao05LtAkIZm3fBDpXoPLWyORtmFV3KS69tTk0&amp;t=634547080209837373" type="text/javascript"></script>
+<script src="/WebResource.axd?d=3GU3tjSEW1ECXKvAUZHsxDFAslEZgbJjoLfCXBVUTswP5j5YYgW1hzjXqjzKD2dwNn0_t62E4VjYXqkzlUOlcdFK8Z_Brbo2xSEHJwdXoWqZ2JKysmKSDqwNmwzMbkFAkkWixyHGSjXGuv05u78Pi5NT0vd1V1i0XAu44rGfRSX4FePt0&amp;t=634547080209837373" type="text/javascript"></script>
+<script src="/WebResource.axd?d=ZNAKjLeYJhqT_oJ98OwZwVJzbm3UJOEc5LdYje7ix7F87IHOHrdtwh0VGbHW1w50Wi1G774JMTJOjcODrws7U3QA83DLFF0NxSeh0X7TA1drh1FHRbbpemnlRUet9k4QWDfNyUfoZvWBZm4x8hX6igDXjctw10e4qulgpzBxItVQN2eu0&amp;t=634547080206241858" type="text/javascript"></script>
+<script src="/WebResource.axd?d=-I9opVMlYERsOWADr5Ja4RssDj9bjzJHgxNjPQ9OjvoFh9msYez2FDTy088QYu1C72c0WsRQFRwLvbjkl5W-5nUXl_DP64ke9Lcb62qn5BUa-Pc2HN1pvm_BxvRFy0R5YH4IK1QyICM_8SECrbjcS3m5T6W1PwtrsEZAgYO-WlfqJYLwakPjAePpK_rDp4hCPrtBXA2&amp;t=634547080209837373" type="text/javascript"></script>
+<script src="/WebResource.axd?d=HaOPiNm1e0sLVdYesQz9mxWwGXMPQMB4pwvUsGB8ZJGyRNswfv6H9HTF-JKe-U2Y1vxDijsXcYELa58DHCNpyH_92CgFm0Ufhn79o8ERhzVbFsOVbA3l7FI1LLkkpikqzv90nK2u1s9OJzHVD9CVAFXD88fLNAeJyjBJ4gdZzh9UGdLy0&amp;t=634547080206241858" type="text/javascript"></script><script type="text/javascript" src="/utility/jquery/jquery-1.5.2.min.js"></script><script type="text/javascript" src="/utility/jquery/autoresize.jquery.min.js"></script>
+<script src="/WebResource.axd?d=ahlDYNbDLqewiDAWERYywUOtVFS2G5LIDpqT1GeuLSeL9pZ00_hrjGdFvqY_kyCXvYVPgnStzP15cHQkWAzWlCzgdszLOoROgHYM-Q8BV8Z6UyC80&amp;t=634505611860851222" type="text/javascript"></script>
+<script src="/WebResource.axd?d=5h4uDIKw0jfgLvo3lCMA-4uYbYFLjWH-CYL_-M2qsXt9DrFoEenc0y52xIhQOIuH3vbY259X3nftMHddV3CFRlcHaaTZaWGgUpmuHdITXpKI9rvCcKFLHbyvpaIOj0Z3daJZkb5OxqyK8MexioOup8dp9HMMcUIaOaV45OQR7pBZLMmbWyMtl_nN2Z62vnk7be3DkGA0e424SusmrWa2Gh69sQk1&amp;t=634547080207023488" type="text/javascript"></script>
+<script src="/WebResource.axd?d=6FRFqSBfWW_ZCmFE0BqdIlvcr4zxqdiaWN8vp2XHPAhpG0AD0_NxkFQ1CcKGC40FJPxdj4F8A7tYf9Z_yaF3WsmUxjEtOVMNJXB8Kwa3_EVNAC48gN_yerZiw_aK8Oz17MWCcfozfjgs_8aIixBDL-2IeZQx3Xlbop7fBCJv5wwZ9pQJ0&amp;t=634547080209837373" type="text/javascript"></script>
+<script src="/WebResource.axd?d=g8NlLbN_osz0sxxr-Bna0nHqaizsNTSphFqtHKkDWqiKQsKKuaAQOVQypJLBFBqEvJaa9dJ2zwQ2JliJ5HhivoDHWcQuKR5yA8KFCBHClR8-sqBOFF19sdL8EztLKXVazT-I1lAPYxzE8AVMmxl9C1bu8SgYgaRi4JnPS9I7huwwIo9w0&amp;t=634547080209837373" type="text/javascript"></script>
+<script src="/WebResource.axd?d=uV5jECGiS8_GGPpJV2cuiPaxOggI_Y2EpUA7ib1PBadUMhq0cmHRiSADtsCT3nmnKrLT5MkAP8h8F3UMJW_2Z3BSuXdlF27_BqU2j91NEX9nvMQ-sYjrkuE32_4xlcSeX4lK-LKMuS9zQ2YdbgN2JBkNqRRQwxIqGO6XxMTzGcqEcljS5LsQy6GnlKQRDlppAf2smw2&amp;t=634547080206241858" type="text/javascript"></script>
+<script src="/WebResource.axd?d=TjiNY1rmv8W4Kzz4QZNyp2P63E6t793JZRNHHbvHuWrJaqpghfU8youCEpBAslnDhi_lkdjijHgIojxgUIqfM-y1jhUZUA-jM-Afdq2fsvIyNiGpZ-YmVXiUSdcBUkhRxJsxknB8hZRBkMJhhgaW8RIio1ZUVIB-8C07L5RKMfEOZZh00&amp;t=634547080206241858" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+//]]>
+</script>
+
+			
+            
+                
+            
+            <div class="header-fragments-header"></div>
+<div class="header-fragments"><div class="header-fragment-outer top-bar msdn-header-fragment-outer msdn-top-bar"><div class="header-fragment-inner top-bar msdn-header-fragment-inner msdn-top-bar"><div class="header-fragment welcome-message" id="header-fragment-1402503690">
+
+
+<!-- always render -->
+</div><div class="header-fragment login-logout" id="header-fragment-1402503691">
+
+
+
+
+
+        <div class="navigation-list-header"></div>
+        <ul class="navigation-list">
+
+            <li class="navigation-item">
+                <span id="ctl00_header_fragment_1402503691__938155_ctl00_ctl02_ctl05_WLIDLoginButton1" class="internal-link live-id-button"><a href="https://login.live.com/login.srf?wa=wsignin1.0&rpsnv=11&ct=1322483397&rver=6.0.5286.0&wp=MBI&wreply=http:%2F%2Fblogs.msdn.com%2Fb%2Fvcblog%2Farchive%2F2010%2F01%2F05%2Fdia-based-stack-walking.aspx&lc=1033&id=271611">Sign In</a></span>
+            </li>
+        </ul>
+        <div class="navigation-list-footer"></div>
+    </div><div class="header-fragment user-welcome-without-login" id="header-fragment-1402503692">
+
+ &nbsp;<!-- always render -->
+
+</div></div></div><div class="header-fragment blog-banner" id="header-fragment-1402503693">
+
+
+
+<div class="site-banner blog-banner">
+
+<h1 class="blog-banner-name"><a href="/b/vcblog/">Visual C++ Team Blog</a></h1>
+
+</div>
+
+</div></div>
+<div class="header-fragments-footer"></div>
+			
+    <div class="content-fragment-page post" id="ctl00_content_ctl00_page"><div class="layout">
+<div class="layout-header"></div>
+<div class="layout-content content-left-sidebar-right" id="ctl00_content_ctl00_layout">
+<div class="layout-region right-sidebar" id="ctl00_content_ctl00_right-sidebar">
+<div class="layout-region-inner right-sidebar"><div class="content-fragment c-t-f-widget no-wrapper-with-spacing with-header" id="fragment-52310">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-header"><div>Translate This Page</div></div>
+<div class="content-fragment-content">
+
+
+
+
+<div id="MicrosoftTranslatorWidget" style="width: 275px; min-height: 83px; border-color: #333333; background-color: #CCCCCC;"><noscript><a href="http://www.microsofttranslator.com/bv.aspx?a=http%3a%2f%2fblogs.msdn.com%2f">Translate this page</a><br />Powered by <a href="http://www.microsofttranslator.com">Microsoft® Translator</a></noscript></div> <script type="text/javascript"> setTimeout(function() { var s = document.createElement("script"); s.type = "text/javascript"; s.charset = "UTF-8"; s.src = "http://www.microsofttranslator.com/Ajax/V2/Widget.aspx?siteData=ncUzpG6DNC3ChU0huEHZCFQbqrzCQRcTVqXdHso8P2KRGM-oFXjoeYwum3D31voFEyqUPj4HjacfvEdrHEyIG8CuATkNhQmRwcZkpGVFjvVnLd1gzFP2dxWEWKdcQtE1&mode=manual&from=en&layout=ts"; var p = document.getElementsByTagName('head')[0] || document.documentElement; p.insertBefore(s, p.firstChild); }, 0); </script> 
+
+</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div class="content-fragment blog-links no-wrapper-with-spacing with-header" id="fragment-52311">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-header"><div>Options</div></div>
+<div class="content-fragment-content">
+
+		<div class="navigation-list-header"></div>
+		<ul class="navigation-list">
+	<li class="navigation-item"><a class="internal-link view-application" href="/b/vcblog/"><span></span>Blog Home</a></li><li class="navigation-item"><a class="internal-link email-post" href="mailto:?subject=DIA based Stack Walking&amp;body=http://blogs.msdn.com/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx">
+		<span></span>Share this
+	</a></li><li class="navigation-item"><a class="internal-link rss" href="/b/vcblog/rss.aspx"><span></span>RSS for posts</a></li><li class="navigation-item"><a class="internal-link rss" href="/b/vcblog/atom.aspx"><span></span>Atom</a></li><li id=""RssComments""" class="navigation-item"><a class="internal-link rss" href="/b/vcblog/rsscomments.aspx"><span></span>RSS for comments</a></li>
+		</ul>
+		<div class="navigation-list-footer"></div>
+	</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div class="content-fragment search-form no-wrapper-with-spacing with-header" id="fragment-52312">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-header"><div>Search</div></div>
+<div class="content-fragment-content">
+
+
+
+        <div class="field-list-header"></div>
+        <fieldset class="field-list">
+            <ul class="field-list">
+                <li class="field-item search">
+                    <div>
+                         <span class="field-item-input"><input name="ctl00$content$ctl00$w_52312$_938155$ctl00$ctl01$ctl01$Keywords" type="text" maxlength="64" size="45" id="ctl00_content_ctl00_w_52312__938155_ctl00_ctl01_ctl01_Keywords" onfocus="if(this.defaultValue==this.value) this.value='';" onblur="if(this.value=='') this.value=this.defaultValue;" /></span>
+                    </div>
+                    <span id="ctl00_content_ctl00_w_52312__938155_ctl00_ctl01_ctl01_Validator" style="color:Red;display:none;"><span class="field-item-validation">*</span></span>
+
+
+                    <a href="#" onclick="ToggleAdvancedSearch(ctl00_content_ctl00_w_52312, this)" id="ctl00_content_ctl00_w_52312_AdvancedOptions" class="internal-link advanced-search"><span></span>Advanced search options...</a>
+                </li>
+                <li class="field-item search-type">
+                    <label for="ctl00_content_ctl00_w_52312__938155_ctl00_ctl01_ctl01_ContentTypes" class="field-item-header">Search In:</label>
+                    <span class="field-item-input">
+                        <select name="ctl00$content$ctl00$w_52312$_938155$ctl00$ctl01$ctl01$ContentTypes" id="ctl00_content_ctl00_w_52312__938155_ctl00_ctl01_ctl01_ContentTypes">
+	<option value="">Everything</option>
+	<option value="blog">Blogs</option>
+	<option value="forum">Forums</option>
+	<option value="user">People</option>
+	<option value="group">Groups</option>
+	<option value="fileapp,forumapp,blogapp,wikiapp">Places</option>
+	<option value="page">Pages</option>
+
+</select>
+                    </span>
+                </li>
+                <li class="field-item date-range">
+                    <label for="ctl00_content_ctl00_w_52312__938155_ctl00_ctl01_ctl01_DatingBackTo" class="field-item-header">Date range:</label>
+                    <span class="field-item-input"><select name="ctl00$content$ctl00$w_52312$_938155$ctl00$ctl01$ctl01$DatingBackTo" id="ctl00_content_ctl00_w_52312__938155_ctl00_ctl01_ctl01_DatingBackTo">
+	<option value="-1">All Time</option>
+	<option value="-365">Last Year</option>
+	<option value="-185">Last 6 Months</option>
+	<option value="-95">Last 3 Months</option>
+	<option value="-35">Last Month</option>
+	<option value="-7">Last Week</option>
+	<option value="-2">Last Two Days</option>
+
+</select></span>
+                </li>
+                
+                <li class="field-item searchbutton">
+                    <span class="field-item-input"><a id="ctl00_content_ctl00_w_52312__938155_ctl00_ctl01_ctl01_SearchButton" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$content$ctl00$w_52312$_938155$ctl00$ctl01$ctl01$SearchButton&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))">Search</a></span>
+                </li>
+            </ul>
+        </fieldset>
+        <div class="field-list-footer">
+            <span style="display:inline-block"><input type="radio" name="SearchTypeRadio" value="ThisBlog" id="ThisBlog" checked /><label for="ThisBlog" id="ThisBlogText">Search this blog</label></span>
+            <span style="display:inline-block"><input type="radio" name="SearchTypeRadio" value="AllBlogs" id="AllBlogs" /><label for="AllBlogs" id="AllBlogsText">Search all blogs</label></span>
+        </div>
+
+    
+
+
+<script type="text/javascript">
+
+// Hide the radio buttons and text if we aren't on a blog
+$(document).ready(function() {
+            
+    // try to get the blog id, if we fail, then we aren't on a blog and just use the regular search approach       
+    var sectionID = 6569;
+
+    if (sectionID == -1)
+    {
+        var tbObj = document.getElementById("ThisBlog");
+        var tbObjText = document.getElementById("ThisBlogText");
+        var abObj = document.getElementById("AllBlogs");
+        var abObjText = document.getElementById("AllBlogsText");
+        
+        if (tbObj != 'undefined' && abObj != 'undefined' && abObjText != 'undefined' && tbObjText != 'undefined')
+        {
+            tbObj.style.display = 'none';
+            tbObjText.style.display = 'none';
+            abObj.style.display = 'none';
+            abObjText.style.display = 'none';
+        }
+    }
+}
+);
+
+// Setup on keypress event for the search box     
+var ctl00_content_ctl00_w_52312={"wrapperId":"fragment-52312","variableName":"ctl00_content_ctl00_w_52312","parameter":{"keywords":"ctl00_content_ctl00_w_52312__938155_ctl00_ctl01_ctl01_Keywords","search":"ctl00_content_ctl00_w_52312__938155_ctl00_ctl01_ctl01_SearchButton"}};
+    
+    $("#" + ctl00_content_ctl00_w_52312.parameter.keywords).bind("keypress", function(event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            var tb = $(event.target);
+            tb.blur();   
+            
+            // try to get the blog id, if we fail, then we aren't on a blog and just use the regular search approach       
+            var sectionID = 6569;
+            if (sectionID != -1 && document.getElementById("ThisBlog").checked==true)
+            {
+                window.location = "/search/SearchResults.aspx?q=" + encodeURIComponent($("#" + ctl00_content_ctl00_w_52312.parameter.keywords).attr("value")) + "&sections=" + sectionID;
+            }
+            else
+            {
+                window.location = $("#" + ctl00_content_ctl00_w_52312.parameter.search).attr("href");
+            }
+        }
+    });
+    
+    function ToggleAdvancedSearch(context, e)
+    {
+        var wrapper = $("#" + context.wrapperId);
+        var advancedSearchLink = $("#" + context.variableName + "_AdvancedOptions", wrapper);
+        if (advancedSearchLink.text() == 'Advanced search options...')
+        {
+            advancedSearchLink.text('Hide advanced options...');
+            $("ul.field-list", wrapper).addClass('advanced-search advanced-search__field-list');
+        }
+        else
+        {
+            advancedSearchLink.text('Advanced search options...');
+            $("ul.field-list", wrapper).removeClass('advanced-search advanced-search__field-list');
+        }
+    }
+</script></div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div class="content-fragment tag-cloud no-wrapper-with-spacing with-header" id="fragment-52313">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-header"><div>Tags</div></div>
+<div class="content-fragment-content">
+<div class="tag-list-header"></div><ul class="tag-list">
+<li class="tag-item level-5"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/Announcement/" rel="tag">Announcement</a></li>
+<li class="tag-item level-6"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/Bug+Info/" rel="tag">Bug Info</a></li>
+<li class="tag-item level-3"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/C_2B002B00_+language/" rel="tag">C++ language</a></li>
+<li class="tag-item level-6"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/C_2B002B002F00_CLI/" rel="tag">C++/CLI</a></li>
+<li class="tag-item level-2"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/C_2B002B00_0x/" rel="tag">C++0x</a></li>
+<li class="tag-item level-1"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/Channel+9/" rel="tag">Channel 9</a></li>
+<li class="tag-item level-5"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/compiler/" rel="tag">compiler</a></li>
+<li class="tag-item level-4"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/design/" rel="tag">design</a></li>
+<li class="tag-item level-1"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/Dev/" rel="tag">Dev</a></li>
+<li class="tag-item level-5"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/DirectX/" rel="tag">DirectX</a></li>
+<li class="tag-item level-6"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/GPU/" rel="tag">GPU</a></li>
+<li class="tag-item level-2"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/IDE/" rel="tag">IDE</a></li>
+<li class="tag-item level-3"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/Intellisense/" rel="tag">Intellisense</a></li>
+<li class="tag-item level-2"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/MFC/" rel="tag">MFC</a></li>
+<li class="tag-item level-5"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/MSBuild/" rel="tag">MSBuild</a></li>
+<li class="tag-item level-6"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/Pages/" rel="tag">Pages</a></li>
+<li class="tag-item level-1"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/Parallelism/" rel="tag">Parallelism</a></li>
+<li class="tag-item level-6"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/performance/" rel="tag">performance</a></li>
+<li class="tag-item level-6"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/SP1/" rel="tag">SP1</a></li>
+<li class="tag-item level-1"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/STL/" rel="tag">STL</a></li>
+<li class="tag-item level-5"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/Test/" rel="tag">Test</a></li>
+<li class="tag-item level-3"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/VC_2B002B00_/" rel="tag">VC++</a></li>
+<li class="tag-item level-2"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/VS2010/" rel="tag">VS2010</a></li>
+<li class="tag-item level-5"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/weekly+roundup/" rel="tag">weekly roundup</a></li>
+<li class="tag-item level-3"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/Windows+7/" rel="tag">Windows 7</a></li>
+</ul>
+<div class="tag-list-footer"></div>
+</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div class="content-fragment blog-archive-list no-wrapper-with-spacing with-header" id="fragment-52314">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-header"><div>Archive</div></div>
+<div class="content-fragment-content">
+
+		<div class="content-list-header"></div>
+		<div class="content-list-name">Archives</div>
+		<ul class="content-list">
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2011/11.aspx">November 2011</a> (3)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2011/10.aspx">October 2011</a> (6)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2011/09.aspx">September 2011</a> (4)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2011/08.aspx">August 2011</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2011/07.aspx">July 2011</a> (3)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2011/06.aspx">June 2011</a> (14)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2011/05.aspx">May 2011</a> (11)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2011/04.aspx">April 2011</a> (11)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2011/03.aspx">March 2011</a> (16)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2011/02.aspx">February 2011</a> (12)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2011/01.aspx">January 2011</a> (15)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2010/12.aspx">December 2010</a> (7)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2010/11.aspx">November 2010</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2010/10.aspx">October 2010</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2010/09.aspx">September 2010</a> (3)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2010/08.aspx">August 2010</a> (3)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2010/07.aspx">July 2010</a> (3)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2010/06.aspx">June 2010</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2010/05.aspx">May 2010</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2010/04.aspx">April 2010</a> (6)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2010/03.aspx">March 2010</a> (9)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2010/02.aspx">February 2010</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2010/01.aspx">January 2010</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2009/12.aspx">December 2009</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2009/11.aspx">November 2009</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2009/10.aspx">October 2009</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2009/09.aspx">September 2009</a> (3)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2009/08.aspx">August 2009</a> (3)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2009/07.aspx">July 2009</a> (4)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2009/06.aspx">June 2009</a> (8)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2009/05.aspx">May 2009</a> (7)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2009/04.aspx">April 2009</a> (3)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2009/03.aspx">March 2009</a> (7)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2009/02.aspx">February 2009</a> (3)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2009/01.aspx">January 2009</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2008/12.aspx">December 2008</a> (6)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2008/11.aspx">November 2008</a> (6)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2008/10.aspx">October 2008</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2008/09.aspx">September 2008</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2008/08.aspx">August 2008</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2008/07.aspx">July 2008</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2008/06.aspx">June 2008</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2008/05.aspx">May 2008</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2008/04.aspx">April 2008</a> (8)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2008/03.aspx">March 2008</a> (3)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2008/02.aspx">February 2008</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2008/01.aspx">January 2008</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2007/12.aspx">December 2007</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2007/11.aspx">November 2007</a> (10)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2007/10.aspx">October 2007</a> (8)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2007/09.aspx">September 2007</a> (6)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2007/08.aspx">August 2007</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2007/07.aspx">July 2007</a> (6)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2007/06.aspx">June 2007</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2007/05.aspx">May 2007</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2007/04.aspx">April 2007</a> (7)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2007/03.aspx">March 2007</a> (9)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2007/02.aspx">February 2007</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2007/01.aspx">January 2007</a> (4)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2006/12.aspx">December 2006</a> (6)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2006/11.aspx">November 2006</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2006/10.aspx">October 2006</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2006/09.aspx">September 2006</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2006/08.aspx">August 2006</a> (6)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2006/07.aspx">July 2006</a> (5)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2006/06.aspx">June 2006</a> (10)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/vcblog/archive/2006/05.aspx">May 2006</a> (3)</li>
+	
+		</ul>
+		<div class="content-list-footer"></div>
+	
+</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+</div>
+</div>
+<div class="layout-region content" id="ctl00_content_ctl00_content">
+<div class="layout-region-inner content"><div class="content-fragment blog-title full-border" id="fragment-52315">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-content">
+<h1 class="title">
+	    
+			        
+			    
+	                DIA based Stack Walking
+			    
+	</h1></div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div class="content-fragment blog-bread-crumbs no-wrapper" id="fragment-52316">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-content">
+
+
+<div class="breadcrumb-list-header"></div>
+<div class="breadcrumb-list">
+	<span class="breadcrumb-item"><a class="internal-link view-home" href="/">MSDN Blogs</a></span>
+  
+	
+
+	
+			<span class="separator"> > </span>
+			<span class="breadcrumb-item">
+		<a href="/b/vcblog/">Visual C++ Team Blog</a>
+			</span>
+		
+	
+	
+			<span class="separator"> > </span>
+			<span class="breadcrumb-item">
+		<a href="/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx">DIA based Stack Walking</a>
+			</span>
+		
+
+	
+</div>
+<div class="breadcrumb-list-footer"></div>
+</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div class="content-fragment blog-post no-wrapper" id="fragment-52317">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-content">
+
+<div class="full-post-header"></div>
+<div class="full-post">
+	<h3 class="post-name">DIA based Stack Walking</h3>
+	
+    <div class="post-author" >
+        <span class="avatar"><a href="/33825/ProfileUrlRedirect.ashx"><img src="http://i1.social.microsoft.com/profile/u/avatar.jpg?displayname=vcblog&amp;size=large" alt="" style="border-width:0px;max-height:32px;max-width:32px;" /></a></span>
+        
+         <span class="profile-usercard-hover" data-profile-userid="82649528-7e0c-46c6-a75c-b3d8d40f1afe">
+            <span class="user-name"><a class="internal-link view-user-profile" href="/33825/ProfileUrlRedirect.ashx"><span></span>vcblog</a></span>
+       
+            
+        </span>
+    </div>
+    <div class="post-date">
+        <span class="value">
+            5 Jan 2010 12:48 PM
+        </span>
+    </div>
+    <div class="post-attributes">
+        <div class="attribute-list-header"></div>
+        <ul class="attribute-list">
+             <li class="attribute-item post-reply-count">
+                <span class="attribute-name">Comments</span>
+                <span class="attribute-value"><a href="#comments" class="internal-link view-replies"><span></span>12</a></span>
+             </li>
+        </ul>
+        <div class="attribute-list-footer"></div>
+    </div>
+    <div class="post-content user-defined-markup"><P class=MsoNormal style="MARGIN: 0in 0in 10pt"><FONT face=Calibri size=3>Hello, I am Manish Vasani, an SDET on the VC++ compiler backend team. In this series of posts, I will talk about call stacks and how to use the </FONT><A href="http://msdn.microsoft.com/en-us/library/x93ctkx8.aspx" mce_href="http://msdn.microsoft.com/en-us/library/x93ctkx8.aspx"><FONT face=Calibri color=#0000ff size=3>DIA SDK</FONT></A><FONT size=3><FONT face=Calibri> for implementing a stack walking client that builds a call stack. If you are interested in knowing how debuggers build the call stack or want to write an application that dumps the call stack for an executing process, you may want to continue reading further. </FONT></FONT></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt"><FONT face=Calibri size=3>In this post I’ll start with a brief introduction on stack walking, discuss the DIA APIs for implementing it, and then walkthrough a code sample for a DIA based stack walker. Those who are familiar with stack walking would know that apart from the DIA SDK, there are two other commonly used stack walking APIs: </FONT><A href="http://msdn.microsoft.com/en-us/library/ms680650(VS.85).aspx" mce_href="http://msdn.microsoft.com/en-us/library/ms680650(VS.85).aspx"><FONT face=Calibri color=#0000ff size=3>StackWalk64</FONT></A><FONT face=Calibri size=3> (found in </FONT><A href="http://msdn.microsoft.com/en-us/library/ms679309(VS.85).aspx" mce_href="http://msdn.microsoft.com/en-us/library/ms679309(VS.85).aspx"><FONT face=Calibri color=#0000ff size=3>DbgHelp</FONT></A><FONT face=Calibri size=3>) and </FONT><A href="http://msdn.microsoft.com/en-us/library/ms680617(VS.85).aspx" mce_href="http://msdn.microsoft.com/en-us/library/ms680617(VS.85).aspx"><FONT face=Calibri color=#0000ff size=3>RtlVirtualUnwind</FONT></A><FONT size=3><FONT face=Calibri> (found in kernel32.lib). I’ll touch upon these two APIs at the end of the post. <?xml:namespace prefix = o ns = "urn:schemas-microsoft-com:office:office" /><o:p></o:p></FONT></FONT></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt"><o:p><FONT face=Calibri size=3>&nbsp;</FONT></o:p></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt"><B><U><FONT size=3><FONT face=Calibri>Introduction:</FONT></FONT></U></B></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt"><FONT face=Calibri size=3>When the Operating system executes a process, it calls into the program’s entry point (or the starting function) and allocates a set of resources to the process. Some of these resources such as stack memory and register context are allocated per thread basis. Every new function call in the thread is allocated a part of this stack memory and has a new register context. A stack frame or an </FONT><A href="http://en.wikipedia.org/wiki/Activation_record#Structure" mce_href="http://en.wikipedia.org/wiki/Activation_record#Structure"><FONT face=Calibri color=#0000ff size=3>activation record</FONT></A><FONT size=3><FONT face=Calibri> is essentially this runtime state information for an active function call. Typical attributes associated with a stack frame are:<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l0 level1 lfo1"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>1)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>Function associated with the frame<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l0 level1 lfo1"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>2)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>Module (binary) associated with the frame<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l0 level1 lfo1"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>3)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>Return address<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l0 level1 lfo1"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>4)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>Amount of stack memory allocated for arguments and locals for the function<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l0 level1 lfo1"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>5)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>Base pointer (BP) for referencing the arguments passed to the function call<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l0 level1 lfo1"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>6)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>Base pointer (BP) for referencing the local variables in the function (most of the time this is same as 5)<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l0 level1 lfo1"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>7)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>Program counter or the Instruction Pointer for currently executing instruction (IP)<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l0 level1 lfo1"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>8)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>Stack Pointer (SP)<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l0 level1 lfo1"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>9)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>Other Register context<o:p></o:p></FONT></FONT></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt; TEXT-INDENT: 0.5in"><FONT size=3><FONT face=Calibri>A sequence of active stack frames in an executing thread is generally referred to as a call stack. Call stacks help developers to debug runtime program errors and also denote the program state at a particular execution point. The process of building this call stack is called stack walking. Stack walking clients (such as debuggers) use the stack frame attributes to retrieve the values of function arguments, locals, etc.<o:p></o:p></FONT></FONT></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt"><o:p><FONT face=Calibri size=3>&nbsp;</FONT></o:p></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt"><B><U><FONT size=3><FONT face=Calibri>DIA APIs for Stack walking:</FONT></FONT></U></B></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt"><FONT face=Calibri size=3>The primary functionality of the </FONT><A href="http://msdn.microsoft.com/en-us/library/x93ctkx8.aspx" mce_href="http://msdn.microsoft.com/en-us/library/x93ctkx8.aspx"><FONT face=Calibri color=#0000ff size=3>DIA SDK</FONT></A><FONT size=3><FONT face=Calibri> is to provide access to the debug information in PDB files. Apart from that, the DIA SDK also provides a set of interfaces&nbsp; that can be used to implement a platform independent stack walker. These are:<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l9 level1 lfo2"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>1)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><A href="http://msdn.microsoft.com/en-us/library/dt06fh94.aspx" mce_href="http://msdn.microsoft.com/en-us/library/dt06fh94.aspx"><FONT face=Calibri color=#0000ff size=3>IDiaStackWalker</FONT></A><FONT size=3><FONT face=Calibri>: This is the primary initialization interface for the DIA stack walker.<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l9 level1 lfo2"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>2)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><A href="http://msdn.microsoft.com/en-us/library/1ca7599z.aspx" mce_href="http://msdn.microsoft.com/en-us/library/1ca7599z.aspx"><FONT face=Calibri color=#0000ff size=3>IDiaEnumStackFrames</FONT></A><FONT size=3><FONT face=Calibri>: This is the stack frame enumerator interface that exposes the primary API to perform a stack walk to the next frame.<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l9 level1 lfo2"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>3)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><A href="http://msdn.microsoft.com/en-us/library/zxsd009h.aspx" mce_href="http://msdn.microsoft.com/en-us/library/zxsd009h.aspx"><FONT face=Calibri color=#0000ff size=3>IDiaStackFrame</FONT></A><FONT size=3><FONT face=Calibri>: This interface represents a stack frame and exposes attributes of the stack frame. <o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l9 level1 lfo2"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>4)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><A href="http://msdn.microsoft.com/en-us/library/b4kdc788.aspx" mce_href="http://msdn.microsoft.com/en-us/library/b4kdc788.aspx"><FONT face=Calibri color=#0000ff size=3>IDiaStackWalkHelper</FONT></A><FONT size=3><FONT face=Calibri>: This is a helper interface for the DIA stack walker. To understand its primary purpose, let us briefly mention the two primary types of inputs required by the stack walker:<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 58.5pt; TEXT-INDENT: -58.5pt; mso-list: l3 level3 lfo3; mso-text-indent-alt: -9.0pt"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><FONT face=Calibri size=3>i.</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT face=Calibri size=3>Run-time entities: This includes the runtime aspects such as thread’s register context, properties of loaded image files such as </FONT><A href="http://msdn.microsoft.com/en-us/library/ms680349(VS.85).aspx" mce_href="http://msdn.microsoft.com/en-us/library/ms680349(VS.85).aspx"><FONT face=Calibri color=#0000ff size=3>LOADED_IMAGE</FONT></A><FONT size=3><FONT face=Calibri>, executable binary (or module) corresponding to a given virtual address, etc.<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 58.5pt; TEXT-INDENT: -58.5pt; mso-list: l3 level3 lfo3; mso-text-indent-alt: -9.0pt"><SPAN class=MsoCommentReference><SPAN style="FONT-SIZE: 8pt; LINE-HEIGHT: 115%; FONT-FAMILY: 'Calibri','sans-serif'; mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>ii.<SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>Compile-time generated entities: This includes the PDB records that provide static attributes for frames such as memory allocated for locals/arguments, whether the function corresponding to the frame contains SEH/C++ EH, the unwind program to execute to walk to the next frame, etc. <SPAN class=MsoCommentReference><SPAN style="FONT-SIZE: 8pt; LINE-HEIGHT: 115%; FONT-FAMILY: 'Calibri','sans-serif'"><o:p></o:p></SPAN></SPAN></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: 13.5pt"><FONT size=3><FONT face=Calibri>DIA stack walker uses other DIA interfaces to read the compile time generated entities, i.e. PDB records. It delegates fetching the runtime entities to the DIA clients. The primary reason for this being that DIA doesn’t maintain the runtime state information for the process. For example, a given virtual address in process’ address space might belong to any one of the modules (executable binaries) loaded in the process. Each module would have a different pdb file and hence a different DIA session to read the pdb. DIA isn’t aware about the loaded modules for the process and hence expects its clients to provide this mapping. Most DIA stack walker clients, such as debuggers, already need to fetch and store this runtime information. Hence, it is logical to expect the clients to provide this information to DIA through the implementation of this helper interface.<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in"><o:p><FONT face=Calibri size=3>&nbsp;</FONT></o:p></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt"><B><U><FONT size=3><FONT face=Calibri>Code Sample Walkthrough:<o:p></o:p></FONT></FONT></U></B></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt; TEXT-INDENT: 0.25in"><FONT size=3><FONT face=Calibri>I will first give the class design for the DIA based stack walker sample and then walk you through its execution flow.<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.25in"><B><U><FONT size=3><FONT face=Calibri>Class design: <o:p></o:p></FONT></FONT></U></B></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l8 level1 lfo4"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri; mso-bidi-font-weight: bold"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>1)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri><I>MyDiaStackWalker: </I>This is the primary DIA stack walker class. It maintains a handle to the initialization interface (IDiaStackWalker) and the stack frame enumerator (IDiaEnumStackFrames). It also contains few helper methods for other DIA operations.<B><U><o:p></o:p></U></B></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l8 level1 lfo4"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri; mso-bidi-font-weight: bold"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>2)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri><I>MyDiaStackWalkHelper:</I> This class implements the IDiaStackWalkHelper interface. I will discuss each of its method in detail later on.<B><U><o:p></o:p></U></B></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l8 level1 lfo4"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri; mso-bidi-font-weight: bold"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>3)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri><I>Debugger</I>: This is a Debugger class with a simple debugging engine. It launches the specified executable with debugging enabled and dumps the call stack at every debug break event in the executable. (Debug break events could be trigged by use of </FONT></FONT><A href="http://msdn.microsoft.com/en-us/library/f408b4et.aspx" mce_href="http://msdn.microsoft.com/en-us/library/f408b4et.aspx"><FONT face=Calibri color=#0000ff size=3>__debugbreak</FONT></A><FONT size=3><FONT face=Calibri>() intrinsic in your source code).<B><U><o:p></o:p></U></B></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l8 level1 lfo4"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri; mso-bidi-font-weight: bold"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>4)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri><I>ContextManager</I>: This class manages the register context associated with the current stack frame of the current debuggee thread (debuggee is the process being debugged)<B><U><o:p></o:p></U></B></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l8 level1 lfo4"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri; mso-bidi-font-weight: bold"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>5)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri><I>ModuleManager: </I>This class maintains the list of modules (executable binaries) loaded in the process along with their attributes.<B><U><o:p></o:p></U></B></FONT></FONT></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt 0.25in"><B><U><FONT size=3><FONT face=Calibri>Execution Flow:<o:p></o:p></FONT></FONT></U></B></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.75in; TEXT-INDENT: -0.25in; mso-list: l5 level1 lfo5"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>1)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri><B><U>Initialization</U></B><U>:<o:p></o:p></U></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: 0.25in"><FONT face=Calibri size=3>The first step in the application is to initialize the DIA stack walker. This is done through the IDiaStackWalker interface. IDiaStackWalker provides two platform specific APIs for initializing the DIA client: </FONT><A href="http://msdn.microsoft.com/en-us/library/818xzktb.aspx" mce_href="http://msdn.microsoft.com/en-us/library/818xzktb.aspx"><FONT face=Calibri color=#0000ff size=3>getEnumFrames</FONT></A><FONT face=Calibri size=3> (for x86) and </FONT><A href="http://msdn.microsoft.com/en-us/library/y7cdyb59.aspx" mce_href="http://msdn.microsoft.com/en-us/library/y7cdyb59.aspx"><FONT face=Calibri color=#0000ff size=3>getEnumFrames2</FONT></A><FONT size=3><FONT face=Calibri> (for x64 and ia64 platforms). Each of these APIs take a pointer to the class that implements IDiaStackWalkHelper (<I>MyDiaStackWalkHelper</I>) and returns the stack frame enumerator (IDiaEnumStackFrames). You may refer to the method “<I>MyDiaStackWalker::Initialize” </I>in MyDiaStackWalker.cpp to see the initialization logic. <o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.25in; TEXT-INDENT: 0.25in"><o:p><FONT face=Calibri size=3>&nbsp;</FONT></o:p></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.75in; TEXT-INDENT: -0.25in; mso-list: l5 level1 lfo5"><B><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>2)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN></B><B><U><FONT size=3><FONT face=Calibri>Walking the stack: <o:p></o:p></FONT></FONT></U></B></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: 0.25in"><FONT size=3><FONT face=Calibri>After the initialization, we launch the specified executable under the debugger. On hitting a debug break event, we initialize the register context and loaded modules for the debuggee. Than we call “<I>MyDiaStackWalker::WalkCallStack” </I>method to walk the call stack and retrieve attributes such as module name, function name, Instruction pointer (IP), etc. for each stack frame:<o:p></o:p></FONT></FONT></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; COLOR: green; FONT-FAMILY: Consolas">// method to walk all the stack frames in the call stack</SPAN><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas"><o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; COLOR: blue; FONT-FAMILY: Consolas">void</SPAN><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas"> <B>MyDiaStackWalker::WalkCallStack</B>()<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">{&nbsp; <o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; wprintf(L<SPAN style="COLOR: #a31515">"\nWalking call stack...\n"</SPAN>);<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; IDiaSymbol *pFuncSym = NULL;&nbsp;&nbsp;&nbsp; <o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; DWORD count = <SPAN style="COLOR: brown">0</SPAN>;<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; BSTR szFunctionName;<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; ULONGLONG ip = <SPAN style="COLOR: brown">0</SPAN>;<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; <o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; <SPAN style="COLOR: blue">do</SPAN> {<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: green">// Get IP for current stack frame</SPAN><o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; pContextManager-&gt;get_currentIP(&amp;ip);<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">if</SPAN> (!ip) {<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">break</SPAN>;<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; }<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: green">// Get module for stack frame</SPAN><o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; Module *pModule = pModuleManager-&gt;FindModuleByVA(ip);<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: green">// Get DIA function symbol for stack frame</SPAN><o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; pMyDiaStackWalkHelper-&gt;symbolForVA(ip, &amp;pFuncSym);<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: green">// Display stack frame attributes</SPAN><o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">if</SPAN> (pFuncSym == NULL) {<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: green">// function symbol could be null if symbols for the module were not loaded.<o:p></o:p></SPAN></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; COLOR: green; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // just dump the IP for the stack frame<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; wprintf(L<SPAN style="COLOR: #a31515">"Stack Frame %d: '%ws!%#x()'\n"</SPAN>, ++count, pModule-&gt;name, ip);<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">continue</SPAN>;<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; }<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">if</SPAN> (pFuncSym-&gt;get_name(&amp;szFunctionName) == S_OK) {<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; wprintf(L<SPAN style="COLOR: #a31515">"Stack Frame %d: '%ws!%ws'\n"</SPAN>, ++count, pModule-&gt;name, szFunctionName);<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SysFreeString(szFunctionName);<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; }<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; pFuncSym-&gt;Release();<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; pFuncSym = NULL; <o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: green">// Walk to next stack frame</SPAN><o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; } <SPAN style="COLOR: blue">while</SPAN> (WalkStackFrame() == S_OK);<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">}<o:p></o:p></SPAN></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in"><o:p><FONT face=Calibri size=3>&nbsp;</FONT></o:p></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in"><FONT face=Calibri size=3>“<I>WalkCallStack”</I> method calls into “<I>WalkStackFrame”</I> to walk each stack frame. <I>WalkStackFrame </I>uses the stack frame enumerator API (</FONT><A href="http://msdn.microsoft.com/en-us/library/0ty7d2d4.aspx" mce_href="http://msdn.microsoft.com/en-us/library/0ty7d2d4.aspx"><FONT face=Calibri color=#0000ff size=3>IDiaEnumStackFrames::Next</FONT></A><FONT size=3><FONT face=Calibri>) to do the stack walk to next frame. Following snippet shows this:<o:p></o:p></FONT></FONT></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; COLOR: green; FONT-FAMILY: Consolas">// MyDiaStackWalker.cpp<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; COLOR: green; FONT-FAMILY: Consolas">// method to walk to the next stack frame</SPAN><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas"><o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">HRESULT <B>MyDiaStackWalker::WalkStackFrame</B>(IDiaStackFrame **ppStackFrame)<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">{<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; IFVERBOSE {<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; wprintf(L<SPAN style="COLOR: #a31515">"MyDiaStackWalker::WalkStackFrame\n"</SPAN>);<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; }<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; <o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; ULONG celtFetched = <SPAN style="COLOR: brown">0</SPAN>;&nbsp; <o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; IDiaStackFrame *pStackFrame = NULL;<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; <o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; <SPAN style="COLOR: green">// walk to the next stack frame</SPAN><o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; HRESULT hr = <B>pEnumFrames-&gt;Next</B>(<SPAN style="COLOR: brown">1</SPAN>, &amp;pStackFrame, &amp;celtFetched);<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas"><o:p>&nbsp;</o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; <SPAN style="COLOR: blue">if</SPAN> (celtFetched == <SPAN style="COLOR: brown">1</SPAN> &amp;&amp; hr == S_OK) {<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">if</SPAN> (ppStackFrame != NULL) {<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *ppStackFrame = pStackFrame;<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; }<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; <SPAN style="COLOR: blue">else</SPAN> {<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pStackFrame-&gt;Release();<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp;&nbsp;&nbsp; }<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; }<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; <SPAN style="COLOR: blue">return</SPAN> hr;<o:p></o:p></SPAN></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in"><SPAN style="FONT-SIZE: 9.5pt; LINE-HEIGHT: 115%; FONT-FAMILY: Consolas">}<o:p></o:p></SPAN></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.25in"><o:p><FONT face=Calibri size=3>&nbsp;</FONT></o:p></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.75in; TEXT-INDENT: -0.25in; mso-list: l5 level1 lfo5"><B><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>3)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN></B><B><U><FONT size=3><FONT face=Calibri>DIA callbacks into MyDiaStackWalkHelper during stack walk:<o:p></o:p></FONT></FONT></U></B></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: 0.25in"><FONT size=3><FONT face=Calibri>When we walk the stack frame using the IDiaEnumStackFrames::Next, DIA makes a few callbacks into MyDiaStackWalkHelper. Let me discuss each of the methods of this class to explain its purpose:<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 1in; TEXT-INDENT: -0.25in; mso-list: l4 level1 lfo6"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>1.</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri><I>&nbsp;</I>Method to read process memory from debuggee’s address space (<I><A href="http://msdn.microsoft.com/en-us/library/9zh911hz.aspx" mce_href="http://msdn.microsoft.com/en-us/library/9zh911hz.aspx"><FONT color=#0000ff>MyDiaStackWalkHelper::readMemory</FONT></A></I>): DIA can’t read into debuggee’s address space, hence it expects the client to do implement this API. I call into the </FONT></FONT><A href="http://msdn.microsoft.com/en-us/library/ms680553(VS.85).aspx" mce_href="http://msdn.microsoft.com/en-us/library/ms680553(VS.85).aspx"><FONT face=Calibri color=#0000ff size=3>ReadProcessMemory</FONT></A><FONT size=3><FONT face=Calibri> Windows API for its implementation.<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 1.5in"><o:p><FONT face=Calibri size=3>&nbsp;</FONT></o:p></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 1in; TEXT-INDENT: -0.25in; mso-list: l4 level1 lfo6"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>2.</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT face=Calibri size=3>Methods to get/set debuggee register context (<I><A href="http://msdn.microsoft.com/en-us/library/06c0z8we.aspx" mce_href="http://msdn.microsoft.com/en-us/library/06c0z8we.aspx"><FONT color=#0000ff>MyDiaStackWalkHelper::get_registerValue</FONT></A> </I>and </FONT><A href="http://msdn.microsoft.com/en-us/library/06c0z8we.aspx" mce_href="http://msdn.microsoft.com/en-us/library/06c0z8we.aspx"><I><FONT face=Calibri color=#0000ff size=3>put_registerValue</FONT></I></A><FONT size=3><FONT face=Calibri><I>)</I>:<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 0pt 94.5pt; TEXT-INDENT: -94.5pt; LINE-HEIGHT: normal; mso-list: l1 level1 lfo7; mso-text-indent-alt: -9.0pt"><SPAN style="FONT-SIZE: 9.5pt; mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><FONT face=Calibri>i.</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT face=Calibri size=3>get_registerValue: This callback API is used by DIA to fetch the register values for the current stack frame. Prior to the <I>WalkCallStack</I> invocation, I use the </FONT><A href="http://msdn.microsoft.com/en-us/library/ms679362(VS.85).aspx" mce_href="http://msdn.microsoft.com/en-us/library/ms679362(VS.85).aspx"><FONT face=Calibri color=#0000ff size=3>GetThreadContext</FONT></A><FONT size=3><FONT face=Calibri> Windows API, for fetching the current thread’s register context (see <I>“ContextManager::InitializeRegisterContext” </I>in ContextManager.cpp). Register IDs used by DIA are defined in cvconst.h that is available in the DIA SDK.<SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas"><o:p></o:p></SPAN></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 0pt 81pt; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas"><o:p>&nbsp;</o:p></SPAN></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 94.5pt; TEXT-INDENT: -94.5pt; mso-list: l1 level1 lfo7; mso-text-indent-alt: -9.0pt"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><FONT face=Calibri size=3>ii.</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>put_registerValue: This callback API is used by DIA to update the register values. DIA makes a few callbacks into put_registerValue at the end of every stack walk invocation (i.e. IDiaEnumStackFrames::Next) to update the register context to the next stack frame. Note that the IDiaStackFrame object returned by IDiaEnumStackFrames::Next corresponds to the stack frame that we walked past (i.e. it corresponds to the top stack frame on the first invocation of next, while the callbacks into IDiaStackWalkHelper::put_registerValue correspond to the second stack frame)<o:p></o:p></FONT></FONT></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt 1in"><FONT face=Calibri size=3>Also, note that a call to IDiaEnumStackFrames::Reset to reset the stackwalker resets only the internal DIA stack frame enumerator. Clients should reinitialize the register context (using </FONT><A href="http://msdn.microsoft.com/en-us/library/ms679362(VS.85).aspx" mce_href="http://msdn.microsoft.com/en-us/library/ms679362(VS.85).aspx"><FONT face=Calibri color=#0000ff size=3>GetThreadContext</FONT></A><FONT size=3><FONT face=Calibri>) between a call to IDiaEnumStackFrames::Reset and subsequent IDiaEnumStackFrames::Next.<o:p></o:p></FONT></FONT></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt 0.75in"><o:p><FONT face=Calibri size=3>&nbsp;</FONT></o:p></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 1in; TEXT-INDENT: -0.25in; mso-list: l4 level1 lfo6"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>3.</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>Methods to map a virtual address (VA) to some entity: <o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 1.5in; TEXT-INDENT: -1.5in; mso-list: l4 level2 lfo6; mso-text-indent-alt: -.25in"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><FONT face=Calibri size=3>i.</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>Methods to map a given VA to unwind data (<I><A href="http://msdn.microsoft.com/en-us/library/54x1w2ee.aspx" mce_href="http://msdn.microsoft.com/en-us/library/54x1w2ee.aspx"><FONT color=#0000ff>MyDiaStackWalkHelper::frameForVA</FONT></A></I> and &nbsp;<I><A href="http://msdn.microsoft.com/en-us/library/d6y7f685.aspx" mce_href="http://msdn.microsoft.com/en-us/library/d6y7f685.aspx"><FONT color=#0000ff>MyDiaStackWalkHelper::pDataForVA</FONT></A></I>): Before getting into the specifics of these APIs, let me provide a brief description about the format of unwind data for different platforms. <o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 1.5in; TEXT-INDENT: 0.5in"><FONT face=Calibri size=3>x86 and x64 platforms have different ABI conventions which lead to the stack unwind information lying in different formats in different files for these architectures. </FONT><A href="http://msdn.microsoft.com/en-us/library/7kcdt6fy(VS.80).aspx" mce_href="http://msdn.microsoft.com/en-us/library/7kcdt6fy(VS.80).aspx"><FONT face=Calibri color=#0000ff size=3>x64 ABI</FONT></A><FONT face=Calibri size=3> requires the functions to setup their prolog and epilog in a standard way, so that a stack unwind can be performed from any given point in the function by just looking at function’s unwind data (pdata/xdata) from the image file. You may refer to articles about </FONT><A href="http://msdn.microsoft.com/en-us/library/1eyas8tf.aspx" mce_href="http://msdn.microsoft.com/en-us/library/1eyas8tf.aspx"><FONT face=Calibri color=#0000ff size=3>Exception Handling (x64)</FONT></A><FONT face=Calibri size=3> and </FONT><A href="http://blogs.msdn.com/freik/archive/2006/01/04/509372.aspx" mce_href="http://blogs.msdn.com/freik/archive/2006/01/04/509372.aspx"><FONT face=Calibri color=#0000ff size=3>x64 Unwind information</FONT></A><FONT size=3><FONT face=Calibri> for more details. <o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 1.5in; TEXT-INDENT: 0.5in"><FONT face=Calibri size=3>x86 platform doesn’t have this requirement of setting up the prolog/epilog in a standard manner. Hence, in order to perform a successful stack unwind from any given IP, the compiler tracks and emits additional unwind information in the PDB. This information is recorded inside the Frame Data PDB records. DIA exposes these records through the </FONT><A href="http://msdn.microsoft.com/en-us/library/hf0s0y3f.aspx" mce_href="http://msdn.microsoft.com/en-us/library/hf0s0y3f.aspx"><FONT face=Calibri color=#0000ff size=3>IDiaFrameData</FONT></A><FONT face=Calibri size=3> interface. We will discuss the details about </FONT><A href="http://msdn.microsoft.com/en-us/library/hf0s0y3f.aspx" mce_href="http://msdn.microsoft.com/en-us/library/hf0s0y3f.aspx"><FONT face=Calibri color=#0000ff size=3>IDiaFrameData</FONT></A><FONT face=Calibri size=3> and how to use it along with </FONT><A href="http://msdn.microsoft.com/en-us/library/ek8246yb(VS.80).aspx" mce_href="http://msdn.microsoft.com/en-us/library/ek8246yb(VS.80).aspx"><FONT face=Calibri color=#0000ff size=3>IDiaStackWalkFrame</FONT></A><FONT size=3><FONT face=Calibri> to walk the Frame Data records in a follow up post.<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 1.5in; TEXT-INDENT: 0.5in"><FONT face=Calibri size=3>As you might have guessed by now, </FONT><A href="http://msdn.microsoft.com/en-us/library/d6y7f685.aspx" mce_href="http://msdn.microsoft.com/en-us/library/d6y7f685.aspx"><FONT face=Calibri color=#0000ff size=3>pDataForVA</FONT></A><FONT face=Calibri size=3> method is specific to x64 and ia64 platforms. This method parses the pdata section in the image file to find the matching pdata entry for the given VA. Structure of the mapped pdata entry that is expected by DIA is quite identical to the </FONT><A href="http://msdn.microsoft.com/en-us/library/ms681678(VS.85).aspx" mce_href="http://msdn.microsoft.com/en-us/library/ms681678(VS.85).aspx"><FONT face=Calibri color=#0000ff size=3>_IMAGE_RUNTIME_FUNCTION_ENTRY</FONT></A><FONT face=Calibri size=3> structure, except that addresses in </FONT><A href="http://msdn.microsoft.com/en-us/library/ms681678(VS.85).aspx" mce_href="http://msdn.microsoft.com/en-us/library/ms681678(VS.85).aspx"><FONT face=Calibri color=#0000ff size=3>_IMAGE_RUNTIME_FUNCTION_ENTRY</FONT></A><FONT size=3><FONT face=Calibri> structure are relative to the base virtual address of the image file, while the addresses in our custom defined IMAGE_RUNTIME_FUNCTION_ENTRY_VA structure are absolute virtual addresses (i.e. with base address relocations applied):<o:p></o:p></FONT></FONT></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 1in; TEXT-INDENT: 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; COLOR: green; FONT-FAMILY: Consolas">// ModuleManager.h<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 1in; TEXT-INDENT: 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; COLOR: blue; FONT-FAMILY: Consolas">struct</SPAN><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas"> IMAGE_RUNTIME_FUNCTION_ENTRY_VA<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 1in; TEXT-INDENT: 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">{<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<B>ULONGLONG</B> BeginAddress;<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<B>ULONGLONG</B> EndAddress;<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<B>ULONGLONG</B> UnwindInfoAddress;&nbsp; <o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 1in; TEXT-INDENT: 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas">};<o:p></o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 1in; TEXT-INDENT: 0.5in; LINE-HEIGHT: normal"><SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas"><o:p>&nbsp;</o:p></SPAN></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 1.5in; TEXT-INDENT: 0.5in; LINE-HEIGHT: normal"><A href="http://msdn.microsoft.com/en-us/library/54x1w2ee.aspx" mce_href="http://msdn.microsoft.com/en-us/library/54x1w2ee.aspx"><FONT face=Calibri color=#0000ff size=3>frameForVA</FONT></A><FONT size=3><FONT face=Calibri> is an x86 specific method to fetch the Frame Data record for a given virtual address. <I>MyDiaStackWalkHelper::frameForVA</I> does the following mapping: given VA -&gt; module -&gt; pdb -&gt; DIA session for the pdb -&gt; frameByVA.<SPAN style="FONT-SIZE: 9.5pt; FONT-FAMILY: Consolas"><o:p></o:p></SPAN></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 2in"><o:p><FONT face=Calibri size=3>&nbsp;</FONT></o:p></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 1.5in; TEXT-INDENT: -1.5in; mso-list: l4 level2 lfo6; mso-text-indent-alt: -.25in"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><FONT face=Calibri size=3>ii.</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT face=Calibri size=3>Method to map a given VA to the base virtual address of the image (exe or dll) file (<I><A href="http://msdn.microsoft.com/en-us/library/ms165594(VS.80).aspx" mce_href="http://msdn.microsoft.com/en-us/library/ms165594(VS.80).aspx"><FONT color=#0000ff>MyDiaStackWalkHelper::imageForVA</FONT></A>)</I>: I use the </FONT><A href="http://msdn.microsoft.com/en-us/library/ms683201(VS.85).aspx" mce_href="http://msdn.microsoft.com/en-us/library/ms683201(VS.85).aspx"><FONT face=Calibri color=#0000ff size=3>GetModuleInformation</FONT></A><FONT face=Calibri size=3> API to obtain the </FONT><A href="http://msdn.microsoft.com/en-us/library/ms684229(VS.85).aspx" mce_href="http://msdn.microsoft.com/en-us/library/ms684229(VS.85).aspx"><FONT face=Calibri color=#0000ff size=3>MODULEINFO</FONT></A><FONT size=3><FONT face=Calibri> structure which contains the base address for the module (see <I>“ModuleManager::InitializeModules”</I> in ModuleManager.cpp)<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 2in"><o:p><FONT face=Calibri size=3>&nbsp;</FONT></o:p></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 0pt 1.5in; TEXT-INDENT: -1.5in; LINE-HEIGHT: normal; mso-list: l4 level2 lfo6; mso-text-indent-alt: -.25in"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri; mso-bidi-font-style: italic"><SPAN style="mso-list: Ignore"><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><FONT face=Calibri size=3>iii.</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT face=Calibri size=3>Method to map a given VA to DIA symbol (<I>“<A href="http://msdn.microsoft.com/en-us/library/182tfte7(VS.80).aspx" mce_href="http://msdn.microsoft.com/en-us/library/182tfte7(VS.80).aspx"><FONT color=#0000ff>MyDiaStackWalkHelper::symbolForVA</FONT></A>”</I>): I first map the VA to an appropriate DIA session and use </FONT><A href="http://msdn.microsoft.com/en-us/library/sf7b36c2(VS.80).aspx" mce_href="http://msdn.microsoft.com/en-us/library/sf7b36c2(VS.80).aspx"><FONT face=Calibri color=#0000ff size=3>IDiaEnumSymbolsByAddr::symbolByVA</FONT></A><FONT size=3><FONT face=Calibri> API to fetch the matching DIA symbol.<I><SPAN style="FONT-SIZE: 9pt"><o:p></o:p></SPAN></I></FONT></FONT></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 0pt 0.5in; LINE-HEIGHT: normal"><o:p><FONT face=Calibri size=3>&nbsp;</FONT></o:p></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 1in; TEXT-INDENT: -0.25in; mso-list: l4 level1 lfo6"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>4.</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT face=Calibri size=3>Methods to search for return address on the stack (</FONT><A href="http://msdn.microsoft.com/en-us/library/w3dfefzc.aspx" mce_href="http://msdn.microsoft.com/en-us/library/w3dfefzc.aspx"><FONT face=Calibri color=#0000ff size=3>MyDiaStackWalkHelper::searchForReturnAddress</FONT></A><FONT face=Calibri size=3> and </FONT><A href="http://msdn.microsoft.com/en-us/library/666w3yty.aspx" mce_href="http://msdn.microsoft.com/en-us/library/666w3yty.aspx"><FONT face=Calibri color=#0000ff size=3>MyDiaStackWalkHelper::searchForReturnAddressStart</FONT></A><FONT face=Calibri size=3>): DIA will make these callbacks when walking an x86 </FONT><A href="http://msdn.microsoft.com/en-us/library/2kxx5t2c(VS.71).aspx" mce_href="http://msdn.microsoft.com/en-us/library/2kxx5t2c(VS.71).aspx"><FONT face=Calibri color=#0000ff size=3>FPO</FONT></A><FONT size=3><FONT face=Calibri> stack frame. I return E_NOTIMPL as I do not wish to override the default FPO stack search done by DIA.<o:p></o:p></FONT></FONT></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt"><B><U><FONT size=3><FONT face=Calibri>Code Sample:</FONT></FONT></U></B></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt"><FONT face=Calibri size=3>You can download the stack walking sample from<SPAN style="COLOR: #1f497d; mso-themecolor: dark2"> </SPAN>the </FONT><A href="http://code.msdn.microsoft.com/vcsamples" mce_href="http://code.msdn.microsoft.com/vcsamples"><FONT face=Calibri size=3>Visual C++ Sample page</FONT></A><FONT size=3><FONT face=Calibri>. Usage of the sample:<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l2 level1 lfo8"><SPAN style="FONT-FAMILY: Wingdings; mso-fareast-font-family: Wingdings; mso-bidi-font-family: Wingdings"><SPAN style="mso-list: Ignore"><FONT size=3>Ø</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>DIA_StackWalk_Sample.exe DIA_StackWalk_Testcase.exe<o:p></o:p></FONT></FONT></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt; TEXT-INDENT: 0.25in"><FONT size=3><FONT face=Calibri>You may compile the sample with /DVERBOSE to get more descriptive logging. A sample test is also provided.<o:p></o:p></FONT></FONT></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt"><o:p><FONT face=Calibri size=3>&nbsp;</FONT></o:p></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt"><B><U><FONT size=3><FONT face=Calibri>Alternative Stack walking APIs:</FONT></FONT></U></B></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt"><FONT size=3><FONT face=Calibri>Let me talk about the two alternative stack walk APIs that I mentioned at the beginning of the post:<o:p></o:p></FONT></FONT></P>
+<P class=MsoNormal style="MARGIN: 0in 0.7pt 10pt 0in; TEXT-INDENT: 0.25in; LINE-HEIGHT: 140%"><A href="http://msdn.microsoft.com/en-us/library/ms680650(VS.85).aspx" mce_href="http://msdn.microsoft.com/en-us/library/ms680650(VS.85).aspx"><FONT face=Calibri color=#0000ff size=3>StackWalk64</FONT></A><FONT size=3><FONT face=Calibri><U> (DbgHelp API)</U>: Similar to the DIA stack walk APIs, StackWalk64 provides a platform independent mechanism for stack walking. If you closely go through all the parameters for this API, you can map them to the corresponding </FONT></FONT><A href="http://msdn.microsoft.com/en-us/library/b4kdc788.aspx" mce_href="http://msdn.microsoft.com/en-us/library/b4kdc788.aspx"><FONT face=Calibri color=#0000ff size=3>IDiaStackWalkHelper</FONT></A><FONT size=3><FONT face=Calibri> methods. Given that StackWalk64 is identical to DIA stack walk APIs, how do we decide which one to pick over other? I find the following guidelines useful:<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0.7pt 10pt 0.5in; TEXT-INDENT: -0.25in; LINE-HEIGHT: 140%; mso-list: l6 level1 lfo9"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>1)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>If you are already using DbgHelp or are willing to add a dependency to it, than StackWalk64 should be the ideal choice for stack walking. It operates at an abstraction layer above DIA and hence provides a more high level and easy to implement interface for the client.<o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0.6pt 10pt 0.5in; TEXT-INDENT: -0.25in; LINE-HEIGHT: 140%; mso-list: l6 level1 lfo9"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>2)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>If you are implementing your own debugger and only want to add the stack walk functionality, than using the DIA stack walker would be a good choice.<SPAN style="FONT-FAMILY: 'Segoe UI','sans-serif'"><o:p></o:p></SPAN></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0.6pt 10pt 0.5in; TEXT-INDENT: -0.25in; LINE-HEIGHT: 140%; mso-list: l6 level1 lfo9"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>3)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>If you want to tweak the low level functionality, such as override how default return address search is performed for FPO stack frames, than DIA stack walker would be a good choice.<SPAN style="FONT-FAMILY: 'Segoe UI','sans-serif'"><o:p></o:p></SPAN></FONT></FONT></P>
+<P class=MsoNormal style="MARGIN: 0in 0.6pt 10pt 0in; TEXT-INDENT: 0.25in; LINE-HEIGHT: 140%"><A href="http://msdn.microsoft.com/en-us/library/ms680617(VS.85).aspx" mce_href="http://msdn.microsoft.com/en-us/library/ms680617(VS.85).aspx"><FONT face=Calibri color=#0000ff size=3>RtlVirtualUnwind</FONT></A><FONT size=3><FONT face=Calibri> is also a similar stack walk API with identical parameters; except that unlike the above APIs:<SPAN style="FONT-FAMILY: 'Segoe UI','sans-serif'"><o:p></o:p></SPAN></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l7 level1 lfo10"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>1)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>It has to be invoked in the same process and <o:p></o:p></FONT></FONT></P>
+<P class=MsoListParagraph style="MARGIN: 0in 0in 10pt 0.5in; TEXT-INDENT: -0.25in; mso-list: l7 level1 lfo10"><SPAN style="mso-fareast-font-family: Calibri; mso-bidi-font-family: Calibri"><SPAN style="mso-list: Ignore"><FONT face=Calibri size=3>2)</FONT><SPAN style="FONT: 7pt 'Times New Roman'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></SPAN></SPAN><FONT size=3><FONT face=Calibri>Is designed only for x64 platforms.<o:p></o:p></FONT></FONT></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt"><B><o:p><FONT face=Calibri size=3>&nbsp;</FONT></o:p></B></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt"><B><U><FONT size=3><FONT face=Calibri>Conclusion:</FONT></FONT></U></B></P>
+<P class=MsoNormal style="MARGIN: 0in 0in 10pt"><FONT face=Calibri size=3>Hopefully this post provided you a good overview of how to implement a stack walker client using the DIA SDK.&nbsp; As always, we welcome your feedback on DIA, and look for part 2 of this series on walking the x86 Frame data records using </FONT><A href="http://msdn.microsoft.com/en-us/library/hf0s0y3f.aspx" mce_href="http://msdn.microsoft.com/en-us/library/hf0s0y3f.aspx"><FONT face=Calibri color=#0000ff size=3>IDiaFrameData</FONT></A><FONT face=Calibri size=3>/</FONT><A href="http://msdn.microsoft.com/en-us/library/ek8246yb(VS.80).aspx" mce_href="http://msdn.microsoft.com/en-us/library/ek8246yb(VS.80).aspx"><FONT face=Calibri color=#0000ff size=3>IDiaStackWalkFrame</FONT></A><FONT size=3><FONT face=Calibri> interfaces. <o:p></o:p></FONT></FONT></P><div style="clear:both;"></div></div>
+    <div class="post-attachment-viewer">
+		
+    </div>
+    <div class="post-actions">
+        <div class="navigation-list-header"></div>
+        <ul class="navigation-list">
+            <!---->
+            <li class="navigation-item"><a class="internal-link view-replies" href="/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx#comments"><span></span>12 Comments</a></li>
+            
+            
+        </ul>
+        <div class="navigation-list-footer"></div>
+    </div>
+    <div class="post-tags"><div id="ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01_Container" style="display: none;"><div class="tags-editor"><textarea id="ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01_Tags" style="width: 97%; height: 100%;" rows="2" cols="30"></textarea><div style="white-space: nowrap; padding-top: 4px;"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><input type="button" onclick="Telligent_Modal.Open('\/utility\/TagSelector.aspx?TagEditor=ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01_TagEditor',400,300,null);;return false;" value="Select Tags..." /></td><td align="right"><input type="button" onclick="ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01.Save(); return false;" value="Save" /><input type="button" onclick="ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01.Close(); return false;" value="Cancel" /></td></tr></table></div></div></div><span id="ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl02"><a href="http://blogs.msdn.com/b/vcblog/archive/tags/DIA+SDK/" rel="tag">DIA SDK</a>, <a href="http://blogs.msdn.com/b/vcblog/archive/tags/stack+walking/" rel="tag">stack walking</a>, <a href="http://blogs.msdn.com/b/vcblog/archive/tags/debugging/" rel="tag">debugging</a></span><input type="hidden" name="ctl00$content$ctl00$w_52317$_938155$ctl00$ctl15$ctl02" id="ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl02_State" value="nochange" /></div>
+</div>
+<div class="full-post-footer"></div></div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div class="content-fragment social-media-sharing no-wrapper" id="fragment-52318">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-content">
+
+<link href="/CustomWidgets/SocialMediaSharingUC/resources/sharethis.css" rel="stylesheet" type="text/css" /> 
+<script src="/CustomWidgets/SocialMediaSharingUC/resources/ShareThis.js" type="text/javascript"></script>
+<div class="ShareThisMainPanel">
+	<div id="ctl00_content_ctl00_w_52318__938155_ctl00_a8ea7a14_6dba_4f5b_9ce6_3f0bf272893c" class="ShareThis_ChildRootPanel" onmouseover="ShareThisChildRootPanelOnmouseOver(this.id);" onmouseout="ShareThisChildRootPanelOnmouseOut(this.id);">
+		<div id="ctl00_content_ctl00_w_52318__938155_ctl00_ShareThisBtnCollPanel_853842543603490296910639d626ce9a" class="tierOnePanel">
+			<div class="buttonPanel">
+				<a title="Share on Facebook" class="iconsOnPanel" href="http://www.facebook.com/sharer.php?u=http://blogs.msdn.com/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx&amp;t=DIA+based+Stack+Walking" target="_blank"><img title="Share on Facebook" src="/CustomWidgets/SocialMediaSharingUC/Resources/facebook.gif" style="border-width:0px;" /></a>
+			</div><div class="buttonPanel">
+				<a title="Share on Twitter" class="iconsOnPanel" href="http://twitter.com/home?status=DIA+based+Stack+Walking : http://blogs.msdn.com/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx" target="_blank"><img title="Share on Twitter" src="/CustomWidgets/SocialMediaSharingUC/Resources/twitter.gif" style="border-width:0px;" /></a>
+			</div><div class="buttonPanel">
+				<a title="Share on Digg" class="iconsOnPanel" href="http://digg.com/submit?url=http://blogs.msdn.com/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx&amp;title=DIA+based+Stack+Walking" target="_blank"><img title="Share on Digg" src="/CustomWidgets/SocialMediaSharingUC/Resources/digg.gif" style="border-width:0px;" /></a>
+			</div><div class="buttonPanel">
+				<a title="Share on del.icio.us" class="iconsOnPanel" href="http://del.icio.us/post?url=http://blogs.msdn.com/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx&amp;title=DIA+based+Stack+Walking" target="_blank"><img title="Share on del.icio.us" src="/CustomWidgets/SocialMediaSharingUC/Resources/delicious.gif" style="border-width:0px;" /></a>
+			</div>
+		</div><div id="ctl00_content_ctl00_w_52318__938155_ctl00_ShareThisBtnCollPanel_a7ba6f506d58471bb277b4f668319e84" class="tierTwoPanel" onclick="TierTwoPanelOnclick(this.id);" onkeypress="if (event.keyCode == 13) TierTwoPanelOnclick(this.id);" onmouseover="TierTwoPanelOnmouseOver(this.id);" onmouseout="TierTwoPanelOnmouseOut(this.id);">
+			<div id="ctl00_content_ctl00_w_52318__938155_ctl00_ShareThisBtnCollPanel_9f5f4cf03bf8436388c7e4051c2f637d" class="tierTwoRowPanel">
+				<div class="buttonPanel">
+					<a title="Share on Reddit" class="iconsOnPanel" href="http://www.reddit.com/submit?url=http://blogs.msdn.com/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx&amp;title=DIA+based+Stack+Walking" target="_blank"><img title="Share on Reddit" src="/CustomWidgets/SocialMediaSharingUC/Resources/reddit.gif" style="border-width:0px;" /></a>
+				</div><div class="buttonPanel">
+					<a title="Share on LinkedIn" class="iconsOnPanel" href="http://www.linkedin.com/shareArticle?mini=true&amp;ro=true&amp;url=http://blogs.msdn.com/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx&amp;title=DIA+based+Stack+Walking&amp;summary=&amp;source=Microsoft&amp;armin=armin" target="_blank"><img title="Share on LinkedIn" src="/CustomWidgets/SocialMediaSharingUC/Resources/linkedin.gif" style="border-width:0px;" /></a>
+				</div><div class="buttonPanel">
+					<a title="Share on Slashdot" class="iconsOnPanel" href="http://slashdot.org/bookmark.pl?url=http://blogs.msdn.com/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx&amp;title=DIA+based+Stack+Walking" target="_blank"><img title="Share on Slashdot" src="/CustomWidgets/SocialMediaSharingUC/Resources/slashdot.gif" style="border-width:0px;" /></a>
+				</div><div class="buttonPanel">
+					<a title="Share on MySpace" class="iconsOnPanel" href="http://www.myspace.com/Modules/PostTo/Pages/?u=http://blogs.msdn.com/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx&amp;t=DIA+based+Stack+Walking" target="_blank"><img title="Share on MySpace" src="/CustomWidgets/SocialMediaSharingUC/Resources/myspace.gif" style="border-width:0px;" /></a>
+				</div>
+			</div><div id="ctl00_content_ctl00_w_52318__938155_ctl00_ShareThisBtnCollPanel_54593cc36d7b452e8bf28dcba4f752ec" class="tierTwoRowPanel">
+				<div class="buttonPanel">
+					<a title="Share on Technorati" class="iconsOnPanel" href="http://technorati.com/faves/?add=http://blogs.msdn.com/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx" target="_blank"><img title="Share on Technorati" src="/CustomWidgets/SocialMediaSharingUC/Resources/technorati.gif" style="border-width:0px;" /></a>
+				</div><div class="buttonPanel">
+					<a title="Share on FriendFeed" class="iconsOnPanel" href="http://friendfeed.com/?url=http://blogs.msdn.com/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx&amp;title=DIA+based+Stack+Walking" target="_blank"><img title="Share on FriendFeed" src="/CustomWidgets/SocialMediaSharingUC/Resources/friendfeed.gif" style="border-width:0px;" /></a>
+				</div><div class="buttonPanel">
+					<a title="Share on Messenger" class="iconsOnPanel" href="http://profile.live.com/badge?url=http://blogs.msdn.com/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx&amp;title=DIA+based+Stack+Walking" target="_blank"><img title="Share on Messenger" src="/CustomWidgets/SocialMediaSharingUC/Resources/messenger.png" style="border-width:0px;" /></a>
+				</div><div class="buttonPanel">
+					<a title="Share on StumbleUpon" class="iconsOnPanel" href="http://www.stumbleupon.com/submit?url=http://blogs.msdn.com/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx&amp;title=DIA+based+Stack+Walking" target="_blank"><img title="Share on StumbleUpon" src="/CustomWidgets/SocialMediaSharingUC/Resources/stumbleupon.gif" style="border-width:0px;" /></a>
+				</div>
+			</div>
+		</div>
+	</div><div id="ctl00_content_ctl00_w_52318__938155_ctl00_ShowMoreLessButtonsPanel_40583dbe_2a50_4672_adab_64f1c4a8b1ff" tabindex="1" class="ShowMoreLessButtonsPanel" onclick="ShowMoreLessButtonsPanelOnClick(this.id);" onkeypress="if (event.keyCode == 13) ShowMoreLessButtonsPanelOnClick(this.id);" onmouseover="ShowMoreLessButtonsPanelOnmouseOver(this.id);" onmouseout="ShowMoreLessButtonsPanelOnmouseOut(this.id);">
+		<a class="buttonMoreLess" id="btn_more"><img title="More" src="/CustomWidgets/SocialMediaSharingUC/Resources/more.gif" src="" style="border-width:0px;" /></a><a class="buttonMoreLess" id="btn_less"><img title="Less" src="/CustomWidgets/SocialMediaSharingUC/Resources/less.gif" src="" style="border-width:0px;" /></a>
+	</div>
+</div><div class="ShareClearFloatsPanel">
+
+</div></div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div class="content-fragment blog-feedback-list no-wrapper with-header" id="fragment-52319">
+<div class="content-fragment-inner msdn-content-fragment-inner"><div class="content-fragment-top msdn-content-fragment-top"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div><div class="content-fragment-header"><div>Blog - Comment List MSDN TechNet</div></div>
+<div class="content-fragment-content">
+
+
+
+
+<script type="text/javascript">
+	// <![CDATA[
+	$(document).ready(function() {
+	$(document).bind('telligent_blogs_commentposted', function(e, message) { 
+	            window.setTimeout(new Function(ctl00_content_ctl00_w_52319__938155_ctl00_ctl00_ctl02_ctl05_DelayedFeedbackList.Reload()), 100); 
+	            return true; 
+	    });
+	    ctl00_content_ctl00_w_52319__938155_ctl00_ctl00_ctl02_ctl05_DelayedFeedbackList.Reload();
+	});
+// ]]>
+</script>
+
+	
+
+
+	    <div id="ctl00_content_ctl00_w_52319__938155_ctl00_ctl00_ctl02_ctl05_DelayedFeedbackList"></div>
+	</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom msdn-content-fragment-bottom"><div class="r1 msdn-r1"></div><div class="r2 msdn-r2"></div><div class="r3 msdn-r3"></div><div class="r4 msdn-r4"></div></div></div></div>
+<div id="fragment-52320"></div>
+</div>
+</div>
+</div>
+<div class="layout-footer"></div>
+</div></div>
+
+			<div class="footer-fragments-header"></div>
+<div class="footer-fragments"><div class="footer-fragment copyright-info" id="footer-fragment-1402503690">
+
+<ul class="footer-fragment-links">
+    <li class="message copyright">© 2011 Microsoft Corporation.</li>
+	<li class="message termsOfService"><a href="http://msdn.microsoft.com/cc300389">Terms of Use</a> </li>
+    <li class="message trademarks"><a href="http://www.microsoft.com/library/toolbar/3.0/trademarks/en-us.mspx">Trademarks</a> </li>
+    <li class="message privacy"><a href="http://www.microsoft.com/info/privacy.mspx">Privacy Statement</a> </li>
+    <li class="message abuse">
+    
+            <a id="ctl00_footer_fragment_1402503690__938155_ctl00_ctl00_ctl01_lnkAbuse" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$footer_fragment_1402503690$_938155$ctl00$ctl00$ctl01$lnkAbuse&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))">Report Abuse</a>
+        
+    </li>
+    
+</ul></div><div class="footer-fragment omniture-footer-fragment" id="footer-fragment-1402503691">
+
+
+<script type="text/javascript" src="/utility/js/omni_rsid_msdn_current.js"></script>
+        <noscript><a href="http://www.omniture.com" title="Web Analytics"><img
+        src="http://msstomsdnblogs.112.2O7.net/b/ss/msstomsdnblogs/1/H.20.2--NS/0"
+        height="1" width="1" border="0" alt="" /></a></noscript>
+
+</div></div>
+<div class="footer-fragments-footer"></div>
+		
+<script type="text/javascript">
+//<![CDATA[
+var Page_Validators =  new Array(document.getElementById("ctl00_content_ctl00_w_52312__938155_ctl00_ctl01_ctl01_Validator"));
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+var ctl00_content_ctl00_w_52312__938155_ctl00_ctl01_ctl01_Validator = document.all ? document.all["ctl00_content_ctl00_w_52312__938155_ctl00_ctl01_ctl01_Validator"] : document.getElementById("ctl00_content_ctl00_w_52312__938155_ctl00_ctl01_ctl01_Validator");
+ctl00_content_ctl00_w_52312__938155_ctl00_ctl01_ctl01_Validator.display = "Dynamic";
+ctl00_content_ctl00_w_52312__938155_ctl00_ctl01_ctl01_Validator.evaluationfunction = "CustomValidatorEvaluateIsValid";
+//]]>
+</script>
+
+<script type="text/javascript">
+// <![CDATA[
+ctl00_content_ctl00 = new ContentFragmentPageCustomCallback('ctl00_content_ctl00',new Function('mode','parameters','callback','errorCallback','context','ctl00_content_ctl00_ctl00._doCallback(mode+\':\'+parameters,callback,context,errorCallback);'));
+// ]]>
+</script>
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx"
+dc:identifier="http://blogs.msdn.com/b/vcblog/archive/2010/01/05/dia-based-stack-walking.aspx"
+dc:title="DIA based Stack Walking"
+trackback:ping="http://blogs.msdn.com/b/vcblog/trackback.ashx?WeblogPostID=9944234" />
+</rdf:RDF>
+-->
+<script type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('\/utility\/loading.htm',['modal'],['modal-title','modal-title-2','modal-title-3','modal-title-4'],['modal-close'],['modal-content','modal-content-2'],['modal-footer','modal-footer-2','modal-footer-3'],['modal-resize'],['modal-mask'],10000,false,true,true);
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+window.ctl00_content_ctl00_ctl00 = new Telligent_CallbackManager('ctl00_content_ctl00_ctl00','ctl00$content$ctl00$ctl00','aspnetForm');
+// ]]>
+</script>
+<script type="text/javascript">
+//<![CDATA[
+
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+        //]]>
+</script>
+<script type="text/javascript">
+// <![CDATA[
+window.ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01 = new Telligent_InlineEditor('ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01','ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01_Container',new Function('id', 'p', 'ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01_InlineTagEditor.SetInlineEditorPanelAndParameter(id,p);'),new Function('return ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01_InlineTagEditor.GetContent();'),new Function('c', 'ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01_InlineTagEditor.SetContent(c);'),null,new Function('ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01_InlineTagEditor.Focus();'),new Function('w', 'h', 'ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01_InlineTagEditor.Resize(w,h);'),300,90);
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+var ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01_TagEditor = new TagEditor('ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01_TagEditor',[['64-bit','64-bit'],['ALM - Application Lifecycle Management','ALM - Application Lifecycle Management'],['Announcement','Announcement'],['ATL','ATL'],['Browsing','Browsing'],['Bug Info','Bug Info'],['Build','Build'],['build times','build times'],['C++ language','C++ language'],['C++\/CLI','C++\/CLI'],['C++\/CX','C++\/CX'],['C++0x','C++0x'],['Channel 9','Channel 9'],['Code Generation','Code Generation'],['COM','COM'],['Command Line','Command Line'],['Community','Community'],['compile','compile'],['compiler','compiler'],['ConcRT','ConcRT'],['concurrency runtime','concurrency runtime'],['Container','Container'],['Conversion','Conversion'],['Custom Build Rule','Custom Build Rule'],['Custom Build Steps','Custom Build Steps'],['Custom Build Tools','Custom Build Tools'],['debugging','debugging'],['design','design'],['Dev','Dev'],['DIA SDK','DIA SDK'],['Dialog Editor','Dialog Editor'],['Direct3D','Direct3D'],['DirectX','DirectX'],['DPI','DPI'],['editor','editor'],['exception handling','exception handling'],['F1','F1'],['Feedback','Feedback'],['Find All References','Find All References'],['Floating Point','Floating Point'],['Games','Games'],['GPU','GPU'],['Graphics','Graphics'],['Help','Help'],['High','High'],['HR','HR'],['IDE','IDE'],['IE add-ins','IE add-ins'],['Intellisense','Intellisense'],['intrinsics','intrinsics'],['iPCH','iPCH'],['lambdas','lambdas'],['learn','learn'],['Link','Link'],['Link Time Code Generation','Link Time Code Generation'],['Linker','Linker'],['memory management','memory management'],['MFC','MFC'],['Migration','Migration'],['mixed-mode','mixed-mode'],['modeling','modeling'],['MSBuild','MSBuild'],['Multi-targeting','Multi-targeting'],['mutex objects','mutex objects'],['MVP','MVP'],['NUI','NUI'],['nullptr','nullptr'],['Pages','Pages'],['Parallelism','Parallelism'],['PCH','PCH'],['performance','performance'],['PGO','PGO'],['Platform Toolset','Platform Toolset'],['Profile Guided Optimization','Profile Guided Optimization'],['Projects','Projects'],['Restart Manager','Restart Manager'],['Ribbon','Ribbon'],['rvalue','rvalue'],['SDF','SDF'],['security development lifecycle','security development lifecycle'],['shared_ptr','shared_ptr'],['SIMD','SIMD'],['Source Control','Source Control'],['SP1','SP1'],['stack walking','stack walking'],['standard libraries','standard libraries'],['startup','startup'],['STL','STL'],['Survey','Survey'],['templates','templates'],['Test','Test'],['Testing','Testing'],['touch','touch'],['Upgrade','Upgrade'],['VC++','VC++'],['VCBuild','VCBuild'],['VS2010','VS2010'],['weekly roundup','weekly roundup'],['Windows 7','Windows 7'],['WinSDK','WinSDK']],'ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01_Tags');
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+var ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01_InlineTagEditor = new InlineTagEditor('ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01_InlineTagEditor','ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01','ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01_Container','ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01_Tags');
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+window.ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl02 = new Telligent_InlineEditorPanel('ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl02','ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl02','ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl02_State','ctl00_content_ctl00_w_52317__938155_ctl00_ctl15_ctl01',false,null,null,null);
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+window.ctl00_content_ctl00_w_52319__938155_ctl00_ctl00_ctl02_ctl05_DelayedFeedbackList = new DelayedContent('ctl00_content_ctl00_w_52319__938155_ctl00_ctl00_ctl02_ctl05_DelayedFeedbackList','ctl00_content_ctl00_w_52319__938155_ctl00_ctl00_ctl02_ctl05_DelayedFeedbackList','ctl00_content_ctl00._customCallback(\'fragment-52319\',\'ctl00$content$ctl00$w_52319$_938155$ctl00$ctl00$ctl02$ctl05$DelayedFeedbackList\',argument,null,callback,null)',false,false,null);
+// ]]>
+</script></form>
+      
+    <script type="text/javascript">
+        $(window).load(function () {
+            $.getScript('http://widgets.membership.microsoft.com/v1/loader.js?brand=msdn&lang=en-US', function () {
+            });
+        });
+    </script>
+    
+	
+        <script type="text/javascript">$('div.breadcrumb-list span:last a').addClass('last');</script></body>
+</html>

@@ -1,0 +1,2155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+
+<html>
+<head>
+	<title>Debug Tutorial Part 2: The Stack - CodeProject</title> 
+	<link type="text/css" rel="stylesheet" href="http://s.codeproject.com/App_Themes/Std/CSS/CodeProject.min.css?dt=2.3.110815.1">
+
+	
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Description" content="Introduction to the most important ally in the fight against bugs, the stack.; Author: Toby Opferman; Section: Debug Tips; Chapter: Development Lifecycle" />
+<meta name="Keywords" content="VC6, VC7, VC7.1, Win2K, WinXP, Win2003, Visual-Studio, MFC, Dev, QA, ASM, Intermediate,Debug Tips,Development Lifecycle,Free source code, tutorials" />
+<meta name="Author" content="Toby Opferman" />
+<meta name="Rating" content="General" />
+<meta name="Robots" content="index, follow" />
+<meta name="Revisit-After" content="1 days" />
+<meta name="google-site-verification" content="RP2bNCUeOmNkkJesEnU8X3UyTbqIcCKP0CmdwU8in5k" />
+<meta name="msapplication-navbutton-color" content="#FF9900" />
+<meta name="application-name" content="The Code Project" />
+<meta name="msapplication-tooltip" content="Your Development Resource." />
+<meta name="msapplication-starturl" content="http://www.codeproject.com/?pinned=true" />
+<meta name="msapplication-task" content="name=Homepage;action-uri=http://www.codeproject.com/;icon-uri=http://www.codeproject.com/favico.ico" />
+<meta name="msapplication-task" content="name=Latest Articles;action-uri=http://www.codeproject.com/script/articles/Latest.aspx;icon-uri=http://www.codeproject.com/favico.ico" />
+<meta name="msapplication-task" content="name=Questions and Answers;action-uri=http://www.codeproject.com/script/Answers/;icon-uri=http://www.codeproject.com/favico.ico" />
+<meta name="msapplication-task" content="name=The Lounge;action-uri=http://www.codeproject.com/Lounge.aspx;icon-uri=http://www.codeproject.com/favico.ico" />
+<link rel="dns-prefetch" href="//ajax.googleapis.com" /> 
+
+<link rel="canonical" href="/KB/debug/cdbntsd2.aspx" />
+
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - All topics" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=1" />
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - MFC / C++" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=2" />
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - C#" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=3" />
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - ASP.NET" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=4" />
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - .NET" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=5" />
+<link rel="alternate" type="application/rss+xml" title="CodeProject Latest articles - VB.NET" href="http://www.codeproject.com/webservices/articlerss.aspx?cat=6" />
+<link rel="alternate" type="application/rss+xml" title="CodeProject Lounge Postings" href="http://www.codeproject.com/webservices/LoungeRSS.aspx" />
+<link rel="search" type="application/opensearchdescription+xml" title="CodeProject" href="http://www.codeproject.com/info/OpenSearch.xml" />
+
+	<base target="_top">
+	<link rel="icon" href="/favicon.ico" type="image/ico" >
+<link rel="shortcut icon" href="/favicon.ico"  type="image/ico" >
+<link rel="apple-touch-icon" href="/images/FavIcon-Apple.png" type="image/png" >
+<script type="text/javascript" language="Javascript">//<![CDATA[
+if(top!=self)top.location.href=location.href; if(typeof(DemoUrl)!="undefined")document.write(unescape('%3Cme')+'ta http'+'-equiv="re' +'fresh" con'+'tent="1;url='+DemoUrl+unescape('"%3CE'));
+function SelfCheck(){ return window.confirm("You are about to reply to your own message. Is this really what you want?");}
+var smoothScroll = true;
+var Selected = "-1";
+function Pin(elm){
+ CloseMsg(Selected);
+ Selected=''
+ var wrk=elm.parentNode; if(wrk)wrk=wrk.children[0];
+ var fc=elm?elm.firstChild:null;
+ if (wrk&&!wrk.pinned) {
+  OpenMsg(wrk.name, true);wrk.pinned=true;fc.src='http://s.codeproject.com/script/forums/images/pinned.gif';fc.title='Pinned. Click to unpin'
+ } else {
+  wrk.pinned=false;CloseMsg(wrk.name); fc.src='http://s.codeproject.com/script/forums/images/pin.gif';fc.title='Click to pin message'
+ }
+ return false;
+}
+function CloseMsg(msgId) {
+ if(!msgId||msgId==''||msgId<0)return;
+ var lnk=document.getElementsByName(msgId);
+ if(lnk&&lnk.length>0&&lnk[0].pinned)return;
+ var hed=document.getElementById('F' + msgId.toString() + '_h0');
+ if(hed) hed.className = hed.className.replace("Sel", "UnSel");
+ var bdy=document.getElementById('F' + msgId.toString() + '_h1');
+ if(bdy) bdy.style.display = 'none';
+}
+function OpenMsg(msgId, keep) {
+ if(!msgId||msgId==''||msgId<0)return;
+ var bdy=document.getElementById('F' + msgId.toString() + '_h1');
+ if(bdy){
+  var lnk=document.getElementsByName(msgId);
+  if(lnk&&lnk.length>0&&lnk[0].pinned)keep=true;
+  if(keep&&bdy.style.display!='none')return;
+  if(bdy.style.display=='none') bdy.style.display='';
+  else bdy.style.display = 'none';
+ }
+ var hed=document.getElementById('F' + msgId.toString() + '_h0');
+ if (hed) hed.className = hed.className.replace('UnSel', 'Sel');
+ if(bdy&&hed&&bdy.style.display!='none'){
+  var webkitWeird=document.documentElement.scrollTop < document.body.scrollTop;
+  if (!webkitWeird)document.body.scrollTop = getRealPos(hed, 'Top') - document.body.clientHeight/10;
+  EnsureMessageVisible(msgId, true);
+ }
+}
+function EnsureMessageVisible(msgID, bShowTop) {
+	var webkitWeird = document.documentElement.scrollTop < document.body.scrollTop;
+	var msgHeader = document.getElementById('F' + msgID + '_h0');
+	var msgBody = document.getElementById('F' + msgID + '_h1');
+	if (!msgBody || !msgHeader) return;
+	var scrollContainer = document.documentElement;
+	var top = getRealPos(msgHeader, 'Top');
+	var bottom = getRealPos(msgBody, 'Top') + msgBody.offsetHeight;
+	var scrollTop = webkitWeird? scrollTop = document.body.scrollTop:document.documentElement.scrollTop;
+	if (scrollTop > top && !bShowTop) scrollTop = top - scrollContainer.clientHeight / 10;
+	if (scrollTop + scrollContainer.clientHeight < bottom) scrollTop = bottom - scrollContainer.clientHeight;
+	if (scrollTop > top && bShowTop) scrollTop = top - scrollContainer.clientHeight / 10;
+ if (smoothScroll){
+  if (webkitWeird) $(document.body).stop().animate({'scrollTop' : scrollTop}, 'fast');
+  else $(scrollContainer).stop().animate({'scrollTop' : scrollTop}, 'fast');
+ } else {
+  if (webkitWeird) document.body.scrollTop = scrollTop;
+  else scrollContainer.scrollTop = scrollTop;
+ }
+}
+function getRealPos(i,which) {
+	iPos = 0;
+	while (i!=null)  {
+		iPos += i['offset' + which];
+		i = i.offsetParent;
+	}
+	return iPos;
+}
+var switchCallback;
+function SwitchMessage(e, msgId) {
+  if (msgId) msgId=msgId.toString();
+  else {
+    if(!e)e=window.event;
+    var target=e.target?e.target:e.srcElement;
+    while(target&&target.className!='message-link')target=target.parentNode;
+    if(!target||target.className!='message-link')return;
+    if(target.pinned){/*Selected='';*/return false;}
+    msgId=target.name;
+  }
+  CloseMsg(Selected)
+  if(Selected==msgId) Selected='';
+  else { OpenMsg(msgId, false); Selected=msgId;}
+  if (e){if(e.preventDefault)e.preventDefault;else e.returnValue=false;}
+    if(switchCallback)switchCallback(null, msgId)
+  return false;
+}
+
+
+//]]>
+</script>
+
+</head>	
+
+<body class="">
+
+
+
+
+<a href="#Main"><img alt="Click here to Skip to main content" class="access-link" src="/Images/t.gif" /></a>
+
+
+<div class="page-background">
+	<div id="A" class="container-content">
+
+		
+		<div id="ctl00_Suggest" class="suggestions">
+		
+<div class="alert-bar " style="display: none;">
+	<a href="#" class="close-notify">×</a>
+	<div><b>Not quite what you are looking for? You may want to try:</b><ul class="see-also"><li><a href="/KB/cpp/rpnexpressionevaluator.aspx?q=stack+c%2b%2b">Expression evaluator : using RPN</a></li><li><a href="/KB/debug/cdbntsd2.aspx?q=stack+c%2b%2b">Debug Tutorial Part 2: The Stack</a></li></ul><div id="removeHilite" class="alert-bar-command">
+<a href="#" onclick="unmarkText('contentdiv','removeHilite')">highlights off</a>
+</div>
+</div>
+</div>
+		</div>
+
+		
+
+		
+		
+
+<div class="container nav-memberbar clearfix">
+<div class="member-stats float-left">8,025,012 members and growing! (44,792 online)</div>
+<div class="float-left"></div>
+<div class="float-right">
+
+
+
+
+	<script type="text/javascript">//<!--
+	function doSubmit(secure)
+	{
+		if (secure)
+			document.subForm.action = "https://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx"
+		else
+			document.subForm.action = "/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx"
+		document.subForm.submit();
+		return true;
+	}//-->
+	</script>
+
+	<a name="SignUp"></a>
+	<form name="subForm" id="subForm" action="/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx" method="post" class="tight">
+
+	
+	<input id="FormName" name="FormName" value="MenuBarForm" type="hidden" />
+
+	Email <input class="small-text" type="text" name="Email" id="Email" style="width:150px" />
+	Password <input class="small-text" type="password" name="Password" id="Password" style="width:60px" />
+	<input type="submit" value="Sign in" class="button" onclick="return doSubmit(false);" />
+	
+	<input type="image"  src="/images/secure.png" class="align-bottom" title="Sign on securely" 
+		onclick="return doSubmit(true);" />
+	<script type="text/javascript">
+function Join(){document.location.href='http://www.codeproject.com/script/Membership/Modify.aspx';return false;}
+document.write('<input type="button" class="button" onclick="return Join();" value="Join"');
+document.write('<input type="hidden" name="fld_quicksign" value="true" />');
+</script>
+	<span class="nowrap">
+		<input type="checkbox" checked = "checked" name="RememberMeCheck" id="RememberMeCheck" value="1"/>
+		<label for="RememberMeCheck">Remember&nbsp;me?</label>
+	</span>&nbsp;
+	<a id="ctl00_MemberMenu_SendPassword" href="/script/Membership/SendPassword.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Lost password?</a>
+	</form>
+
+</div>
+
+</div>
+		
+
+		
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
+		<tr>
+			<td class="header"><a href="/"><img id="ctl00_Logo" title="The Code Project" src="http://s.codeproject.com/App_Themes/Std/Img/logo225x90.gif" alt="Home" style="border-width:0px;" /></a></td>
+			<td class="header" align="right">
+				<div class="lqm_ad" width="728px" height="90px" lqm_channel="1" lqm_publisher="495" lqm_zone="77" lqm_format="8" lqm_tags='VC6,VC7,VC7.1,Win2K,WinXP,Win2003,Visual-Studio,MFC,Dev,QA,ASM,Intermediate'></div>
+			</td>
+		</tr></table>
+
+		<table cellpadding="0" cellspacing="0" class="contrast1-background extended"><tr><td nowrap="nowrap">
+			
+
+<div class="navbar clearfix">
+<ul id="nav">
+
+<li><a id="ctl00_TopNavBar_Home" class="down" href="http://www.codeproject.com">Home</a>
+
+
+<li><a id="ctl00_TopNavBar_Art" class="down selected" href="/script/Articles/Latest.aspx">Articles</a>
+
+	<ul>
+		<li><a id="ctl00_TopNavBar_ArtTopicList" class="fly last" onmouseover="ShowMap(this, &#39;siteMap&#39;);" href="/script/Content/SiteMap.aspx">Chapters and Sections</a><ul id="ctl00_TopNavBar_MapFlyout"><li>
+				<div id="siteMap" class="tooltip-flyout">
+					<img src="/images/animated.gif" style="margin:150px;width:100px;height:100px;" />
+				</div>
+			</li></ul>
+		</li>
+		<li><a id="ctl00_TopNavBar_ArtSearch" class="fly break" href="/search.aspx">Search</a></li>
+		<li><a id="ctl00_TopNavBar_ArtLatestArts" class="fly" href="/script/Articles/Latest.aspx?at=1,3,7">Latest Articles</a></li>
+		<li><a id="ctl00_TopNavBar_ArtLatestTips" class="fly" href="/script/Articles/Latest.aspx?at=6,8">Latest Tips/Tricks</a></li>
+		<li><a id="ctl00_TopNavBar_ArtTop" class="fly" href="/script/Articles/TopArticles.aspx?ta_so=4">Top Articles</a></li>
+		<li><a id="ctl00_TopNavBar_ArtBeginner" class="fly" href="/search.aspx?aidlst=152&amp;sa_us=True">Beginner Articles</a></li>
+		<li id="ctl00_TopNavBar_VideosLink">
+			<a id="ctl00_TopNavBar_ArtVideoArticles" class="fly" href="/script/Articles/VideoArticleList.aspx">Video Articles</a>
+		</li>
+		<li><a id="ctl00_TopNavBar_ArtBlogArticles" class="fly break" href="/script/Articles/BlogArticleList.aspx">Technical Blogs</a></li>
+		<li><a id="ctl00_TopNavBar_ArtPostArticle" class="fly" href="/script/Articles/Submit.aspx">Post an Article</a></li>
+		<li><a id="ctl00_TopNavBar_ArtPostTipTrick" class="fly" href="/Tips/post.aspx">Post Tip & Trick</a></li>
+		<li><a id="ctl00_TopNavBar_ArtPostBlog" class="fly break" href="/script/Articles/BlogFeed.aspx">Post your Blog</a></li>
+		<li><a id="ctl00_TopNavBar_ArtGuide" class="fly" href="/info/Submit.aspx">Posting/Update Guidelines</a></li>
+		<li><a id="ctl00_TopNavBar_ArtCompetition" class="fly last" href="/script/Awards/CurrentCompetitions.aspx?cmpTpId=1">Article Competition</a></li>
+	</ul>
+
+</li>
+
+
+
+<li><a id="ctl00_TopNavBar_Answers" href="/script/Answers/List.aspx?tab=active">Quick Answers</a>
+	<ul>
+		<li id="ctl00_TopNavBar_AQL"><a id="ctl00_TopNavBar_ArticleQuestion" class="fly highlight" href="#_comments">Ask a Question about this article</a></li>
+
+		<li><a id="ctl00_TopNavBar_QAAsk" class="fly" href="/Questions/ask.aspx">Ask a Question</a></li>
+
+		
+		<li><a id="ctl00_TopNavBar_QAUnanswered" class="fly" href="/script/Answers/List.aspx?tab=unanswered">View Unanswered Questions</a></li>
+		<li><a id="ctl00_TopNavBar_QALatest" class="fly" href="/script/Answers/List.aspx?tab=active">View All Questions...</a></li>
+		
+	</ul>
+
+</li>
+
+
+
+<li><a id="ctl00_TopNavBar_Forums" href="/script/Forums/List.aspx">Discussions</a>
+
+	<ul>
+		<li><a id="ctl00_TopNavBar_MessageBoardsAll" class="fly" href="/script/Forums/List.aspx">All Message Boards...</a></li>
+		<li><a class="fly" style="padding-left:30px" href="/Forums/1580997/Application-Lifecycle.aspx">Application Lifecycle<span class="fly-menu">&gt;</span></a>
+<ul><li><a class="fly" href="/Forums/369270/Design-and-Architecture.aspx">Design and Architecture</a></li>
+<li><a class="fly" href="/Forums/1533717/Running-a-Business.aspx">Running a Business</a></li>
+<li><a class="fly" href="/Forums/1533716/Sales-Marketing.aspx">Sales / Marketing</a></li>
+<li><a class="fly" href="/Forums/1651/Collaboration-Beta-Testing.aspx">Collaboration / Beta Testing</a></li>
+<li><a class="fly" href="/Forums/3304/Work-Training-Issues.aspx">Work &amp; Training Issues</a></li>
+</ul></li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1627782/Free-Tools.aspx">Free Tools</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/12076/ASP-NET.aspx">ASP.NET</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1580226/JavaScript.aspx">JavaScript</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1647/C-Cplusplus-MFC.aspx">C / C++ / MFC<span class="fly-menu">&gt;</span></a>
+<ul><li><a class="fly" href="/Forums/4486/ATL-WTL-STL.aspx">ATL /  WTL / STL</a></li>
+<li><a class="fly" href="/Forums/3785/Managed-Cplusplus-CLI.aspx">Managed C++/CLI</a></li>
+</ul></li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1649/Csharp.aspx">C#</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1725/Database.aspx">Database</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/186301/Hardware-Devices.aspx">Hardware &amp; Devices<span class="fly-menu">&gt;</span></a>
+<ul><li><a class="fly" href="/Forums/1644/System-Admin.aspx">System Admin</a></li>
+</ul></li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1606152/Hosting-and-Servers.aspx">Hosting and Servers</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1643/Java.aspx">Java</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1650/NET-Framework.aspx">.NET Framework</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/13695/Mobile.aspx">Mobile</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1540733/Sharepoint.aspx">Sharepoint</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1004257/Silverlight-WPF.aspx">Silverlight / WPF</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1646/Visual-Basic.aspx">Visual Basic</a>
+</li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1640/Web-Development.aspx">Web Development<span class="fly-menu">&gt;</span></a>
+<ul><li><a class="fly" href="/Forums/1580227/CSS.aspx">CSS</a></li>
+<li><a class="fly" href="/Forums/1213656/PHP.aspx">PHP</a></li>
+</ul></li>
+<li><a class="fly" style="padding-left:30px" href="/Forums/1645/Site-Bugs-Suggestions.aspx">Site Bugs / Suggestions</a>
+</li>
+
+
+		<li class="heading">Other Languages<span class="fly-menu">&gt;</span>
+		<ul>
+		<li><a class="fly" href="/Forums/1580229/Hindi.aspx">General Indian Topics</a></li>
+		<li><a class="fly" href="/Forums/1580230/Chinese.aspx">General Chinese Topics</a></li>
+		</ul>
+		</li>
+	</ul>
+
+</li>
+
+<li><a id="ctl00_TopNavBar_Zones" href="/Zones/index.aspx">Learning Zones</a>
+
+	<ul>
+		<!--<li class="heading">Zones</li>-->
+		<li><a href="/Zones/SqlServer/" class="fly">The SQL Zone</a></li><li><a href="/Zones/WhitePapers/" class="fly">WhitePapers / Webcasts</a></li><li><a href="/Zones/Commerce/" class="fly">The Commerce Zone</a></li><li><a href="/Zones/Mobile/" class="fly">The Mobile Zone</a></li><li><a href="/Zones/Cloud/" class="fly">The Cloud Zone</a></li><li><a href="/Zones/Hardware/" class="fly">The Hardware Zone</a></li><li><a href="/Zones/Parallelism/" class="fly">The Parallelism Zone</a></li><li><a href="/Zones/WPF-Silverlight/" class="fly">The WPF / Silverlight Zone</a></li><li><a href="/Zones/Flex-Flash/" class="fly break">The Flex / Flash Zone</a></li>
+		<li><a id="ctl00_TopNavBar_Solutions" class="fly last" href="/kb/Solution-Center/">Solutions Center</a></li>
+	</ul>
+
+</li>
+
+
+
+
+
+
+
+
+
+
+<li><a id="ctl00_TopNavBar_Features" href="/Feature/">Features</a>
+
+	<ul>
+		<li><a id="ctl00_TopNavBar_WhosWho" class="fly" href="/script/Membership/Profiles.aspx">Who's Who</a></li>
+		<li><a id="ctl00_TopNavBar_MVPs" class="fly" href="/script/Awards/MVPWinners.aspx">CodeProject MVPs</a></li>
+		<li><a id="ctl00_TopNavBar_Companies" class="fly break" href="/script/Membership/Profiles.aspx?mgtid=1&amp;mgm=True">Company Listings</a></li>
+		<li><a id="ctl00_TopNavBar_Catalog" class="fly" href="/script/Catalog/List.aspx">Component & Service Catalog</a></li>
+		<li><a id="ctl00_TopNavBar_Comps" class="fly" href="/script/Awards/CurrentCompetitions.aspx?cmpTpId=1&amp;awsac=true">Competitions</a></li>
+		<li><a id="ctl00_TopNavBar_News" class="fly" href="/script/News/List.aspx">News</a></li>
+        <li><a id="ctl00_TopNavBar_TechSummit" class="fly" href="/TechSummit/">Tech Summits</a></li>
+		<li><a id="ctl00_TopNavBar_Insider" class="fly" href="/Feature/Insider/">Daily Insider</a></li>
+		<li><a id="ctl00_TopNavBar_Newsletters" class="fly" href="/script/Mailouts/Archive.aspx?mtpid=1">Newsletter archive</a></li>
+		<li><a id="ctl00_TopNavBar_PressRelease" class="fly" href="/script/PressReleases/Preview.aspx">Press Releases</a></li>
+		<li><a id="ctl00_TopNavBar_Surveys" class="fly" href="/script/Surveys/List.aspx">Surveys</a></li>
+		<li><a id="ctl00_TopNavBar_Stuff" class="fly" href="/Info/Stuff.aspx">CodeProject Stuff</a></li>
+		<li><a id="ctl00_TopNavBar_AddIn" class="fly last" href="/Services/Addins/">CodeProject VS Addin </a></li>
+	</ul>
+
+</li>
+
+
+<li><a id="ctl00_TopNavBar_Help" href="/KB/FAQs/">Help!</a>
+
+	<ul>
+		<li><a id="ctl00_TopNavBar_HelpWhatIs" class="fly" href="/info/guide.aspx">What is 'The Code Project'?</a></li>
+		<li><a id="ctl00_TopNavBar_HelpGeneral" class="fly" href="/KB/FAQs/">General FAQ</a></li>
+		<li><a id="ctl00_TopNavBar_HelpPostQuestion" class="fly" href="/Questions/ask.aspx">Post a Question</a></li>
+		<li><a id="ctl00_TopNavBar_HelpBugs" class="fly" href="/Forums/1645/Site-Bugs-Suggestions.aspx">Bugs and Suggestions</a></li>
+		<li><a id="ctl00_TopNavBar_HelpSiteMap" class="fly" href="/script/Content/SiteMap.aspx">Site Directory</a></li>
+		<li><a id="ctl00_TopNavBar_HelpAdvertise" class="fly" href="http://lakequincy.com/">Advertise with us</a></li>
+		<li><a id="ctl00_TopNavBar_HelpAboutUs" class="fly last" href="/info/about.aspx">About Us</a></li>
+	</ul>
+
+</li>
+
+
+<li style="margin-left:10px">
+<a id="ctl00_TopNavBar_Lounge" class="simple" href="/Lounge.aspx">The Lounge</a>
+
+	<ul>
+		<li><a id="ctl00_TopNavBar_LoungeLnk" class="fly" href="/Lounge.aspx">The Lounge  </a></li>
+		<li><a id="ctl00_TopNavBar_CleverLnk" class="fly" href="/feature/CleverCode.aspx">Clever Code</a></li>
+		<li><a id="ctl00_TopNavBar_ShameLnk" class="fly" href="/feature/HallOfSHame.aspx">Hall of Shame</a></li>
+		<li><a id="ctl00_TopNavBar_SoapBoxLnk" class="fly" href="/Forums/1536756/The-Soapbox-2-0.aspx">The Soapbox</a></li>
+		
+	</ul>
+
+</li>
+
+</ul>
+
+</div>
+
+<script type="text/javascript">
+
+function ShowMap(prnt, elmId) {
+	var map = $('#' + elmId);
+	
+	if (!prnt.populated && !prnt.populating) {
+		prnt.populating = true;
+		map.css( { 'height': '400px', 'width': '400px' });
+		map.load("/script/content/ajax/SiteMap.aspx", function() { prnt.populated = true; });
+		prnt.populated = true;
+		prnt.populating = false;
+	}
+
+	if (prnt.populated) {
+		var width = Math.min((($(window).width()-map.offset().left) * 0.9), 1000);
+		var height = Math.min((($(window).height()-map.offset().top) * 0.9), 700);
+		map.css('width', width + 'px');
+		map.css('height', height + 'px');
+		map.css('overflow', 'auto');
+		map.css('margin', '0');
+	}
+}
+
+</script>
+		</td><td align="right">
+			
+
+<div class="search-bar">
+
+<form method="get" action="/search.aspx" name="Search" class="tight">
+
+
+<table border="0" cellspacing="0" cellpadding="0" class="search"><tr><td><input TabIndex="2" class="search highlight" id="sb_tb" value="stack c++" name="q" /></td><td><input type="image" src="/images/search.gif" /></td></tr></table>
+
+<div class="hover-container">
+	<div id="SearchFilter" class="search-advanced popup small-text align-left">
+	<b>Search within:<br /></b>
+		
+		<input type="radio" id="sb_kw" name="sbo" value="kw" checked="true"><label for="sb_kw">Articles</label><br>
+<input type="radio" id="sb_qa" name="sbo" value="qa"><label for="sb_qa">Quick Answers</label><br>
+<input type="radio" id="sb_fm" name="sbo" value="fm"><label for="sb_fm">Messages</label><br>
+<input type="radio" id="sb_ctlk" name="sbo" value="ctlk"><label for="sb_ctlk">Product Catalog</label><br>
+
+
+		
+		
+	</div>
+</div>
+</form>
+
+</div>
+		</td></tr></table>
+		
+
+		
+		<div class="container-article hreview-aggregate">
+		
+			
+			<div class="container-header">
+				<div id="ctl00_Header" class="header">
+
+					<a name="Main"></a>
+
+					
+					<a name="_articleTop" id="_articleTop"></a>
+					
+
+<div class="clearfix hover-container">
+
+	<div class="container">
+		
+		<div class="breadcrumb float-left"><a href="/script/Content/SiteMap.aspx"><span class="sitemap-anchor" onmouseover="ShowMap(this,'map');"><img width="16px" height="16px" src="/images/sitemap16.png" border="0" alt="Site map" style="vertical-align:middle" /><div id="map" class="tooltip-flyout"><img src="/images/animated.gif" style="margin:150px;width:100px;height:100px;border:0;" /></div></span></a> &#187; <a href="/Chapters/11/Development-Lifecycle.aspx">Development Lifecycle</a> &#187; <a href="/KB/debug/">Debug Tips</a> &#187; <a href="/KB/debug/#General">General</a></div>
+	</div>
+
+	
+	<div id="ctl00_TitleArea_InfoArea" class="float-right">
+		
+
+<div class="infobox">
+	<table class="tight small-text" cellpadding="0" cellspacing="1">
+	<tr><td>Licence&nbsp;</td><td></td></tr>
+	
+	<tr><td>First Posted&nbsp;</td><td nowrap="nowrap"><b>19 Mar 2004</b></td></tr>
+	<tr><td>Views&nbsp;</td><td><b>142,523</b></td></tr>
+	
+	<tr><td>Downloads&nbsp;</td><td><b>0</b></td></tr>
+		
+	
+	<tr><td>Bookmarked&nbsp;</td><td><b>208 times</b></td></tr>
+	
+
+	
+	
+	</table>
+</div>	
+	</div>
+
+	
+	<div class="item">
+	<h1 id="ctl00_TitleArea_ArticleTitle" class="fn">Debug Tutorial Part 2: The Stack</h1>
+	</div>
+
+	
+	<div class="author">
+		By <b><a href="/script/Membership/View.aspx?mid=961412">Toby Opferman</a></b> | 
+		28 Mar 2004 
+		
+
+		
+		
+	</div>
+	
+	<div class="tags">
+	<span id="ctl00_TitleArea_TagsList_TagWrp" class="tags">
+	
+	
+	
+	<span id="ctl00_TitleArea_TagsList_VisibleTags"><span class="t"><a href="/search.aspx?aidlst=4">VC6</a></span><span class="t"><a href="/search.aspx?aidlst=5">VC7</a></span><span class="t"><a href="/search.aspx?aidlst=7">VC7.1</a></span><span class="t"><a href="/search.aspx?aidlst=23">Win2K</a></span><span class="t"><a href="/search.aspx?aidlst=24">WinXP</a></span><span class="t"><a href="/search.aspx?aidlst=26">Win2003</a></span><span class="t"><a href="/search.aspx?aidlst=103">Visual-Studio</a></span><span class="t"><a href="/search.aspx?aidlst=107">MFC</a></span><span class="t"><a href="/search.aspx?aidlst=118">Dev</a></span><span class="t"><a href="/search.aspx?aidlst=119">QA</a></span></span><acronym id="ctl00_TitleArea_TagsList_HiddenTags" title="plus: ASM, Intermediate">, +</acronym> 
+
+	
+	
+</span>
+
+	</div>
+
+	
+	<div class="abstract summary"><span id="ctl00_TitleArea_ArticleDescr">Introduction to the most important ally in the fight against bugs, the stack.</span></div>
+</div>
+
+
+
+					
+
+				</div>
+
+				<div id="ctl00_HeadSide" class="header-sidebar">
+					<div class="align-left" style="height:24px">
+						
+
+
+&nbsp;
+
+
+
+
+
+
+
+
+
+
+					</div>
+
+					
+
+<div class="bold pad-top">See Also</div>
+<ul class="outdent small-text" style="margin-left:5px">
+	<li><a id="ctl00_SeeAlso_LikeThis" href="/search.aspx?q=Debug+Tutorial+Part+2++Stack">More like this</a></li>
+	<li><a id="ctl00_SeeAlso_ByAuthor" href="/script/Articles/MemberArticles.aspx?amid=961412">More by this author</a></li>
+</ul>
+
+				</div>
+
+			</div>
+			
+
+			
+			<div id="ctl00_Nav" class="container-nav">
+				<div id="ctl00_TabContainer" class="tabs-container clearfix">
+
+					
+					<div class="float-right action-links"> 
+						<a id="ctl00_ActionLinks_PrintLnk" class="tooltip" href="/KB/debug/cdbntsd2.aspx?display=Print">
+	<img src="http://s.codeproject.com/script/Content/Images/print.gif" 
+		width="24px" height="24px" style="vertical-align:middle;border:0">
+	<div class="speech-bubble-container-up">
+		<div class="speech-bubble-up">Print Article</div>
+		<div class="speech-bubble-pointer-up">
+			<div class="speech-bubble-pointer-up-inner"></div>
+		</div>
+	</div>
+</a>
+
+<span id="SBI"><img src="http://s.codeproject.com/images/share_drop24.png" id="ctl00_ActionLinks_AddTo_Img" width="37" height="24" alt="add" style="vertical-align:middle" />
+</span>
+<div id="ATD" class="list-socialbookmark"></div> 
+ 
+
+<span class="tooltip">
+	 
+	<div class="speech-bubble-container-up">
+		<div class="speech-bubble-up">Add to your CodeProject bookmarks</div>
+		<div class="speech-bubble-pointer-up">
+			<div class="speech-bubble-pointer-up-inner"></div>
+		</div>
+	</div>
+</span>
+
+<a id="discussAnch" href="#_comments" class="tooltip anchorLink">
+	
+	<img src="http://s.codeproject.com/script/Content/Images/discuss.gif" 
+		width="24px" height="24px" alt="Discuss" style="vertical-align:middle;border:0" />
+	<div class="speech-bubble-container-up">
+		<div class="speech-bubble-up">Discuss this article</div>
+		<div class="speech-bubble-pointer-up">
+			<div class="speech-bubble-pointer-up-inner"></div>
+		</div>
+	</div>
+</a>
+<span id="ctl00_ActionLinks_cmtcnt" class="subdue small-text align-middle" style="margin-left:-4px">17</span>
+
+
+
+
+
+					</div>
+
+					<div class="float-left">
+						
+						
+
+<div class="tabs float-left"><table cellpadding="0" cellspacing="0"><tr>
+	<td class="tab-selected">Article</td><td class="tab-unselected"><a href="/script/Articles/ViewDownloads.aspx?aid=6470">Browse Code</a></td><td class="tab-unselected"><a href="/script/Articles/ListVersions.aspx?aid=6470">Revisions</a></td>
+</tr></table></div>	
+
+
+						
+						<div class="float-left" style="margin-left:15px">
+							<div id="ctl00_CurRat" class="tooltip" name="CurRat_6470">
+								
+
+<table cellpadding="0" cellspacing="0" class="small-text">
+<tr>
+	
+	<td class="nowrap">
+
+		<span id="ctl00_ArticleRating_VI">
+		<div class="nowrap rating-stars" style="height:24px;width:120px;position:relative;">
+	<div class="clipped align-left float-left" style="height:24px;width:118px;">
+		<img src="http://s.codeproject.com/script/Ratings/Images/stars-fill.png" style="border-width:0px;" />
+	</div><div class="clipped" style="height:24px;width:2px;position:relative;">
+		<img src="http://s.codeproject.com/script/Ratings/Images/stars-empty.png" style="border-width:0px;position:absolute;top:0;right:0;" />
+	</div>
+</div>
+		</span>
+
+		
+	</td>
+	
+	<td id="ctl00_ArticleRating_VR" class="nowrap">
+		&nbsp;<span id="ctl00_ArticleRating_VotesR">&nbsp;<span class="rating">4.94</span> (<span class="count">84 votes</span>)</span>
+		
+	</td>
+
+</tr>
+
+</table>
+
+								<div id="ctl00_RB" class="speech-bubble-container-up">
+									<div class="speech-bubble-up" style="width:150px !important">
+										            
+<div>
+<table class="feature" width="100%" height="50px" title="Voting Distribution. Recent data only" cellpadding="0" cellspacing="0"><tr><td class="chart-column rating-ignore-vote" title="Outside deviation limits - not included in score."><img src="/script/Ratings/Images/pollcol.gif" width="20pxpx" height="1px" border="0px" alt="1 vote, 1.2%" title="1 vote, 1.2%" /><br /><span title="1 vote">1</span></td>
+<td class="chart-column rating-ignore-vote" title="Outside deviation limits - not included in score."><img src="/script/Ratings/Images/pollcol.gif" width="20pxpx" height="1px" border="0px" alt="1 vote, 1.2%" title="1 vote, 1.2%" /><br /><span title="1 vote">2</span></td>
+<td class="chart-column rating-ignore-vote" title="Outside deviation limits - not included in score."><img src="/script/Ratings/Images/pollcol.gif" width="20pxpx" height="1px" border="0px" alt="1 vote, 1.2%" title="1 vote, 1.2%" /><br /><span title="1 vote">3</span></td>
+<td class="chart-column"><img src="/script/Ratings/Images/pollcol.gif" width="20pxpx" height="4px" border="0px" alt="7 votes, 8.3%" title="7 votes, 8.3%" /><br /><span title="7 votes">4</span></td>
+<td class="chart-column"><img src="/script/Ratings/Images/pollcol.gif" width="20pxpx" height="50px" border="0px" alt="74 votes, 88.1%" title="74 votes, 88.1%" /><br /><span title="74 votes">5</span></td>
+</tr></table><div class="small-text align-center">4.94/5 - 84 votes</div><div class="small-text align-center subdue">3 removed</div><div class="small-text align-center subdue">μ 4.80, σ<sub>a</sub> 1.10 [<a href="/KB/FAQs/RatingReputationFAQ.aspx#noisefilter">?</a>]</div>
+</div>
+									</div>
+									<div class="speech-bubble-pointer-up">
+										<div class="speech-bubble-pointer-up-inner"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+				<div id="ctl00_HeadSideFoot" class="tabs-sidebar">
+					<div>Sponsored Links</div>
+				</div>
+			</div>
+			
+
+			
+			<div class="container-text">
+
+				<div id="AT" class="text">
+					
+					
+					
+					
+
+					   
+
+						
+							
+			
+					<form name="aspnetForm" method="post" action="/KB/debug/cdbntsd2.aspx" id="aspnetForm" style="margin:0;padding:0">
+<div>
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMjExOTQzNjk4Mw9kFgJmD2QWAgIGD2QWCgIBDxYCHgdWaXNpYmxlZ2QCEQ9kFgICAQ9kFgZmDw8WAh4LTmF2aWdhdGVVcmwFMS9zY3JpcHQvQXJ0aWNsZXMvQWRtaW4vRWRpdG9yQ2hvaWNlLmFzcHg/YWlkPTY0NzBkZAICDw8WAh8BBTcvc2NyaXB0L0F3YXJkcy9BZG1pbi9Bd2FyZE9iamVjdC5hc3B4P29iaWQ9NjQ3MCZvYnRpZD0yZGQCCg8PFgIfAQUuL3NjcmlwdC9BcnRpY2xlcy9BZG1pbi9RdWV1ZUVkaXQuYXNweD9haWQ9NjQ3MGRkAhMPZBYCAgEPZBYCAgEPZBYGZg8PFgIfAQUlL0tCL2RlYnVnL2NkYm50c2QyLmFzcHg/ZGlzcGxheT1QcmludGRkAgQPFgIeCWlubmVyaHRtbAUCMTdkAgUPDxYCHwEFJS9zY3JpcHQvQXJ0aWNsZXMvUmVwb3J0LmFzcHg/YWlkPTY0NzBkZAIVD2QWAgIND2QWBgICDxYCHgZhY3Rpb24FFy9LQi9kZWJ1Zy9jZGJudHNkMi5hc3B4FggCAQ9kFgICAQ8WAh8AaGQCAw9kFgICAg9kFgICAQ8QZGQWAGQCCQ8WAh4LXyFJdGVtQ291bnQCAWQCCw9kFgICAQ8WAh4EVGV4dAU+PGEgIGhyZWY9Ii9LQi9kZWJ1Zy9jZGJudHNkMi5hc3B4I19hcnRpY2xlVG9wIj5BcnRpY2xlIFRvcDwvYT5kAgoPDxYEHwUFCVBlcm1hbGluax8BBRcvS0IvZGVidWcvY2RibnRzZDIuYXNweGRkAhgPFgIfBQUfQ29weXJpZ2h0IDIwMDQgYnkgVG9ieSBPcGZlcm1hbmQCFw9kFgICBQ8PFgIfAGhkZGQaBXsug4PRebpX+V4AUkUqzEk1Ug==" />
+</div>
+
+
+						<!-- Article Text Start -->
+						<div id="contentdiv">
+						
+
+
+
+<!-- Article Starts -->
+
+<H2>Introduction</H2>
+<P>Welcome to the second installment of these debugging tutorials. In this article, I will investigate the stack and how it plays an integral part in debugging. Anytime you ask the question "What do you do when your program traps?", the most common answer is "Get a stack trace". This is definitely true, it's probably the very first thing you should do anytime you investigate a crash dump.</P>
+<P>Sorry if this tutorial is too general and beginner-ish! I should probably set the level as beginner instead of intermediate. I only set it as intermediate since the article is requiring assembly knowledge.</P>
+<H2>What is the Stack?</H2>
+<P>This is the first and most obvious question. Unfortunately, I did not cover or really answer this in the first tutorial as I was taking for granted that everyone was familiar with it. In order to explain what the stack is, let me start from where we begin, what a process is.</P>
+<H3>What is a Process?</H3>
+<P>A process is basically an instance of an application in memory. The executable and supported libraries are mapped into this address space. A process does not execute, but just rather defines the memory boundaries, resources, and the like which are accessible from anyone operating within that process.</P>
+<H3>What is a Thread?</H3>
+<P>A thread is an instance of execution that operates within the boundaries of a process. A process is not scheduled to execute, the threads within a process are. There may be many threads executing in the context of one process. Although a thread may have "thread specific storage", generally all memory and resources created in the context of the process can be used by any executing thread.</P>
+<H3>Global and Local Resources</H3>
+<P>Not to be confusing here, but there are exceptions. There are resources that are created globally rather than locally. That means these resources may be used outside the context of the process in which they were created. One such example is a window handle. These resources have their own boundaries outside of a process. Some resources may be system wide, others desktop or session wide. There are also "shared" resources where processes can negotiate sharing of a resource through other means and mechanisms.</P>
+<H3>What is Virtual Memory?</H3>
+<P>In general, "Virtual Memory" is generally thought of as fooling the system into thinking there's more physical memory than there really is. This is true and false at the same time. It depends on who "the system" is and there's really more to it than that.</P>
+<P>The system is not being fooled into thinking there's more memory than there really is. The hardware already knows there's less memory and is actually the one who implements the necessary mechanisms to support "Virtual Memory". The Operating System is the one which utilizes these capabilities to perform "Virtual Memory", so it is also not being fooled. So, who is being fooled? If anyone is being fooled, it's the processes running on the system.</P>
+<P>I don't believe that to be the case either. The application programmer generally knows the system he is programming for already. That means, he knows the Operating System uses "Virtual Memory" or not such as DOS and he programs for that platform. In general, it doesn't mean anything. A simple application really doesn't care as long as it gets to execute. The only time you really run into trouble would be a "cooperative multitasking" system verses a "preemptive multitasking" system. But, then again, the programmer knows his target platform and programs appropriately. The differences with those two types of Operating Systems is beyond the scope of this article and does not apply.</P>
+<P>So, back to answering this question. The first thing that "Virtual Memory" does is that it abstracts the physical address space of the machine. This means the application programs do not see or know about the physical address. They know a "Virtual" address. The CPU is then capable of converting a "Virtual" address to a "Physical" address based on certain characteristics setup by the Operating System. The details of that mechanism is beyond the scope of this document. Just understand that the application receives a "Virtual" address and the processor maps it to a physical address.</P>
+<P>The next part of the equation is that the "Virtual" address does not need to point to a "Physical" address. The Operating System can use a swap file to keep memory on disk, that way, the entire program does not have to be in physical memory at the same time. This allows many programs to be in memory and execute. If a program attempts to access a memory location that is not in physical memory, the CPU knows this. The CPU will page fault and know that the memory that is being accessed is out on disk. The Operating System will then get told and will pull that memory from disk to Physical memory. Once this is complete, the program is given back execution and will continue where it left off.</P>
+<P>There are many algorithms to decide how to pull memory in from disk. Unless you plan to grow the footprint of a process in Physical memory, you usually swap a page out to swap one in. There are many algorithms that the OS can use to grow the process physical foot print and swap pages in and out. A simple one is basically, the least frequently used page in memory. You generally want to avoid writing programs that keep crossing page boundaries frequently, this will eliminate "thrashing" which is swapping in and out pages from memory to disk often. These topics are outside the scope of this tutorial.</P>
+<P>The next advantage of "Virtual Memory" is protection. A process cannot directly access another process's memory. That means that at anyone time, the CPU has only the Virtual address mappings for that process. That means, it can't resolve a virtual address in another process. This makes sense because since they are separate mappings, the processes could and will have the same memory address pointed to different locations!</P>
+<P>That doesn't mean it's impossible to read another process' memory. If the Operating System has built-in support, such as Windows does, you can access another process' memory. You could also do this if you could gain access to memory locations, and manipulate the CPU registers as they relate to Virtual Memory mapping. Luckily, you can't, as the CPU can check your privilege level before you attempt to execute sensitive assembly instructions, and "Virtual Memory" will keep you away from being a usermode process and manipulating page or descriptor tables (Although, there is a method in Windows 9x to get the LDT in usermode).</P>
+<H3>What is the stack?</H3>
+<P>Now that I've described the basics of the system, I can get back to "What is a stack?". In general, a stack is a general-purpose data structure that allows items to be pushed onto it and popped off. Think of it as a stack of plates. You can put items on the top and you can only take items off the top (without cheating). If you followed that strict rule, you have a stack. A stack is generally referred to as "LIFO" or "Last In First Off".</P>
+<P>Programs generally use the stack as a means of temporary storage. This is generally unknown to the non-assembly programmer as the language hides these details. However, the generated code produced by your program will use a stack and the CPU has built-in stack support!</P>
+<P>On Intel, the assembly instructions to put something on the stack and take something off are <CODE lang=asm><span class="code-keyword">PUSH</span></CODE> and <CODE lang=asm><span class="code-keyword">POP</span></CODE>. Note that some processors use <CODE lang=asm><span class="code-keyword">PUSH</span></CODE>/<CODE lang=asm>PULL</CODE>, but in the Intel world, we use <CODE lang=asm><span class="code-keyword">PUSH</span></CODE>/<CODE lang=asm><span class="code-keyword">POP</span></CODE>. This is just a "mnemonic" anyway, which basically means an English word for a machine operation. All assembly boils down to an opcode or number which is processed by the CPU. That means, you can call the instruction anything you want in English as long as you use it correctly and generate the correct "opcode".</P>
+<P>Getting back on track, every "thread" executing in a process has its <B>own</B> stack. This is because we can't have multiple threads attempting to use the same temporary storage location as we will see in a moment.</P>
+<H4>How is a function call made?</H4>
+<P>The function call depends on the "calling convention". The "calling convention" is a basic method that the caller (the function making the call) and callee (the function being called) have agreed on in order to pass parameters to the function and clean up the parameters afterwards. In Windows, we generally support three different calling conventions. These are "this call", "standard call" and "CDECL or C Calling convention".</P>
+<H4>This Call</H4>
+<P>This is a C++ calling convention. If you're familiar with C++ internals, member functions of an object require the <CODE><span class="code-keyword">this</span></CODE> pointer to be passed into the function. In general, the <CODE><span class="code-keyword">this</span></CODE> pointer is the first parameter on the stack. This is not the case with "this call". In "this call", the <CODE><span class="code-keyword">this</span></CODE> pointer is in a register, <CODE lang=asm><span class="code-keyword">ECX</span></CODE> to be exact. The parameters are pushed on the stack in reverse order and the callee cleans up the stack.</P>
+<H4>Standard Call</H4>
+<P>"Standard Call" is when the parameters are pushed backwards on to the stack and the callee cleans up the stack.</P>
+<H4>CDECL or C Calling Convention</H4>
+<P>"C Calling" convention basically means that the parameters are pushed backwards onto the stack and the caller cleans up the stack.</P>
+<H4>Pascal Calling Convention</H4>
+<P>If you've seen old programs, you will see "PASCAL" as their calling convention. In WIN32, you actually are not allowed to use <CODE>__pascal</CODE> anymore. The <CODE>PASCAL</CODE> macro has actually been redefined as "Standard Call". However, Pascal calling convention parameters are pushed <B>forward</B> onto the stack. The callee cleans up the stack.</P>
+<H4>Cleans up the stack?</H4>
+<P>The difference in who cleans up the stack is a big deal. The first is saving bytes. If the callee cleans up the stack, that means there doesn't have to be extra instructions generated at every function call to clean up the stack. The disadvantage to this is that you cannot use variable arguments. Variable arguments are used by functions like <CODE>printf</CODE>. The actual callee does not <I>REALLY</I> know how many arguments are pushed onto the stack. It can only <I>GUESS</I> by the information provided to it, in say, its format string. If you tell <CODE>printf <span class="code-string">&quot;</span><span class="code-string">%i %i %i&quot;</span></CODE>, it will attempt to use 3 more values on the stack to fill those, whether or not you pushed them or not! This may or may not trap. If you push more parameters than you tell <CODE>printf</CODE>, there's no problem since the caller is cleaning up the stack anyway. They're just there for no reason, but <CODE>printf</CODE> does not know they're there. Remember that, variable argument functions do not magically know how many parameters are there, they must implement some method for the caller to tell them through their parameter list. <CODE>Printf</CODE>'s just happen to be the format string, you could even pass a number down if you want, but the compiler isn't going to do it for you.</P>
+<P>Also, although it is possible to then clean up the stack, it's not entirely feasible. Since the function does not know at compile time how many parameters are sent to it, it means it has to manipulate the stack and move around the return value in order to clean up. It's easier to just let the caller clean up the stack in this case.</P>
+<P>Intel supports an instruction to clean up the stack by the callee. It's <CODE lang=asm><span class="code-keyword">RET</span></CODE> <CODE><span class="code-keyword">&lt;</span><span class="code-SDKkeyword">Byte</span> Count<span class="code-keyword">&gt;</span></CODE> where <CODE lang=text>Byte Count</CODE> is the size in bytes of the parameters on the stack. A 2 byte instruction.</P>
+<H4>So, what is the stack?</H4>
+<P>A stack is a location for temporary storage. Parameters are pushed onto the stack, then the return address is pushed onto the stack. The flow of execution must know where to return to. The CPU is stupid, it just executes one instruction after the other. You have to tell it where to go. In order to tell it how to get back, we need to save the return address, the location after the function call. There is an assembly instruction that does this for us: <CODE lang=asm><span class="code-keyword">CALL</span></CODE>. There is an assembly instruction that uses the current value on the stack and the return address and transfers execution to that location. It's called <CODE lang=asm><span class="code-keyword">RET</span></CODE>. Beyond this, we have local variables and possibly even other values that are pushed onto the stack for temporary storage. This is one of the reasons you can never return an array or an address of any local variable, they disappear when the function returns!</P>
+<P>The layout of the stack would be the following:</P><PRE lang=text>[Parameter n          ]
+...
+[Parameter 2          ]
+[Parameter 1          ]
+[Return Address       ]
+[Previous Base Pointer]
+[Local Variables      ]</PRE>
+<P>Before returning, the stack is cleaned up to the return address and then a "return" is issued. If the stack is not kept in proper order, we may get out of sync and return to the wrong address! This can cause a trap, obviously!</P>
+<H4>What is the "base pointer"?</H4>
+<P>The "base pointer" in Intel is generally <CODE lang=asm>EBP</CODE>. What happens is since <CODE lang=asm>ESP</CODE> is dynamic and always changing, you save the old <CODE lang=asm>EBP</CODE> from the previous function, then set <CODE lang=asm>EBP</CODE> to the current stack location. You can now reference variables directly on the stack from a standard offset. This means that the first parameter will always be <CODE lang=asm>EBP</CODE> + <CODE>xx</CODE>, etc. If you do not save <CODE lang=asm>ESP</CODE> and always reference <CODE lang=asm>ESP</CODE>, you're going to have to keep track of how much data is on the stack. If you put more and more data on the stack, the offset to the first parameter changes. The assembler <B>does</B> generate functions when appropriate to not set <CODE lang=asm>EBP</CODE>, so it's not always the case that <CODE lang=asm>EBP</CODE> is the base pointer but rather the function could be using <CODE lang=asm>ESP</CODE> directly.</P>
+<P>Generally, it's <CODE lang=asm>EBP</CODE> + <CODE>Value</CODE> to get to function parameters and <CODE lang=asm>EBP</CODE> - <CODE>Value</CODE> to get to local variables.</P>
+<H4>Putting it all together</H4>
+<P>So, you can now see the reason each thread has its own stack. If they shared the same stack, they would overwrite each other's return values and data! Or, could eventually, if they ran out of stack space. That's the next problem we will discuss.</P>
+<H4>Stack Overflow</H4>
+<P>A Stack Overflow is when you reached the end of your stack. Windows generally gives the program a fixed amount of user mode stack space. The kernel has its own stack. It generally occurs when you run out of stack space! Recursion is a good way to run out of stack space. If you keep recursively calling a function you may eventually run out of stack and trap.</P>
+<P>Windows generally does not allocate all of the stack at once, but instead grows the stack as you need it. This is an optimization obviously.</P>
+<P>We can write a small program to perform a stack overflow and then find out how much stack Windows gave us.</P><PRE lang=asm>0:000&gt; g
+(<span class="code-digit">928</span>.<span class="code-digit">898</span>): Stack overflow - code c00000fd (first chance)
+First chance exceptions are reported before any exception handling.
+This exception may be expected and handled.
+eax=00131ad8 ebx=7ffdf000 ecx=00131ad8 edx=00430df0 esi=00000000 edi=0003347c
+eip=00401029 esp=00032ffc ebp=00033230 iopl=0         nv up ei pl nz ac po nc
+cs=001b  ss=0023  ds=0023  es=0023  fs=0038  gs=0000             efl=00010216
+*** WARNING: Unable to verify checksum for COMSTRESS.exe
+COMSTRESS!func+0x9:
+<span class="code-digit">00401029</span> <span class="code-digit">53</span>               <span class="code-keyword">push</span>    ebx
+0:000&gt; !teb
+TEB at 7ffde000
+    ExceptionList:        0012ffb0
+    StackBase:            <span class="code-digit">00130000</span>
+    StackLimit:           <span class="code-digit">00031000</span>
+    SubSystemTib:         <span class="code-digit">00000000</span>
+    FiberData:            00001e00
+    ArbitraryUserPointer: <span class="code-digit">00000000</span>
+    Self:                 7ffde000
+    EnvironmentPointer:   <span class="code-digit">00000000</span>
+    ClientId:             <span class="code-digit">00000928</span> . <span class="code-digit">00000898</span>
+    RpcHandle:            <span class="code-digit">00000000</span>
+    Tls Storage:          <span class="code-digit">00000000</span>
+    PEB Address:          7ffdf000
+    LastErrorValue:       <span class="code-digit">0</span>
+    LastStatusValue:      <span class="code-digit">0</span>
+    Count Owned Locks:    <span class="code-digit">0</span>
+    HardErrorMode:        <span class="code-digit">0</span>
+0:000&gt; ? <span class="code-digit">130000</span> - <span class="code-digit">31000</span>
+Evaluate expression: <span class="code-digit">1044480</span> = 000ff000
+0:000&gt;</PRE>
+<P>To do this, I simply used !teb, which displays all elements of the TEB or "Thread Environment Block" (found at FS:0 as mentioned in a previous tutorial). If you subtract the base of the stack from the stack limit, you get the size. 1,044,480 bytes is how big of a stack Windows gave us.</P>
+<H4>Stack Underflow</H4>
+<P>In general, a Stack Underflow is the opposite of an overflow. You've somehow thought you put more on the stack than you really have and you've popped off too much. You've reached the beginning of the stack and it's empty, but you thought there was more data and kept attempting to pop data off.</P>
+<H4>Overflows and Underflows</H4>
+<P>Overflows and Underflows can also be said to occur when your program gets out of sync and crashes thinking the stack is in a different position. The stack could underflow if you clean up too much in a function and then attempt to return. Your stack is out of sync and you return to the wrong address. The reason your stack is out of sync is you thought you had more data on it than you did. You could consider that an underflow.</P>
+<P>The opposite can also occur. You've cleaned up too little because you didn't think you had that much data on the stack and you return. You trap when you return because you went to the wrong address. You "could" consider this an overflow as you are out of sync, thinking you have less data on the stack than you really do.</P>
+<H3>How does the debugger get a stack trace?</H3>
+<P>This brings me to my next topic, how does a debugger get a stack trace? The first answer is simply by using "Symbols". The symbols can tell the debugger how many parameters are on the stack, how many local variables, etc., so the debugger can then use the symbols to determine how to walk the stack and display the information.</P>
+<P>If there are no symbols, it uses the base pointer. Each base pointer points to the previous base pointer. The Base Pointer + 4 also points to the return address. This is how it then walks the stack. If everyone uses <CODE lang=asm>EBP</CODE>, the stack trace could be a perfect world. Although the debugger does not know how many parameters there are, it just dumps the location where the parameters <B>WOULD</B> be, it's up to you to interpret what the correct parameters are.</P>
+<P>Here is a simple table of some function calls. I am going to use the stack trace from the first tutorial.</P><PRE lang=text>0:000&gt; kb
+ChildEBP RetAddr  Args to Child
+0012fef4 77c3e68d 77c5aca0 00000000 0012ff44 MSVCRT!_output+0x18
+0012ff38 00401044 00000000 77f944a8 00000007 MSVCRT!printf+0x35
+0012ff4c 00401147 00000001 00323d70 00322ca8 temp!main+0x44
+0012ffc0 77e814c7 77f944a8 00000007 7ffdf000 temp!mainCRTStartup+0xe3
+0012fff0 00000000 00401064 00000000 78746341 kernel32!BaseProcessStart+0x23</PRE>
+<P>Since <CODE lang=asm>ESP</CODE> will point to local variables, etc., we will dump <CODE lang=asm>EBP</CODE>. I will use the "DDS" command which means 'Dump Dwords with Symbols'. The debugger will attempt to match the value on the stack with the closest symbol.</P>
+<P>Our current <CODE lang=asm>EBP</CODE> value is 0012fef4. This is a pointer on the stack, remember? This value points to the previous <CODE lang=asm>EBP</CODE>. Remember, <CODE lang=asm>EBP</CODE> + 4 == return value, <CODE lang=asm>EBP</CODE> + 8 == Parameters. The bold walks the stack to each <CODE lang=asm>EBP</CODE> value.</P><PRE lang=text>[Stack Address |  Value  | Description]
+0012fef4  <B>0012ff38</B>
+0012fef8  77c3e68d MSVCRT!printf+0x35
+0012fefc  77c5aca0 MSVCRT!_iob+0x20
+0012ff00  00000000
+0012ff04  0012ff44
+0012ff08  77c5aca0 MSVCRT!_iob+0x20
+0012ff0c  00000000
+0012ff10  000007e8
+0012ff14  7ffdf000
+0012ff18  0012ffb0
+0012ff1c  00000001
+0012ff20  0012ff0c
+0012ff24  0012f8c8
+0012ff28  0012ffb0
+0012ff2c  77c33eb0 MSVCRT!_except_handler3
+0012ff30  77c146e0 MSVCRT!`string'+0x16c
+0012ff34  00000000
+<B>0012ff38  0012ffc0</B>
+0012ff3c  00401044 temp!main+0x44
+0012ff40  00000000
+0012ff44  77f944a8 ntdll!RtlpAllocateFromHeapLookaside+0x42
+0012ff48  00000007
+0012ff4c  00000000
+0012ff50  00401147 temp!mainCRTStartup+0xe3
+0012ff54  00000001
+0012ff58  00323d70
+0012ff5c  00322ca8
+0012ff60  00403000 temp!__xc_a
+0012ff64  00403004 temp!__xc_z
+0012ff68  0012ffa4
+0012ff6c  0012ff94
+0012ff70  0012ffa0
+0012ff74  00000000
+0012ff78  0012ff98
+0012ff7c  00403008 temp!__xi_a
+0012ff80  0040300c temp!__xi_z
+0012ff84  77f944a8 ntdll!RtlpAllocateFromHeapLookaside+0x42
+0012ff88  00000007
+0012ff8c  7ffdf000
+0012ff90  c0000005
+0012ff94  00323d70
+0012ff98  00000000
+0012ff9c  8053476f
+0012ffa0  00322ca8
+0012ffa4  00000001
+0012ffa8  0012ff84
+0012ffac  0012f8c8
+0012ffb0  0012ffe0
+0012ffb4  00401210 temp!except_handler3
+0012ffb8  004020d0 temp!&amp;#8962;MSVCRT_NULL_THUNK_DATA+0x80
+0012ffbc  00000000
+<B>0012ffc0  0012fff0</B>
+0012ffc4  77e814c7 kernel32!BaseProcessStart+0x23
+0012ffc8  77f944a8 ntdll!RtlpAllocateFromHeapLookaside+0x42
+0012ffcc  00000007
+0012ffd0  7ffdf000
+0012ffd4  c0000005
+0012ffd8  0012ffc8
+0012ffdc  0012f8c8
+0012ffe0  ffffffff
+0012ffe4  77e94809 kernel32!_except_handler3
+0012ffe8  77e91210 kernel32!`string'+0x98
+0012ffec  00000000
+<B>0012fff0  00000000</B>
+0012fff4  00000000
+0012fff8  00401064 temp!mainCRTStartup</PRE>
+<P>So, <CODE lang=asm>EBP</CODE> points to (0012fef4) which points to the previous <CODE lang=asm>EBP</CODE> of 0012ff38. <CODE lang=asm>EIP</CODE> == 77c3f10b, which is <CODE lang=asm>MSVCRT!_output</CODE>+0x18. We can then dump <CODE lang=asm>EBP</CODE> + 8 as the parameters. The debugger with "KB" generally dumps the first 3 values of the stack. It doesn't know if those are correct parameters or not, it's just a preview. If you want to know the rest, you simply find the location on the stack and dump.</P><PRE lang=text>0012fefc  77c5aca0 MSVCRT!_iob+0x20
+0012ff00  00000000
+0012ff04  0012ff44</PRE>
+<P>So, we can assemble the first function:</P><PRE lang=text>MSVCRT!_output+0x18(77c5aca0, 00000000, 0012ff44);</PRE>
+<P>The second function is <CODE lang=asm>EBP</CODE> + 4, the return address. Remember, it doesn't know where the functions start. So, the best it can do is match the return address specifying this as the function.</P>
+<P>This is the calling function:</P><PRE lang=text>0012fef8  77c3e68d MSVCRT!printf+0x35</PRE>
+<P>It then goes to the previous <CODE lang=asm>EBP</CODE>, 0012ff38, and adds 8 to get the parameters.</P><PRE lang=text>0012ff40  00000000
+0012ff44  77f944a8 ntdll!RtlpAllocateFromHeapLookaside+0x42
+0012ff48  00000007</PRE>
+<P>This is the calling function with its parameters.</P><PRE lang=text>MSVCRT!printf+0x35(00000000, 77f944a8, 00000007);</PRE>
+<P>As you can see, if anything is off, this information is wrong. That is why you must use your judgment when interpreting these values.</P>
+<P>The next <CODE lang=asm>EBP</CODE> was :0012ffc0. It's the memory location at 0012ff38. The previous return value is:</P><PRE lang=text>0012ff3c  00401044 temp!main+0x44</PRE>
+<P>The previous parameters were at 0012ffc0 + 8. Remember, this also assumes that <CODE lang=asm>EBP</CODE> was the first value pushed onto the stack. If the debugger is smart enough, it could attempt to just walk the stack until it gets the first recognizable symbol and use that as the return value! That's in case something was pushed onto the stack before <CODE lang=asm>EBP</CODE> was saved and set.</P>
+<P>These are the parameters:</P><PRE lang=text>0012ffc8  77f944a8 ntdll!RtlpAllocateFromHeapLookaside+0x42
+0012ffcc  00000007
+0012ffd0  7ffdf000
+
+temp!main+0x44(77f944a8, 00000007, 7ffdf000)</PRE>
+<P>Our next <CODE lang=asm>EBP</CODE> was 0012ffc0, so + 4 is the return value. That's our function now.</P><PRE lang=text>0012ffc4  77e814c7 kernel32!BaseProcessStart+0x23</PRE>
+<P>So, <CODE lang=asm>EBP</CODE> = 0012ffc0, points to previous <CODE lang=asm>EBP</CODE> 0012fff0 and we know that previous <CODE lang=asm>EBP</CODE> + 8 == parameters.</P><PRE lang=text>0:000&gt; dds 0012fff0
+0012fff0  00000000
+0012fff4  00000000  &lt;-- Previous return value is NULL so stop here.
+0012fff8  00401064 temp!mainCRTStartup  &lt;-- + 8
+0012fffc  00000000
+00130000  78746341
+
+kernel32!BaseProcessStart+0x23(00401064, 00000000, 78746341)</PRE>
+<P>This should be good enough since our previous return value is <CODE>NULL</CODE>. So, this is our manual generation of the stack:</P><PRE lang=text>MSVCRT!_output+0x18            (77c5aca0, 00000000, 0012ff44);
+MSVCRT!printf+0x35             (00000000, 77f944a8, 00000007);
+temp!main+0x44                 (77f944a8, 00000007, 7ffdf000);
+kernel32!BaseProcessStart+0x23 (00401064, 00000000, 78746341);</PRE>
+<P>This was our stack trace from the debugger:</P><PRE lang=text>ChildEBP RetAddr  Args to Child
+0012fef4 77c3e68d 77c5aca0 00000000 0012ff44 MSVCRT!_output+0x18
+0012ff38 00401044 00000000 77f944a8 00000007 MSVCRT!printf+0x35
+0012ff4c 00401147 00000001 00323d70 00322ca8 temp!main+0x44
+0012ffc0 77e814c7 77f944a8 00000007 7ffdf000 temp!mainCRTStartup+0xe3
+0012fff0 00000000 00401064 00000000 78746341 kernel32!BaseProcessStart+0x23</PRE>
+<P>What's different and why? Well, we followed a simple rule to walk the stack. <CODE lang=asm>EBP</CODE> points to the previous <CODE lang=asm>EBP</CODE>. Secondly, we didn't use symbol information to walk the stack. If I delete the symbols for <I>temp.exe</I>, I get the following stack trace:</P><PRE lang=text>0:000&gt; kb
+ChildEBP RetAddr  Args to Child
+0012fef4 77c3e68d 77c5aca0 00000000 0012ff44 MSVCRT!_output+0x18
+0012ff38 00401044 00000000 77f944a8 00000007 MSVCRT!printf+0x35
+WARNING: Stack unwind information not available. Following frames may be wrong.
+0012ffc0 77e814c7 77f944a8 00000007 7ffdf000 temp+0x1044
+0012fff0 00000000 00401064 00000000 78746341 kernel32!BaseProcessStart+0x23
+0:000&gt;</PRE>
+<P>The same as ours! So, the debugger used symbolic information to walk the stack and display a more accurate picture. However, without symbolic information, there's function calls missing. That means, we cannot always trust the stack trace if symbols are wrong, missing or not complete. If we do not have symbol information for all modules, then we have a problem!</P>
+<P>If I continue with these tutorials, one of the next ones will attempt to explain symbols and validating them. However, I will attempt to show you one trick to validating function calls in this tutorial.</P>
+<P>As we can see, we notice we are missing a function call. How do you validate function calls? By verifying they were made.</P>
+<H3>Verifying Function Calls</H3>
+<P>I ran the program again and got a new stack trace.</P><PRE lang=text>0:000&gt; kb
+ChildEBP RetAddr  Args to Child
+0012fef4 77c3e68d 77c5aca0 00000000 0012ff44 MSVCRT!_output+0x18
+0012ff38 00401044 00000000 00000000 00000000 MSVCRT!printf+0x35
+WARNING: Stack unwind information not available. Following frames may be wrong.
+0012ffc0 77e814c7 00000000 00000000 7ffdf000 temp+0x1044
+0012fff0 00000000 00401064 00000000 78746341 kernel32!BaseProcessStart+0x23
+0:000&gt;</PRE>
+<P>Some of the values on the stack are different, but that's what happens when you run programs again. You're not guaranteed the same run every time!</P>
+<P>This is your first return value: 77c3e68d </P>
+<P>If you un-assemble it, you will get this:</P><PRE lang=asm>0:000&gt; u 77c3e68d
+MSVCRT!printf+0x35:
+77c3e68d 8945e0           <span class="code-keyword">mov</span>     [ebp-0x20],eax
+77c3e690 <span class="code-digit">56</span>               <span class="code-keyword">push</span>    <span class="code-keyword">esi</span>
+77c3e691 ff75e4           <span class="code-keyword">push</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [ebp-0x1c]</PRE>
+<P>The listing reads like this:</P><PRE lang=asm>&lt;address&gt; &lt;opcode&gt; &lt;assembly instruction in english <span class="code-keyword">or</span> mnemonic&gt;
+
+77c3e691 ff75e4  <span class="code-keyword">push</span> <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [ebp-0x1c]
+
+77c3e691 == Address
+ff75e4   == Opcode <span class="code-keyword">or</span> machine code.  This is what the CPU understands
+<span class="code-keyword">push</span> <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [ebp-0x1c]  == Assembly instruction in english. The mnemonic.</PRE>
+<P>This is the return value. What is a return value? It's the next instruction <B>after</B> a call is made. Thus, if we keep subtracting from this value, we will eventually un-assemble the call instruction. The trick is to un-assemble enough to make out the call function. Be warned though, Intel opcodes are variable. That means that they are <B>not</B> a fixed size and un-assembling in the <B>middle</B> of an instruction can generate a completely different instruction and even different instruction list! So, we have to guess. Usually if we go back enough, the instructions eventually get back on track and are unassembled correctly.</P><PRE lang=asm>0:000&gt; u 77c3e68d - <span class="code-digit">20</span>
+MSVCRT!printf+0x15:
+77c3e66d bdadffff59       <span class="code-keyword">mov</span>     ebp,0x59ffffad
+77c3e672 <span class="code-digit">59</span>               <span class="code-keyword">pop</span>     <span class="code-keyword">ecx</span>
+77c3e673 8365fc00         and     <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [ebp-0x4],0x0
+77c3e677 <span class="code-digit">56</span>               <span class="code-keyword">push</span>    <span class="code-keyword">esi</span>
+77c3e678 e8c7140000       <span class="code-keyword">call</span>    MSVCRT!_stbuf (77c3fb44)
+77c3e67d 8945e4           <span class="code-keyword">mov</span>     [ebp-0x1c],eax
+77c3e680 8d450c           <span class="code-keyword">lea</span>     eax,[ebp+0xc]
+77c3e683 <span class="code-digit">50</span>               <span class="code-keyword">push</span>    <span class="code-keyword">eax</span>
+0:000&gt; u
+MSVCRT!printf+0x2c:
+77c3e684 ff7508           <span class="code-keyword">push</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [ebp+0x8]
+77c3e687 <span class="code-digit">56</span>               <span class="code-keyword">push</span>    <span class="code-keyword">esi</span>
+<B>77c3e688 e8660a0000       <span class="code-keyword">call</span>    MSVCRT!_output (77c3f0f3)
+77c3e68d 8945e0           <span class="code-keyword">mov</span>     [ebp-0x20],eax</B></PRE>
+<P>As you can see, the return address is 77c3e68d. So, 77c3e688 is the function call. Thus, we are calling <CODE>_output</CODE>! So, that is a correct function call. Want to try another?</P>
+<P>The next return address listed in the stack trace is 00401044. Let's try the same:</P><PRE lang=asm>0:000&gt; u <span class="code-digit">00401044</span>  - <span class="code-digit">20</span>
+temp+0x1024:
+<span class="code-digit">00401024</span> <span class="code-digit">2408</span>             and     al,0x8
+<span class="code-digit">00401026</span> <span class="code-digit">57</span>               <span class="code-keyword">push</span>    <span class="code-keyword">edi</span>
+<span class="code-digit">00401027</span> <span class="code-digit">50</span>               <span class="code-keyword">push</span>    <span class="code-keyword">eax</span>
+<span class="code-digit">00401028</span> 6a04             <span class="code-keyword">push</span>    0x4
+0040102a <span class="code-digit">6820304000</span>       <span class="code-keyword">push</span>    0x403020
+0040102f <span class="code-digit">56</span>               <span class="code-keyword">push</span>    <span class="code-keyword">esi</span>
+<span class="code-digit">00401030</span> ff1500204000     <span class="code-keyword">call</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x2000 (<span class="code-digit">00402000</span>)]
+<span class="code-digit">00401036</span> <span class="code-digit">56</span>               <span class="code-keyword">push</span>    <span class="code-keyword">esi</span>
+0:000&gt; u
+temp+0x1037:
+<span class="code-digit">00401037</span> ff1508204000     <span class="code-keyword">call</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x2008 (<span class="code-digit">00402008</span>)]
+0040103d <span class="code-digit">57</span>               <span class="code-keyword">push</span>    <span class="code-keyword">edi</span>
+<B>0040103e ff1510204000     <span class="code-keyword">call</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x2010 (<span class="code-digit">00402010</span>)]
+<span class="code-digit">00401044</span> <span class="code-digit">59</span>               <span class="code-keyword">pop</span>     <span class="code-keyword">ecx</span></B></PRE>
+<P>Unfortunately yes, this is assembly. This is basically a function pointer. It means call the function at address 00402010.</P>
+<P>Use "DD" to get the value at the address.</P><PRE lang=text>0:000&gt; dd 00402010
+00402010  77c3e658</PRE>
+<P>We will now un-assemble this address since we know it's a function call.</P><PRE lang=asm>0:000&gt; u 77c3e658
+MSVCRT!printf:
+77c3e658 6a10             <span class="code-keyword">push</span>    0x10</PRE>
+<P>So, yes, we're calling <CODE>printf</CODE> here.</P>
+<P>The next return value is 77e814c7. Let's see if we're calling <CODE>temp</CODE>.</P><PRE lang=asm>0:000&gt; u 77e814c7 - <span class="code-digit">20</span>
+kernel32!BaseProcessStart+0x3:
+77e814a7 <span class="code-digit">1012</span>             adc     [edx],dl
+77e814a9 e977e8288e       <span class="code-keyword">jmp</span>     0610fd25
+77e814ae ffff             ???
+77e814b0 8365fc00         and     <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [ebp-0x4],0x0
+77e814b4 6a04             <span class="code-keyword">push</span>    0x4
+77e814b6 8d4508           <span class="code-keyword">lea</span>     eax,[ebp+0x8]
+77e814b9 <span class="code-digit">50</span>               <span class="code-keyword">push</span>    <span class="code-keyword">eax</span>
+77e814ba 6a09             <span class="code-keyword">push</span>    0x9
+0:000&gt; u
+kernel32!BaseProcessStart+0x18:
+77e814bc 6afe             <span class="code-keyword">push</span>    0xfe
+77e814be ff159c13e677 <span class="code-keyword">call</span> <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [kernel32!_imp__NtSetInformationThread (77e
+6139c)]
+<B>77e814c4 ff5508           <span class="code-keyword">call</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [ebp+0x8]
+77e814c7 <span class="code-digit">50</span>               <span class="code-keyword">push</span>    <span class="code-keyword">eax</span></B></PRE>
+<P>It's calling the first parameter. This is the first parameter:</P><PRE lang=asm>0012fff0 <span class="code-digit">00000000</span> <B><span class="code-digit">00401064</span></B> <span class="code-digit">00000000</span> <span class="code-digit">78746341</span> kernel32!BaseProcessStart+0x23
+
+0:000&gt; u <span class="code-digit">00401064</span>
+temp+0x1064:
+<span class="code-digit">00401064</span> <span class="code-digit">55</span>               <span class="code-keyword">push</span>    ebp
+<span class="code-digit">00401065</span> 8bec             <span class="code-keyword">mov</span>     ebp,esp
+<span class="code-digit">00401067</span> 6aff             <span class="code-keyword">push</span>    0xff</PRE>
+<P>So, it is calling something inside of <CODE>temp</CODE>. Unfortunately, we can't be certain it's the same function. In order to find that out, we need to un-assemble this function and walk through it. Remember, the call to <CODE>printf</CODE> is at:</P><PRE lang=asm>0040103e ff1510204000     <span class="code-keyword">call</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x2010 (<span class="code-digit">00402010</span>)]</PRE>
+<P>That means that we have to un-assemble this function from its start all the way to 0401064. Another way to do it would be to use DDS on the stack and find out if there are any other symbols on the stack and verify them.</P>
+<P>If we do DDS on <CODE lang=asm>EBP</CODE>, we find this:</P><PRE lang=text>0:000&gt; dds ebp
+0012fef4  0012ff38
+0012fef8  77c3e68d MSVCRT!printf+0x35
+0012fefc  77c5aca0 MSVCRT!_iob+0x20
+0012ff00  00000000
+0012ff04  0012ff44
+0012ff08  77c5aca0 MSVCRT!_iob+0x20
+0012ff0c  00000000
+0012ff10  000007e8
+0012ff14  7ffdf000
+0012ff18  0012ffb0
+0012ff1c  00000001
+0012ff20  0012ff0c
+0012ff24  ffffffff
+0012ff28  0012ffb0
+0012ff2c  77c33eb0 MSVCRT!_except_handler3
+0012ff30  77c146e0 MSVCRT!`string'+0x16c
+0012ff34  00000000
+0012ff38  0012ffc0
+<B>0012ff3c  00401044 temp+0x1044</B>
+0012ff40  00000000
+0012ff44  00000000
+0012ff48  00000000
+0012ff4c  00000000
+0012ff50  00401147 temp+0x1147
+0012ff54  00000001
+0012ff58  00322470
+0012ff5c  00322cf8
+0012ff60  00403000 temp+0x3000
+0012ff64  00403004 temp+0x3004
+0012ff68  0012ffa4
+0012ff6c  0012ff94
+0012ff70  0012ffa0
+0:000&gt; dds
+0012ff74  00000000
+0012ff78  0012ff98
+0012ff7c  00403008 temp+0x3008
+0012ff80  0040300c temp+0x300c
+0012ff84  00000000
+0012ff88  00000000
+0012ff8c  7ffdf000
+0012ff90  00000001
+0012ff94  00322470
+0012ff98  00000000
+0012ff9c  8053476f
+0012ffa0  00322cf8
+0012ffa4  00000001
+0012ffa8  0012ff84
+0012ffac  e3ce0b30
+0012ffb0  0012ffe0
+0012ffb4  00401210 temp+0x1210
+0012ffb8  004020d0 temp+0x20d0
+0012ffbc  00000000
+0012ffc0  0012fff0
+0012ffc4  77e814c7 kernel32!BaseProcessStart+0x23</PRE>
+<P>There are a lot of unknown <CODE>TEMP</CODE> + <CODE>xxx</CODE> values on the stack! The one in bold is the one we know is the return value for the <CODE>printf()</CODE>. 00401064, we know is the start address of the function called from <CODE>BaseProcessStart()</CODE>. What values are close to this one?</P>
+<P>This is where guess work comes in. If you think that function does not jump backwards, you could attempt to only look at values that are &gt; than this one. You could attempt to un-assemble every single reference, but you have to start somewhere. I would say, look at the symbols closest to this one first. Here is one:</P><PRE lang=asm>0012ff50  <span class="code-digit">00401147</span> temp+0x1147 
+
+0:000&gt; u <span class="code-digit">00401147</span> - <span class="code-digit">20</span>
+temp+0x1127:
+<span class="code-digit">00401127</span> <span class="code-digit">40</span>               <span class="code-keyword">inc</span>     <span class="code-keyword">eax</span>
+<span class="code-digit">00401128</span> 00e8             <span class="code-keyword">add</span>     al,ch
+0040112a <span class="code-digit">640000</span>           <span class="code-keyword">add</span>     fs:[<span class="code-keyword">eax</span>],al
+0040112d 00ff             <span class="code-keyword">add</span>     bh,bh
+0040112f <span class="code-digit">1520204000</span>       adc     eax,0x402020
+<span class="code-digit">00401134</span> 8b4de0           <span class="code-keyword">mov</span>     ecx,[ebp-0x20]
+<span class="code-digit">00401137</span> <span class="code-digit">8908</span>             <span class="code-keyword">mov</span>     [<span class="code-keyword">eax</span>],ecx
+<span class="code-digit">00401139</span> ff75e0           <span class="code-keyword">push</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [ebp-0x20]
+0:000&gt; u
+temp+0x113c:
+0040113c ff75d4           <span class="code-keyword">push</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [ebp-0x2c]
+0040113f ff75e4           <span class="code-keyword">push</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [ebp-0x1c]
+<B><span class="code-digit">00401142</span> e8b9feffff       <span class="code-keyword">call</span>    temp+0x1000 (<span class="code-digit">00401000</span>)</B>
+<span class="code-digit">00401147</span> 83c430           <span class="code-keyword">add</span>     esp,0x30</PRE>
+<P>We found this function call and it looks to be a valid address. The way to distinguish an invalid return value on the stack is, the previous instruction is <B>not</B> a <CODE lang=asm><span class="code-keyword">CALL</span></CODE> instruction. That is one way to distinguish return values from just values on the stack that may be a symbol, but not return value.</P>
+<P>Let's un-assemble this one:</P><PRE lang=asm>0:000&gt; u <span class="code-digit">00401000</span>
+temp+0x1000:
+<span class="code-digit">00401000</span> <span class="code-digit">51</span>               <span class="code-keyword">push</span>    <span class="code-keyword">ecx</span>
+<span class="code-digit">00401001</span> <span class="code-digit">56</span>               <span class="code-keyword">push</span>    <span class="code-keyword">esi</span>
+<span class="code-digit">00401002</span> <span class="code-digit">57</span>               <span class="code-keyword">push</span>    <span class="code-keyword">edi</span>
+<span class="code-digit">00401003</span> 33ff             <span class="code-keyword">xor</span>     edi,edi
+<span class="code-digit">00401005</span> <span class="code-digit">57</span>               <span class="code-keyword">push</span>    <span class="code-keyword">edi</span>
+<span class="code-digit">00401006</span> <span class="code-digit">57</span>               <span class="code-keyword">push</span>    <span class="code-keyword">edi</span>
+<span class="code-digit">00401007</span> 6a03             <span class="code-keyword">push</span>    0x3
+<span class="code-digit">00401009</span> <span class="code-digit">57</span>               <span class="code-keyword">push</span>    <span class="code-keyword">edi</span>
+0:000&gt; u
+temp+0x100a:
+0040100a <span class="code-digit">57</span>               <span class="code-keyword">push</span>    <span class="code-keyword">edi</span>
+0040100b <span class="code-digit">6800000080</span>       <span class="code-keyword">push</span>    0x80000000
+<span class="code-digit">00401010</span> <span class="code-digit">6810304000</span>       <span class="code-keyword">push</span>    0x403010
+<span class="code-digit">00401015</span> ff1504204000     <span class="code-keyword">call</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x2004 (<span class="code-digit">00402004</span>)]
+0040101b 8bf0             <span class="code-keyword">mov</span>     esi,eax
+0040101d 83feff           <span class="code-keyword">cmp</span>     esi,0xffffffff
+<span class="code-digit">00401020</span> 741b             jz      temp+0x103d (0040103d)
+<span class="code-digit">00401022</span> 8d442408         <span class="code-keyword">lea</span>     eax,[esp+0x8]
+0:000&gt; u
+temp+0x1026:
+<span class="code-digit">00401026</span> <span class="code-digit">57</span>               <span class="code-keyword">push</span>    <span class="code-keyword">edi</span>
+<span class="code-digit">00401027</span> <span class="code-digit">50</span>               <span class="code-keyword">push</span>    <span class="code-keyword">eax</span>
+<span class="code-digit">00401028</span> 6a04             <span class="code-keyword">push</span>    0x4
+0040102a <span class="code-digit">6820304000</span>       <span class="code-keyword">push</span>    0x403020
+0040102f <span class="code-digit">56</span>               <span class="code-keyword">push</span>    <span class="code-keyword">esi</span>
+<span class="code-digit">00401030</span> ff1500204000     <span class="code-keyword">call</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x2000 (<span class="code-digit">00402000</span>)]
+<span class="code-digit">00401036</span> <span class="code-digit">56</span>               <span class="code-keyword">push</span>    <span class="code-keyword">esi</span>
+<span class="code-digit">00401037</span> ff1508204000     <span class="code-keyword">call</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x2008 (<span class="code-digit">00402008</span>)]
+0:000&gt;
+temp+0x103d:
+0040103d <span class="code-digit">57</span>               <span class="code-keyword">push</span>    <span class="code-keyword">edi</span>
+<BB>0040103e ff1510204000     <span class="code-keyword">call</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x2010 (<span class="code-digit">00402010</span>)]</B>
+<span class="code-digit">00401044</span> <span class="code-digit">59</span>               <span class="code-keyword">pop</span>     <span class="code-keyword">ecx</span>
+<span class="code-digit">00401045</span> 5f               <span class="code-keyword">pop</span>     <span class="code-keyword">edi</span>
+<span class="code-digit">00401046</span> 33c0             <span class="code-keyword">xor</span>     eax,eax
+<span class="code-digit">00401048</span> 5e               <span class="code-keyword">pop</span>     <span class="code-keyword">esi</span>
+<span class="code-digit">00401049</span> <span class="code-digit">59</span>               <span class="code-keyword">pop</span>     <span class="code-keyword">ecx</span>
+0040104a c3               <span class="code-keyword">ret</span>
+0:000&gt;</PRE>
+<P>This looks like a valid function call and looks like it calls <CODE>printf</CODE>. So, we could then disassemble the original function call until we reached this call, to see if it called it, or if there's yet another function call in between.</P><PRE lang=asm>0:000&gt; u <span class="code-digit">0401064</span>
+temp+0x1064:
+<span class="code-digit">00401064</span> <span class="code-digit">55</span>               <span class="code-keyword">push</span>    ebp
+<span class="code-digit">00401065</span> 8bec             <span class="code-keyword">mov</span>     ebp,esp
+<span class="code-digit">00401067</span> 6aff             <span class="code-keyword">push</span>    0xff
+<span class="code-digit">00401069</span> 68d0204000       <span class="code-keyword">push</span>    0x4020d0
+0040106e <span class="code-digit">6810124000</span>       <span class="code-keyword">push</span>    0x401210
+<span class="code-digit">00401073</span> 64a100000000     <span class="code-keyword">mov</span>     eax,fs:[<span class="code-digit">00000000</span>]
+<span class="code-digit">00401079</span> <span class="code-digit">50</span>               <span class="code-keyword">push</span>    <span class="code-keyword">eax</span>
+0040107a <span class="code-digit">64892500000000</span>   <span class="code-keyword">mov</span>     fs:[<span class="code-digit">00000000</span>],esp
+0:000&gt; u
+temp+0x1081:
+<span class="code-digit">00401081</span> 83ec20           <span class="code-keyword">sub</span>     esp,0x20
+<span class="code-digit">00401084</span> <span class="code-digit">53</span>               <span class="code-keyword">push</span>    ebx
+<span class="code-digit">00401085</span> <span class="code-digit">56</span>               <span class="code-keyword">push</span>    <span class="code-keyword">esi</span>
+<span class="code-digit">00401086</span> <span class="code-digit">57</span>               <span class="code-keyword">push</span>    <span class="code-keyword">edi</span>
+<span class="code-digit">00401087</span> 8965e8           <span class="code-keyword">mov</span>     [ebp-0x18],esp
+0040108a 8365fc00         and     <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [ebp-0x4],0x0
+0040108e 6a01             <span class="code-keyword">push</span>    0x1
+<span class="code-digit">00401090</span> ff153c204000     <span class="code-keyword">call</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x203c (0040203c)]
+0:000&gt;
+temp+0x1096:
+<span class="code-digit">00401096</span> <span class="code-digit">59</span>               <span class="code-keyword">pop</span>     <span class="code-keyword">ecx</span>
+<span class="code-digit">00401097</span> 830d40304000ff   <span class="code-keyword">or</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x3040 (<span class="code-digit">00403040</span>)],0xffffffff
+0040109e 830d44304000ff   <span class="code-keyword">or</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x3044 (<span class="code-digit">00403044</span>)],0xffffffff
+004010a5 ff1538204000     <span class="code-keyword">call</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x2038 (<span class="code-digit">00402038</span>)]
+004010ab 8b0d3c304000     <span class="code-keyword">mov</span>     ecx,[temp+0x303c (0040303c)]
+004010b1 <span class="code-digit">8908</span>             <span class="code-keyword">mov</span>     [<span class="code-keyword">eax</span>],ecx
+004010b3 ff1534204000     <span class="code-keyword">call</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x2034 (<span class="code-digit">00402034</span>)]
+004010b9 8b0d38304000     <span class="code-keyword">mov</span>     ecx,[temp+0x3038 (<span class="code-digit">00403038</span>)]
+0:000&gt;
+temp+0x10bf:
+004010bf <span class="code-digit">8908</span>             <span class="code-keyword">mov</span>     [<span class="code-keyword">eax</span>],ecx
+004010c1 a130204000       <span class="code-keyword">mov</span>     eax,[temp+0x2030 (<span class="code-digit">00402030</span>)]
+004010c6 8b00             <span class="code-keyword">mov</span>     eax,[<span class="code-keyword">eax</span>]
+004010c8 a348304000       <span class="code-keyword">mov</span>     [temp+0x3048 (<span class="code-digit">00403048</span>)],eax
+004010cd e8e1000000       <span class="code-keyword">call</span>    temp+0x11b3 (004011b3)
+004010d2 833d2830400000   <span class="code-keyword">cmp</span>     <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x3028 (<span class="code-digit">00403028</span>)],0x0
+004010d9 750c             <span class="code-keyword">jnz</span>     temp+0x10e7 (004010e7)
+004010db 68b0114000       <span class="code-keyword">push</span>    0x4011b0
+0:000&gt;
+temp+0x10e0:
+004010e0 ff152c204000     <span class="code-keyword">call</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x202c (0040202c)]
+004010e6 <span class="code-digit">59</span>               <span class="code-keyword">pop</span>     <span class="code-keyword">ecx</span>
+004010e7 e8ac000000       <span class="code-keyword">call</span>    temp+0x1198 (<span class="code-digit">00401198</span>)
+004010ec 680c304000       <span class="code-keyword">push</span>    0x40300c
+004010f1 <span class="code-digit">6808304000</span>       <span class="code-keyword">push</span>    0x403008
+004010f6 e897000000       <span class="code-keyword">call</span>    temp+0x1192 (<span class="code-digit">00401192</span>)
+004010fb a134304000       <span class="code-keyword">mov</span>     eax,[temp+0x3034 (<span class="code-digit">00403034</span>)]
+<span class="code-digit">00401100</span> 8945d8           <span class="code-keyword">mov</span>     [ebp-0x28],eax
+0:000&gt;
+temp+0x1103:
+<span class="code-digit">00401103</span> 8d45d8           <span class="code-keyword">lea</span>     eax,[ebp-0x28]
+<span class="code-digit">00401106</span> <span class="code-digit">50</span>               <span class="code-keyword">push</span>    <span class="code-keyword">eax</span>
+<span class="code-digit">00401107</span> ff3530304000     <span class="code-keyword">push</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x3030 (<span class="code-digit">00403030</span>)]
+0040110d 8d45e0           <span class="code-keyword">lea</span>     eax,[ebp-0x20]
+<span class="code-digit">00401110</span> <span class="code-digit">50</span>               <span class="code-keyword">push</span>    <span class="code-keyword">eax</span>
+<span class="code-digit">00401111</span> 8d45d4           <span class="code-keyword">lea</span>     eax,[ebp-0x2c]
+<span class="code-digit">00401114</span> <span class="code-digit">50</span>               <span class="code-keyword">push</span>    <span class="code-keyword">eax</span>
+<span class="code-digit">00401115</span> 8d45e4           <span class="code-keyword">lea</span>     eax,[ebp-0x1c]
+0:000&gt;
+temp+0x1118:
+<span class="code-digit">00401118</span> <span class="code-digit">50</span>               <span class="code-keyword">push</span>    <span class="code-keyword">eax</span>
+<span class="code-digit">00401119</span> ff1524204000     <span class="code-keyword">call</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x2024 (<span class="code-digit">00402024</span>)]
+0040111f <span class="code-digit">6804304000</span>       <span class="code-keyword">push</span>    0x403004
+<span class="code-digit">00401124</span> <span class="code-digit">6800304000</span>       <span class="code-keyword">push</span>    0x403000
+<span class="code-digit">00401129</span> e864000000       <span class="code-keyword">call</span>    temp+0x1192 (<span class="code-digit">00401192</span>)
+0040112e ff1520204000     <span class="code-keyword">call</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [temp+0x2020 (<span class="code-digit">00402020</span>)]
+<span class="code-digit">00401134</span> 8b4de0           <span class="code-keyword">mov</span>     ecx,[ebp-0x20]
+<span class="code-digit">00401137</span> <span class="code-digit">8908</span>             <span class="code-keyword">mov</span>     [<span class="code-keyword">eax</span>],ecx
+0:000&gt;
+temp+0x1139:
+<span class="code-digit">00401139</span> ff75e0           <span class="code-keyword">push</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [ebp-0x20]
+0040113c ff75d4           <span class="code-keyword">push</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [ebp-0x2c]
+0040113f ff75e4           <span class="code-keyword">push</span>    <span class="code-keyword">dword</span> <span class="code-keyword">ptr</span> [ebp-0x1c]
+<B><span class="code-digit">00401142</span> e8b9feffff       <span class="code-keyword">call</span>    temp+0x1000 (<span class="code-digit">00401000</span>)</B>
+<span class="code-digit">00401147</span> 83c430           <span class="code-keyword">add</span>     esp,0x30</PRE>
+<P>If you know assembly, you can simply read through the logic and bet that it could have made it here or if it could not make it here. If it could, then provided two functions do not share the same assembled code base, there are two function calls missing. Now, if you just find their return values on the stack, you can find their parameter list. What can we assume from this? Some of these functions do not use <CODE lang=asm>EBP</CODE>, thus we could not get an accurate stack trace. When that happens, we need to verify our trace. As we can see, the previous function did not call <CODE>printf</CODE>, but another one did that it called.</P>
+<P>00401147 is the missing return value. If we find it on the stack, we can update the correct parameters:</P><PRE lang=text>00000000
+00401147 temp+0x1147
+00000001
+00322470
+00322cf8</PRE>
+<P>So, here's the one generated from KB:</P><PRE lang=text>0:000&gt; kb
+ChildEBP RetAddr  Args to Child
+0012fef4 77c3e68d 77c5aca0 00000000 0012ff44 MSVCRT!_output+0x18
+0012ff38 00401044 00000000 00000000 00000000 MSVCRT!printf+0x35
+WARNING: Stack unwind information not available. Following frames may be wrong.
+0012ffc0 77e814c7 00000000 00000000 7ffdf000 temp+0x1044
+0012fff0 00000000 00401064 00000000 78746341 kernel32!BaseProcessStart+0x23
+0:000&gt;</PRE>
+<P>Here's our modified one:</P><PRE lang=text>ChildEBP RetAddr  Args to Child
+0012fef4 77c3e68d 77c5aca0 00000000 0012ff44 MSVCRT!_output+0x18
+0012ff38 00401044 00000000 00000000 00000000 MSVCRT!printf+0x35
+WARNING: Stack unwind information not available. Following frames may be wrong.
+
+<B>xxxxxxxx  0401147  00000001 00322470 00322cf8 temp+0x1044</B>
+0012ffc0 77e814c7 00000000 00000000 7ffdf000 <B>temp+0x1147</B>
+0012fff0 00000000 00401064 00000000 78746341 kernel32!BaseProcessStart+0x23
+0:000&gt;</PRE>
+<P>We know that the <CODE>temp</CODE> that calls <CODE>printf()</CODE> is <CODE>main()</CODE>. So, <CODE>argc</CODE> = 1, <CODE>*argv[]</CODE> = 322470.</P>
+<P><CODE>*argv[]</CODE> is a pointer to an array of pointers which are ANSI strings.</P><PRE lang=text>0:000&gt; dd 322470
+00322470  <B>00322478</B> 00000000 706d6574 ababab00
+00322480  abababab feeefeab 00000000 00000000
+00322490  000500c5 feee0400 00325028 00320178
+003224a0  feeefeee feeefeee feeefeee feeefeee
+003224b0  feeefeee feeefeee feeefeee feeefeee
+003224c0  feeefeee feeefeee feeefeee feeefeee
+003224d0  feeefeee feeefeee feeefeee feeefeee
+003224e0  feeefeee feeefeee feeefeee feeefeee
+0:000&gt; da <B>00322478</B>
+00322478  &quot;temp&quot;</PRE>
+<P>Dumping the array, which only contains 1 string as per <CODE>argc</CODE>, we can then use the "da" command to view that string as shown above.</P>
+<H2>Multiple Return Addresses On The Stack?</H2>
+<P>Why are there multiple return addresses on the stack? The stack may generally be initialized to zero, but as it's being used, it becomes dirty. You know that local variables aren't always initialized, so if you make a function call, those values aren't reset to zero when the stack moves up. If you pop a value off the stack, the stack may decrement, but the values stay unless they are physically cleaned up. Sometimes, the stack optimizes things and doesn't clean up variables as well. So, seeing "ghost" values on the stack is very common.</P>
+<P>This is not always desirable to leave values on the stack. For example, if your function puts the password on the stack and traps sometime later. A stack dump may still show the password on the stack! So, sometimes when you have sensitive information, you may want to clean up the values on the stack before you return. One way to do this is with the <CODE>SecureZeroMemory()</CODE> API. This can be used to clear memory securely as calling other APIs may be "optimized" out of the code, for example, if you call them before you return. The compiler knows you're not going to use the variable anymore and may not perform the clearing.</P>
+<H2>Buffer Overflows</H2>
+<P>Buffer overflows are a common occurrence on the stack. The stack grows down in memory, but arrays grow up in memory. This is because you usually "increment" a pointer or array when using it to get to the next index, rather than decrementing it. Thus let's say this was your C function:</P><PRE>{
+      DWORD MyArray[<span class="code-digit">4</span>];
+      <span class="code-keyword">int</span> Index;</PRE>
+<P>That would evaluate to a stack like this:</P><PRE lang=text>424 [Return Address               ]
+420 [ Previous Base Pointer       ]
+416 [ Local Array Variable Index 3]
+412 [ Local Array Variable Index 2]
+408 [ Local Array Variable Index 1]
+404 [ Local Array Variable Index 0]
+400 [ Local Integer Value         ]</PRE>
+<P>As you can see, if you index your array to <CODE>MyArray[<span class="code-digit">4</span>]</CODE> or <CODE>MyArray[<span class="code-digit">5</span>]</CODE>, you overwrite critical values that may cause you to trap! Overwriting the previous base pointer may not harm if the calling function does not use it anymore. However, overwriting the return address will most definitely cause a trap! This is why you must always be careful to stay within your array boundaries when dealing with local variables. You could overwrite other local variables, the return address, the parameters, or just about anything!</P>
+<H3>Windows 2003</H3>
+<P>Windows 2003 has a new method to attempt to prevent buffer overflows. This can be compiled in VS.NET using the GS flags. A random value is generated as a cookie on startup of the application. The cookie is then XOR'd with the return address of the function and placed on the stack after the base pointer. This is a simple example:</P><PRE lang=text>[Return Address            ]
+[Previous Base Pointer     ]
+[Cookie XOR Return Address ]</PRE>
+<P>Upon return, the cookie is checked against the return value. If they're unchanged, then the return occurs, if not, then we have a problem. The reason for this security is not to prevent code from trapping without proper handling, but rather to protect code from executing injected code. A security risk is when someone finds out how to overflow a buffer with actual code and an address to that code. This will cause the program to return to and execute that code.</P>
+<P>This URL provides the full details of this:</P>
+<UL>
+<LI><A href="http://msdn.microsoft.com/library/?url=/library/en-us/dv_vstechart/html/vctchCompilerSecurityChecksInDepth.asp?frame=true" target=_blank>MSDN</A> </LI></UL>
+<H2>Conclusion</H2>
+<P>I have confused beginners and probably bored advanced programmers, however, it's hard to portray advanced concepts in a simple manner. I am trying my best though. If you like or dislike these tutorials, leave me a comment. If you want these to end, let me know too!</P>
+<P>I've probably started off too simple then got too advanced too fast. I can't help it though, programmers should study this information and supplement it with other sources to gain full knowledge on the subject. Do not take what you read or posted on message boards as concrete fact. Everyone is human, everyone errors and not one person knows everything. These sites let just about anyone post information, so always be skeptical. Let me know if you found an error. Thanks.</P>
+
+
+
+
+
+
+						</div>
+						<!-- Article Text End -->
+
+						
+						
+						<h2>License</h2>
+						<div id="LicenseTerms"><p>This article has no explicit license attached to it but may contain usage terms in the article text or the download files themselves. If in doubt please contact the author via the discussion board below.</p><p>A list of licenses authors might use can be found <a href="/info/Licenses.aspx">here</a></p></div>
+						
+
+						
+						<h2 id="ctl00_AboutHeading">About the Author</h2>
+
+						<div class="float-right">
+						<div class="lqm_ad" width="300px" height="250px" lqm_channel="1" lqm_publisher="495" lqm_zone="77" lqm_format="6" lqm_tags='VC6,VC7,VC7.1,Win2K,WinXP,Win2003,Visual-Studio,MFC,Dev,QA,ASM,Intermediate'></div>
+						</div>
+
+						
+						
+   
+<table cellpadding="0" cellspacing="5" border="0">
+<tr valign="top">
+<td id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberPhotoTable" valign="top" style="width:155px;">
+	<b><a id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberProfileLink" href="/Members/Toby-Opferman">Toby Opferman</a></b><br /><br />
+	<center><img id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberPhoto" src="/script/Membership/ProfileImages/{1D312E1D-1B8D-47F8-8ED1-2985F85E7E68}.gif" style="border-width:0px;" /></center>
+
+	<div class="small-text">
+		<span id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberJobTitle">Engineer</span><br />
+		<span id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberCompany">Intel</span><br />
+		<span id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberLocation"><img src="/script/Geo/Images/US.gif" alt="United States" width="16px" height="11px" /> United States</span><br />
+		<br />
+		<span id="ctl00_AboutAuthorRptr_ctl00_AboutAuthor_memberType">Member</span><br />
+		
+
+		
+	</div>
+</td>
+
+<td>
+	Toby Opferman has worked in just about all aspects of Windows development including applications, services and drivers.<br />
+&nbsp;<br />
+He has also played a variety of roles professionally on a wide range of projects.  This has included pure researching roles, architect roles and developer roles.  He also was also solely responsible for debugging traps and blue screens for a number of years.<br />
+&nbsp;<br />
+Previously of Citrix Systems he is very experienced in the area of Terminal Services.  He currently works on Operating Systems and low level architecture at Intel.<br />	
+</td>
+</tr>
+</table><br />
+						
+						
+
+						<div class="clearfix"></div>
+
+						
+						<div id="ctl00_RateArticleRow" class="clearfix voting-bar">
+						<div class="float-left" style="padding-top:8px"><a  href="/KB/debug/cdbntsd2.aspx#_articleTop">Article Top</a></div>
+						<div class="float-right align-right"><div id="ctl00_RateArticle_RateItemWrapper" class="container-rating small-text" name="RateItem_6470">
+
+	<table width="100%" cellpadding="0" cellspacing="0" class="small-text">
+	<tr>
+		
+	
+		<td class="voteTbl" style="white-space:nowrap" align="right">
+			<table class="small-text">
+			<tr class="">
+				<td id="ctl00_RateArticle_SignIn" nowrap="nowrap">
+					<a href="#SignUp">Sign Up</a> to vote for this article
+				</td>
+
+				
+				
+				
+				
+				
+			</tr>
+			</table>
+			<span id="ctl00_RateArticle_ErrorMessage" class="error"></span>
+		</td>
+	</tr>
+	</table>
+	<div class="hover-container">
+		<div id="ctl00_RateArticle_RCD" class="rating-comment align-left float-right">
+			Add a reason or comment to your vote: <a href="#" id="clear-rate_ctl00_RateArticle_RCD" 
+				title="close">x</a><br />
+			<textarea class="RateComment" rows="5" cols="60" style="width:98%;"></textarea>
+			<span id="ctl00_RateArticle_CommentReq" class="subdue">Votes of 3 or less require a comment</span>
+		</div>
+	</div>
+</div>
+</div>
+						</div>
+						
+
+					</form>
+
+					
+					<div style="margin:auto;padding:0px 10px;white-space:nowrap;overflow:hidden;width:468px;height:60px">		  
+						<div class="lqm_ad" width="468px" height="60px" lqm_channel="1" lqm_publisher="495" lqm_zone="77" lqm_format="1" lqm_tags='VC6,VC7,VC7.1,Win2K,WinXP,Win2003,Visual-Studio,MFC,Dev,QA,ASM,Intermediate'></div>
+					</div>
+					
+
+					
+					
+					<h2>Comments and Discussions</h2>
+					<a name="_comments" id="_comments">&nbsp;</a><div id="_MessageBoard" onclick="return SwitchMessage(event, null)">
+<table id="ForumTable" class="box forum" cellpadding="0" cellspacing="0">
+<tr>
+<td class="forum-header1 highlight"><b>You must <a href="/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx%3ffid%3d36054">Sign In</a> to use this message board.</b> (<a href="https://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx%3ffid%3d36054">secure sign-in</a>)</td>
+</tr><tr>
+<td><table width="100%" border="0" cellpadding="3px" cellspacing="0">
+<tr class="forum-header1">
+<td style="white-space:nowrap;"><img src="http://s.codeproject.com/Images/info-16.gif" alt="FAQ" style="border-width:0;width:16px;height:16px;vertical-align:middle;" />&nbsp;<a href="/KB/FAQs/MessageBoardsFAQ.aspx"><b>FAQ</b></a>&nbsp;</td><td colspan="2" style="white-space:nowrap;text-align:right;"><form action="/Search.aspx?fid=0" method="get" style="margin:0;padding:0;">
+<input type="hidden" name="fid" value="36054" /><input type="text" class="Frm_Input" name="qf" />&nbsp;<input type="submit" value="Search" class="button" />
+</form></td>
+</tr><tr class="forum-header2">
+<td colspan="3" style="width:100%;"><div style="text-align:right;">
+<form action="/script/Forums/SetOptions.aspx?floc=%2fKB%2fdebug%2fcdbntsd2.aspx&amp;fid=36054" method="get" style="margin:0;padding:0;">
+<input type="hidden" name="fid" value="36054" /><input type="hidden" name="currentQS" value="?floc=%2fKB%2fdebug%2fcdbntsd2.aspx&amp;fid=36054" /><input type="hidden" name="floc" value="/KB/debug/cdbntsd2.aspx" /><input type="checkbox" name="prof" id="prof" style="vertical-align:middle;" /><label for="prof">Profile popups</label>&nbsp;&nbsp;&nbsp;&nbsp;Noise level<select size="1" class="Frm_DropDown" name="noise">
+<option value="1">Very High</option><option value="2">High</option><option selected value="3">Medium</option><option value="4">Low</option><option value="5">Very Low</option>
+</select>&nbsp;&nbsp;Layout<select size="1" class="Frm_DropDown" name="view">
+<option selected value="Quick">Normal</option><option value="Topic">Expand Posts only</option><option value="Expanded">Expand Posts & Replies</option><option value="Thread">Thread View</option><option value="Normal">No Javascript</option><option value="Preview">No JS + Preview</option>
+</select>&nbsp;&nbsp;Per page<select size="1" class="Frm_DropDown" name="mpp">
+<option value="10">10</option><option selected value="25">25</option><option value="50">50</option>
+</select>&nbsp;&nbsp;&nbsp;<input type="submit" value="Update" name="SetOpt" class="button" />
+</form>
+</div></td>
+</tr>
+</table></td>
+</tr><tr>
+<td><a name="xx0xx"></a><table border="0" cellpadding="2px" cellspacing="0" width="100%">
+<tr class="forum-navbar">
+<td>&nbsp;</td><td> <a href="/KB/debug/cdbntsd2.aspx?fid=36054">Refresh</a></td><td style="text-align:right;white-space:nowrap;"><span class="subdue">First</span> <span class="subdue">Prev</span> <span class="subdue">Next</span></td>
+</tr>
+</table></td>
+</tr><tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%" class="fixed-layout blank-background">
+<tr>
+<td><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="5px" alt="" /></td>
+</tr><tr class="MsgHd Rt HdUnSel " id="F3759768_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx3759768xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="3759768" parent="0" thread="3759768" href="/Messages/3759768/My-vote-of-4.aspx">My vote of 4</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td class="Frm_MsgIcon"><img border="0" src="http://s.codeproject.com/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=6521763">taqdeer</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">20:02 5 Feb '11 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F3759768_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Very informative and concise. The example given is in assembly language, though very good but needs some extra efforts to understand the command. I would love it if the author can present with example from VB.Net or C#.<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Sign In</a>·<a class="toolbar" href="/KB/debug/cdbntsd2.aspx?fid=36054&amp;tid=3759768" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/3759768/My-vote-of-4.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF3759768" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd LoVote Rt HdUnSel " id="F1379300_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx1379300xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="1379300" parent="0" thread="1379300" href="/Messages/1379300/Excellent-article.aspx">Excellent article</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td class="Frm_MsgIcon"><img border="0" src="http://s.codeproject.com/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=1705546">Qasida</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">7:32 21 Feb '06 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F1379300_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">I found this article to be a quantum leap for me as I am a virtual beginner in the world of debugging (kernel + user mode, etc), and this was actually the first tutorial that gave me the additional knowledge necessary to troubleshoot at a deeper level in WinDbg, etc. without relying simply on "!analyze -v" and trying to stumble through the debugger help file. Thanks a bunch Toby. <br />
+&nbsp;<br />
+chris <br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Sign In</a>·<a class="toolbar" href="/KB/debug/cdbntsd2.aspx?fid=36054&amp;tid=1379300" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/1379300/Excellent-article.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF1379300" style="white-space:nowrap;">2.00/5 (1 vote) </span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd Rt HdUnSel " id="F1172225_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx1172225xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="1172225" parent="0" thread="1172225" href="/Messages/1172225/Error.aspx">Error</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td class="Frm_MsgIcon"><img border="0" src="http://s.codeproject.com/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=961412">Toby Opferman</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">20:32 23 Jul '05 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F1172225_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">"Fast Call" in the article should be "This Call".  "Fast Call" is when the first two parameters are passed in using ECX and EDX.  "This Call" is when C++ passes the this pointer in ECX.<br />
+&nbsp;<br />
+ <br />
+&nbsp;<br />
+8bc7c0ec02c0e404c0cc0680f7018827ebee<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Sign In</a>·<a class="toolbar" href="/KB/debug/cdbntsd2.aspx?fid=36054&amp;tid=1172225" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/1172225/Error.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF1172225" style="white-space:nowrap;">4.00/5 (2 votes) </span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd Rt HdUnSel " id="F1117753_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx1117753xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="1117753" parent="0" thread="1117753" href="/Messages/1117753/Base-pointer.aspx">Base pointer</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td class="Frm_MsgIcon"><img border="0" src="http://s.codeproject.com/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=1546584">ArunKumar Yalamarthy</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">3:50 26 May '05 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F1117753_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Hi Toby,<br />
+&nbsp;<br />
+You wrote in your article that <br />
+"Generally, it's EBP + Value to get to function parameters and EBP - Value to get to local variables"<br />
+as you said this is true when standard stack frames are created (generally <br />
+standard stack frames are created when optimize size is selected instead of optimize speed), but when we have optimize speed, we observe positive offsets of stack like esp+xxx refering to variables..and it seems FPO (frame pointer omission data) is generated, can you explain us (may be by writing one more article) on how to interpret this FPO data?<br />
+&nbsp;<br />
+ <br />
+&nbsp;<br />
+Thanks in advance<br />
+ArunKumar.Y<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Sign In</a>·<a class="toolbar" href="/KB/debug/cdbntsd2.aspx?fid=36054&amp;tid=1117753" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/1117753/Base-pointer.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF1117753" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HiVote HdUnSel " id="F1119454_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="34px" class="Frm_MsgIndent"><a name="xx1119454xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="1119454" parent="1117753" thread="1117753" href="/Messages/1119454/Re-Base-pointer.aspx">Re: Base pointer</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td class="Frm_MsgIcon"><img border="0" src="http://s.codeproject.com/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=961412">Toby Opferman</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">21:38 27 May '05 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F1119454_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:34px;"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="34px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Speed and Size you usually find a mixure of both it depends on how the function is written and what it is doing.  As an example for size, the "PUSH EBP MOV EBP, ESP" and the "POP EBP" is 4 bytes.  So, setting up the frame pointer does take some bytes but it can also optimize out bytes depending on how the arguements are used in the function (Dereferencing ESP + x as opposed to EBP + x however is 1 more byte per instruction).<br />
+&nbsp;<br />
+The same goes for speed.  If there's no reason for a scratch variable there could still be a frame pointer.  Also remember, the compiler also attempts to do a good job, it's not perfect and other options you choose could also help in determining how certain functions are generated.  <br />
+&nbsp;<br />
+As I mention though usually applications have a combination of functions with and without frame pointers.<br />
+&nbsp;<br />
+In any case, the FPO data is stored in the PDB symbols and should be automatically used when you do a "kb" with the correct symbols.  <br />
+&nbsp;<br />
+In the case of a frame pointer you have EBP + x to get the arguments and EBP - y to get the variables.  In the case of a stack pointer everything is obviously ESP + x and ESP + y since there is no valid data below the stack pointer's current location.  The x and y offsets to variables and parameters will change with each PUSH in the function.<br />
+&nbsp;<br />
+Consider this simple example:<br />
+&nbsp;<br />
+void myfunction(x, y, z)<br />
+{<br />
+    someotherfunc(x, y, z);<br />
+}<br />
+&nbsp;<br />
+With a frame pointer the code would probably look like this:<br />
+&nbsp;<br />
+PUSH EBP<br />
+MOV ESP, EBP<br />
+PUSH [EBP + 10h]<br />
+PUSH [EBP + 0ch]<br />
+PUSH [EBP + 08h]<br />
+CALL someotherfunc<br />
+POP EBP<br />
+RET 0Ch<br />
+&nbsp;<br />
+With no frame pointer the code would look like this:<br />
+&nbsp;<br />
+PUSH [ESP + 0Ch] ; x = ESP + 4, y = ESP + 8, z = ESP + 12<br />
+PUSH [ESP + 0Ch] ; x = ESP + 8, y = ESP + 12, z = ESP + 16<br />
+PUSH [ESP + 0Ch] ; x = ESP + 12, y = ESP + 16, z = ESP + 20<br />
+CALL someotherfunc<br />
+RET 0Ch<br />
+&nbsp;<br />
+(Or it could be generated into a single "JMP" instruction to the "someotherfunc" obviously, but that wouldn't fit into an example of using ESP to reference the stack.)<br />
+&nbsp;<br />
+So, in order to interprete what exactly is being dereferenced when ESP is being used you need to know the location of ESP (i.e., how many PUSHes occured and how many SUB's occured).<br />
+&nbsp;<br />
+Is this basically what you are referring to when you talk about interpreting "FPO" data or do you mean you want to know how the FPO data is stored in the debug symbols?<br />
+&nbsp;<br />
+<br />
+ <br />
+&nbsp;<br />
+8bc7c0ec02c0e404c0cc0680f7018827ebee<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Sign In</a>·<a class="toolbar" href="/KB/debug/cdbntsd2.aspx?fid=36054&amp;tid=1117753" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/1119454/Re-Base-pointer.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF1119454" style="white-space:nowrap;">5.00/5 (1 vote) </span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F1125022_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="52px" class="Frm_MsgIndent"><a name="xx1125022xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="1125022" parent="1119454" thread="1117753" href="/Messages/1125022/Re-Base-pointer.aspx">Re: Base pointer</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td class="Frm_MsgIcon"><img border="0" src="http://s.codeproject.com/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=1546584">ArunKumar Yalamarthy</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">21:11 2 Jun '05 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F1125022_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:52px;"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="52px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Thanks! It was really good explanation <br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Sign In</a>·<a class="toolbar" href="/KB/debug/cdbntsd2.aspx?fid=36054&amp;tid=1117753" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/1125022/Re-Base-pointer.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF1125022" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F1125355_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="52px" class="Frm_MsgIndent"><a name="xx1125355xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="1125355" parent="1119454" thread="1117753" href="/Messages/1125355/Re-Base-pointer.aspx">Re: Base pointer</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td class="Frm_MsgIcon"><img border="0" src="http://s.codeproject.com/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=1546584">ArunKumar Yalamarthy</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">3:43 3 Jun '05 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F1125355_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:52px;"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="52px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Thanks Toby for great explanation, When I am analysing dr.Watson logs,<br />
+as a part of stack traces I am getting some Text like<br />
+&nbsp;<br />
+FPO: [0,0,3] ..I really do not know how to interpret this, Following<br />
+is a sample stack back trace I got from one of customer crashes.<br />
+&nbsp;<br />
+*----> Stack Back Trace <----*<br />
+&nbsp;<br />
+FramePtr ReturnAd Param#1  Param#2  Param#3  Param#4  Function Name<br />
+0012fdec 003368ec 005a9978 01632350 00336fcb 01632350 ptmap!<nosymbols>  (FPO: [0,0,3])<br />
+0012fdf8 00336fcb 01632350 005a9978 00509cc0 0012feec ptmap!PTMAP_suspend  (FPO: [1,0,2])<br />
+0012fe74 005958e7 0012fe88 00509f14 00509cc0 00000001 ptmap!PTMAP_terminate  (FPO: [EBP 0x005a9978] [1,25,4])<br />
+005a9a04 00595936 005a0722 005936db 005a0716 005a0710 gefm!CPtmapWinApp::~CPtmapWinApp <br />
+&nbsp;<br />
+It would be great,If you can throw some light on what FPO[n1,n2,n3] kind of statements mean?<br />
+ <br />
+&nbsp;<br />
+Thanks<br />
+Arun<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Sign In</a>·<a class="toolbar" href="/KB/debug/cdbntsd2.aspx?fid=36054&amp;tid=1117753" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/1125355/Re-Base-pointer.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF1125355" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F1125924_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="70px" class="Frm_MsgIndent"><a name="xx1125924xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="1125924" parent="1125355" thread="1117753" href="/Messages/1125924/Re-Base-pointer.aspx">Re: Base pointer</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td class="Frm_MsgIcon"><img border="0" src="http://s.codeproject.com/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=961412">Toby Opferman</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">16:45 3 Jun '05 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F1125924_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:70px;"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="70px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">WINDBG Help explains these details under the "k" command help as the following:<br />
+&nbsp;<br />
+<br />
+FPO text Meaning <br />
+FPO: [non-Fpo]<br />
+ No FPO data for frame. <br />
+&nbsp;<br />
+FPO: [N1,N2,N3]<br />
+ N1 is the total number of parameters. <br />
+ N2 is the number of DWORDs for the locals. <br />
+ N3 is number of registers saved.<br />
+ <br />
+FPO: [N1,N2] TrapFrame @ Address<br />
+ N1 is the total number of parameters. <br />
+ N2 is the number of DWORDs for the locals. <br />
+&nbsp;<br />
+Address is the address of the trap frame.<br />
+ <br />
+FPO: TaskGate Segment<img src="/script/Forums/Images/smiley_redface.gif" align="top" alt="Blush | :O" /> <br />
+ Segment is task gate segment selector. <br />
+&nbsp;<br />
+FPO: [EBP 0xBase]<br />
+ Base is the base pointer for the frame. <br />
+&nbsp;<br />
+<br />
+---------------<br />
+&nbsp;<br />
+The number of parameters and the number of DWORDS reserved for locals is probably self explainatory.  The "registers saved" may confuse a little however it simply means that when you call this function it will save the values that are currently residing in certain CPU registers so they do not get overwritten when the function is being executed.<br />
+&nbsp;<br />
+I never use this information (But I also don't use Doctor Watson logs) since I just end up reading the assembly and it shows everything anyway.  Then again I'm probably one of the only people ever debugged java script via IE at the assembly level.<br />
+ <br />
+&nbsp;<br />
+8bc7c0ec02c0e404c0cc0680f7018827ebee<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Sign In</a>·<a class="toolbar" href="/KB/debug/cdbntsd2.aspx?fid=36054&amp;tid=1117753" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/1125924/Re-Base-pointer.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF1125924" style="white-space:nowrap;">4.43/5 (4 votes) </span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd Rt HdUnSel " id="F784437_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx784437xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="784437" parent="0" thread="784437" href="/Messages/784437/Use-callstack-to-fixed-bugs.aspx">Use callstack to fixed bugs.</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td class="Frm_MsgIcon"><img border="0" src="http://s.codeproject.com/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=539818">autodebug</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">15:55 5 Apr '04 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F784437_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Yes, callstack can used to fixed bugs.<br />
+ <br />
+&nbsp;<br />
+---------------------------<br />
+Auto Debug for Windows<br />
+<a href="http://www.autodebug.com/">http://www.autodebug.com/</a><br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Sign In</a>·<a class="toolbar" href="/KB/debug/cdbntsd2.aspx?fid=36054&amp;tid=784437" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/784437/Use-callstack-to-fixed-bugs.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF784437" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd Rt HdUnSel " id="F778782_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx778782xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="778782" parent="0" thread="778782" href="/Messages/778782/Good-Article.aspx">Good Article</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td class="Frm_MsgIcon"><img border="0" src="http://s.codeproject.com/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=61244">rromerot</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">4:02 30 Mar '04 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F778782_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Brings back good memories of when I first started programming in assembler, way back when. <br />
+&nbsp;<br />
+Ray<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Sign In</a>·<a class="toolbar" href="/KB/debug/cdbntsd2.aspx?fid=36054&amp;tid=778782" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/778782/Good-Article.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF778782" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F791701_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="34px" class="Frm_MsgIndent"><a name="xx791701xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="791701" parent="778782" thread="778782" href="/Messages/791701/Re-Good-Article.aspx">Re: Good Article</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td class="Frm_MsgIcon"><img border="0" src="http://s.codeproject.com/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=906348">MichaelB76</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">5:17 14 Apr '04 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F791701_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:34px;"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="34px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Useful and well written. <br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Sign In</a>·<a class="toolbar" href="/KB/debug/cdbntsd2.aspx?fid=36054&amp;tid=778782" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/791701/Re-Good-Article.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF791701" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="root msg-divide"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd LoVote Rt HdUnSel " id="F776907_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="16px" class="Frm_MsgIndent"><a name="xx776907xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="776907" parent="0" thread="776907" href="/Messages/776907/Please-stop-writing-tutorials.aspx">Please stop writing tutorials.</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td class="Frm_MsgIcon"><img src="http://s.codeproject.com/script/Forums/Images/usersuss.gif" width="14px" height="15px" alt="suss" /></td><td class="Frm_MsgAuthor">Anonymous</td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">1:05 28 Mar '04 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F776907_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:16px;"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="16px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">This was the biggest pile of crap i've ever taken the time to read. You seem to know very little about this subject, you seem to know the keywords, and in general what they mean. But this tutorial will be read by other people, who will be under the false impression that this information is true. The number of significant errors in this article is overwhelming. Please Tony, stop adding to the ignorance. I feel that i'm stupider for having read this article, please don't contribute more innacurate garbage.<br />
+&nbsp;<br />
+cheers,<br />
+jordan <br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Sign In</a>·<a class="toolbar" href="/KB/debug/cdbntsd2.aspx?fid=36054&amp;tid=776907" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/776907/Please-stop-writing-tutorials.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF776907" style="white-space:nowrap;">1.14/5 (30 votes) </span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HiVote HdUnSel " id="F777043_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="34px" class="Frm_MsgIndent"><a name="xx777043xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="777043" parent="776907" thread="776907" href="/Messages/777043/Re-Please-stop-writing-tutorials.aspx">Re: Please stop writing tutorials.</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a><img class="vote-hi-img" src="http://s.codeproject.com/images/star12.png" alt="Popular" title="Popular" /></td><td class="Frm_MsgIcon"><img border="0" src="http://s.codeproject.com/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=961412">Toby Opferman</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">7:16 28 Mar '04 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F777043_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:34px;"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="34px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">I think the real truth is that you know nothing about the subject.  First of all, you remain anonymous and second of all you have not justified any of your claims.  <br />
+&nbsp;<br />
+If there are errors, I welcome you to actually list and correct them instead of randomly posting junk.  You did not even spell my name correct in your post...  I think there are more errors in your post than in this article.<br />
+&nbsp;<br />
+Perhaps your "truth" or what you think is the "truth" is actually incorrect so when you actually see the truth, you dismiss it because you don't know any better...<br />
+&nbsp;<br />
+I actually think you should stop posting because people may think you might know something, but posting anonymously and not justifying any claims make it obvious you're a fraud.<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Sign In</a>·<a class="toolbar" href="/KB/debug/cdbntsd2.aspx?fid=36054&amp;tid=776907" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/777043/Re-Please-stop-writing-tutorials.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF777043" style="white-space:nowrap;">4.71/5 (13 votes) </span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F804498_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="52px" class="Frm_MsgIndent"><a name="xx804498xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="804498" parent="777043" thread="776907" href="/Messages/804498/Re-Please-stop-writing-tutorials.aspx">Re: Please stop writing tutorials.</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td class="Frm_MsgIcon"><img border="0" src="http://s.codeproject.com/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=741829"><b><i><font color=#FF8000>toxcct</font></i></b></a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">9:54 27 Apr '04 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F804498_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:52px;"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="52px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">well, i didn't take time to read you 3 tutorials, si i won't vote for something i didn't read, but when i saw the lenght of that article .... wow perhaps one day i'll find the time out. <img src="/script/Forums/Images/smiley_smile.gif" align="top" alt="Smile | :)" /> <br />
+anyway, even if don't "like" your post (sorry for the prejudice), i quite like you answer to a certain <font style="color:gray;"><b>Anonymous</b></font>...<br />
+congratulations, you put him on place <img src="/script/Forums/Images/smiley_smile.gif" align="top" alt="Smile | :)" /> <br />
+&nbsp;<br />
+Welcome on CP toby <img src="/script/Forums/Images/smiley_wink.gif" align="top" alt="Wink | ;)" /> <br />
+ <br />
+&nbsp;<br />
+<hr><p style="filter:Glow(color=#00FF00, strength=5, strength=2);margin:2px;padding:2px;text-align:left;color:#0000FF;width:400px;"><b>TOXCCT >>> GEII power</b></p>
+<br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Sign In</a>·<a class="toolbar" href="/KB/debug/cdbntsd2.aspx?fid=36054&amp;tid=776907" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/804498/Re-Please-stop-writing-tutorials.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF804498" style="white-space:nowrap;"></span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HiVote HdUnSel " id="F1034797_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="52px" class="Frm_MsgIndent"><a name="xx1034797xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="1034797" parent="777043" thread="776907" href="/Messages/1034797/Good-Article.aspx">Good Article!!</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td class="Frm_MsgIcon"><img border="0" src="http://s.codeproject.com/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=976089"><font  color=#3399ff><i>Thats</i><b>Alok</b></a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">21:55 8 Feb '05 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F1034797_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:52px;"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="52px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">But problem is in ME!,as i am <big>big ZERO</big> in assembly language.<br />
+&nbsp;<br />
+ may be after reading some of tutorial written by you, i grasp the concept of perfectly debugging the application.<br />
+&nbsp;<br />
+thanks for providing the programmer community this Great article<br />
+&nbsp;<br />
+<hr color=ff6600> <b><i> "<font  color=#ff6600>I Think this Will Help</font>"</i></b><br />
+<h5
+ Alok Gupta <br/> visit me at <a href="http://alok.bizhat.com">http://www.thisisalok.tk</a><br />
+</h5><br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Sign In</a>·<a class="toolbar" href="/KB/debug/cdbntsd2.aspx?fid=36054&amp;tid=776907" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/1034797/Good-Article.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF1034797" style="white-space:nowrap;">5.00/5 (1 vote) </span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HiVote HdUnSel " id="F1454739_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="52px" class="Frm_MsgIndent"><a name="xx1454739xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="1454739" parent="777043" thread="776907" href="/Messages/1454739/Re-Please-stop-writing-tutorials.aspx">Re: Please stop writing tutorials.</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td class="Frm_MsgIcon"><img border="0" src="http://s.codeproject.com/script/Membership/Images/member_sm.gif" title="member" alt="member" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=30251">Trollslayer</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">23:57 18 Apr '06 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F1454739_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:52px;"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="52px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">Nice article and good troll slaying <img src="/script/Forums/Images/smiley_wink.gif" align="top" alt="Wink | ;)" />  <br />
+&nbsp;<br />
+<a href="http://www.codeproject.com/script/profile/whos_who.asp?id=30251">The tigress is here</a> <img src="/script/Forums/Images/smiley_biggrin.gif" align="top" alt="Big Grin | :-D" /> <br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Sign In</a>·<a class="toolbar" href="/KB/debug/cdbntsd2.aspx?fid=36054&amp;tid=776907" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/1454739/Re-Please-stop-writing-tutorials.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF1454739" style="white-space:nowrap;">5.00/5 (1 vote) </span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr class="quick">
+<td class="msg-divide"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="1px" alt="" /></td>
+</tr><tr class="MsgHd HdUnSel " id="F797469_h0">
+<td width="100%"><table class="quickHd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr class="hover-row">
+<td width="34px" class="Frm_MsgIndent"><a name="xx797469xx"></a><img height="16px" width="16px" align="top" src="/script/Forums/Images/msg_general.gif" alt="General" /></td><td class="Frm_MsgSubject hover-container"><a class="message-link" rel="nofollow" name="797469" parent="776907" thread="776907" href="/Messages/797469/Re-Please-stop-writing-tutorials.aspx">Re: Please stop writing tutorials.</a> <a onclick="return Pin(this);" href="#" title="Click to pin message"><img src="http://s.codeproject.com/script/Forums/Images/pin.gif" border="0" align="top" alt="Pin" width="13px" height="12px" /></a></td><td class="Frm_MsgIcon"><img border="0" src="http://s.codeproject.com/script/Membership/Images/supporter_sm.gif" title="supporter" alt="supporter" height="16px" /></td><td class="Frm_MsgAuthor"><a href="/script/Membership/View.aspx?mid=175">peterchen</a></td><td class="Frm_MsgDate" style="vertical-align:top;white-space:nowrap;">9:22 20 Apr '04 &nbsp;</td>
+</tr>
+</table></td>
+</tr><tr id="F797469_h1" style="display:none;">
+<td width="100%"><table class="quickBd" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="Frm_MsgIndent" style="width:34px;"><img src="http://s.codeproject.com/script/Forums/Images/t.gif" height="1px" width="34px" alt="" /></td><td class="MsgBd BdSel "><table border="0" cellpadding="0" cellspacing="5px" width="100%">
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2">I'm quite surprised that you had just 5 '1' votes by this time.<br />
+&nbsp;<br />
+If you would be willing to discuss the issues in a court and professional manner, you had would have a great chance to make a point, or two or three.<br />
+&nbsp;<br />
+But your reply looks very much like that of a very arrogant guy who thinks he's better. <br />
+&nbsp;<br />
+<hr color="maroon"><small><i>Flirt harder, I'm a Coder</i><br><br />
+<a href="http://www.cherea.de/movielog/" target="_blank">mlog</a> || <a href="/gen/design/agileprogramming.asp">Agile Programming</a> | <a href="/tips/doxysetup.asp">doxygen</a></small><br /></td>
+</tr><tr style="vertical-align:middle;">
+<td class="msg-footer"><a class="toolbar" href="http://www.codeproject.com/script/Membership/LogOn.aspx?rp=%2fKB%2fdebug%2fcdbntsd2.aspx">Sign In</a>·<a class="toolbar" href="/KB/debug/cdbntsd2.aspx?fid=36054&amp;tid=776907" title="View&nbsp;Thread">View&nbsp;Thread</a>·<a class="toolbar" href="/Messages/797469/Re-Please-stop-writing-tutorials.aspx" title="Get permanent link">Permalink</a></td><td class="msg-footer" style="text-align:right;"><span id="MVF797469" style="white-space:nowrap;">3.30/5 (7 votes) </span></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr>
+<td><img src="http://s.codeproject.com/script/Forums/Images/t.gif" border="0" width="1px" height="5px" alt="" /></td>
+</tr>
+</table></td>
+</tr><tr>
+<td><table width="100%" cellpadding="2px" cellspacing="0">
+<tr class="forum-footer">
+<td>Last Visit: 19:00 31 Dec '99  &nbsp; &nbsp; Last Update: 19:58 15 Aug '11 </td><td style="text-align:right;white-space:nowrap;"><input id="_mbnUrl" type="hidden" value="/KB/debug/cdbntsd2.aspx?fid=36054&amp;fr=18" /><b>1</b></td>
+</tr>
+</table></td>
+</tr>
+</table>
+</div><p class="small-text"><img align="top" src="/script/Forums/Images/msg_general.gif" width="16px" height="16px" alt="General" /> General &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_news.gif" width="16px" height="16px" alt="News" /> News &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_idea.gif" width="16px" height="16px" alt="Suggestion" /> Suggestion &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_question.gif" width="16px" height="16px" alt="Question" /> Question &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_bug.gif" width="16px" height="16px" alt="Bug" /> Bug &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_answer.gif" width="16px" height="16px" alt="Answer" /> Answer &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_joke.gif" width="16px" height="16px" alt="Joke" /> Joke &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_rant.gif" width="16px" height="16px" alt="Rant" /> Rant &nbsp;&nbsp; <img align="top" src="/script/Forums/Images/msg_admin.gif" width="16px" height="16px" alt="Admin" /> Admin &nbsp;&nbsp; </p><p class="small-text">Use Ctrl+Left/Right to switch messages, Ctrl+Up/Down to switch threads, Ctrl+Shift+Left/Right to switch pages.</p>
+
+					
+					<div class="theme1-background" style="height:2px"></div>
+
+					<div class="extended tiny-text">
+						<div class="row">
+							<div class="float-left">
+								<a id="ctl00_PermaLink" href="/KB/debug/cdbntsd2.aspx">Permalink</a> | 
+								<a id="ctl00_AdvertiseLink" href="http://lakequincy.com/">Advertise </a> |
+								<a id="ctl00_PrivacyLink" href="/info/privacy.aspx">Privacy</a> |
+								<a id="ctl00_Mobile" href="/KB/debug/cdbntsd2.aspx?display=Mobile">Mobile</a>
+								<br />
+								
+								 |
+								Web23 |
+								2.3.110815.1
+								
+							</div>
+							<div class="float-right align-right">
+								Article Copyright 2004 by Toby Opferman<br />Everything else
+								Copyright &copy; <a href="mailto:webmaster@codeproject.com">CodeProject</a>, 1999-2011<br />
+								<a id="ctl00_TermsOfUseLink" href="/info/TermsOfUse.aspx">Terms of Use</a>
+							</div>
+
+							
+
+
+<div class="page-width">
+Layout: <a id="ctl00_PageWidth_FixedT" title="Fixed width layout" href="/KB/debug/cdbntsd2.aspx?PageFlow=FixedWidth">fixed</a>
+|
+<a id="ctl00_PageWidth_FluidT" title="Fluid layout" href="/KB/debug/cdbntsd2.aspx?PageFlow=Fluid">fluid</a>
+</div>
+
+
+
+						</div>
+					</div>
+					
+
+				<br clear="all" />
+		
+				
+				</div>
+
+				<div id="ctl00_ContentSide" class="text-sidebar">
+					<script type="text/javascript">document.write(unescape('%0d%0a%3cdiv class%3d%22results%22%3e%0d%0a%09%0d%0a%09%3cdiv class%3d%22container-adwords%22%3e%0d%0a%09%09%3ca id%3d%22ctl00_RelatedAds_RelatedResults_ctl00_Link%22 href%3d%22%2fscript%2fCatalog%2fRedir.aspx%3fctid%3d2790%26amp%3bcttype%3d2%22 target%3d%22_blank%22%3e%3cspan id%3d%22ctl00_RelatedAds_RelatedResults_ctl00_Title%22 class%3d%22title%22%3eWinGDB%3c%2fspan%3e%3cbr %2f%3e%0d%0a%09%09%09%3cspan id%3d%22ctl00_RelatedAds_RelatedResults_ctl00_Teaser%22 class%3d%22desc%22%3eWinGDB is a Visual Studio Add-In allowing to debug Linux programs on...%3c%2fspan%3e%3cbr %2f%3e%0d%0a%09%09%09%3cspan id%3d%22ctl00_RelatedAds_RelatedResults_ctl00_Url%22 class%3d%22link%22%3ewww.wingdb.com%3c%2fspan%3e%3c%2fa%3e%0d%0a%09%3c%2fdiv%3e%0d%0a%09%0d%0a%09%3cdiv class%3d%22container-adwords%22%3e%0d%0a%09%09%3ca id%3d%22ctl00_RelatedAds_RelatedResults_ctl01_Link%22 href%3d%22%2fscript%2fCatalog%2fRedir.aspx%3fctid%3d3465%26amp%3bcttype%3d2%22 target%3d%22_blank%22%3e%3cspan id%3d%22ctl00_RelatedAds_RelatedResults_ctl01_Title%22 class%3d%22title%22%3eAccordion Navigation Pane for WinForms%3c%2fspan%3e%3cbr %2f%3e%0d%0a%09%09%09%3cspan id%3d%22ctl00_RelatedAds_RelatedResults_ctl01_Teaser%22 class%3d%22desc%22%3eThe Accordion style Navgation pane is a WinForms control that allows...%3c%2fspan%3e%3cbr %2f%3e%0d%0a%09%09%09%3cspan id%3d%22ctl00_RelatedAds_RelatedResults_ctl01_Url%22 class%3d%22link%22%3ewww.viblend.com%3c%2fspan%3e%3c%2fa%3e%0d%0a%09%3c%2fdiv%3e%0d%0a%09%0d%0a%3c%2fdiv%3e'));</script>
+
+					
+
+					
+
+					
+
+					
+
+					
+<div class="announce">
+<div class="announce-header">The Daily Insider</div>
+<div class="announce-content">
+
+<div><a id="ctl00_News_News_ctl01_Link" href="http://citizen428.net/archives/434">30 free programming books</a></div>
+
+Daily News: <a id="ctl00_News_News_ctl02_Subscribe" href="/Feature/Insider/">Signup now</a>.
+</div>
+</div>
+		
+
+					<div style="margin:auto;width:160px;margin-top:10px">
+						<div class="lqm_ad" width="160px" height="600px" lqm_channel="1" lqm_publisher="495" lqm_zone="77" lqm_format="18" lqm_tags='VC6,VC7,VC7.1,Win2K,WinXP,Win2003,Visual-Studio,MFC,Dev,QA,ASM,Intermediate'></div>
+					</div>
+				</div>
+
+			</div>
+			
+
+		</div>
+		
+
+	</div>
+</div>
+
+
+<div style="display:none;" id="lqm_AdTable">
+	
+</div>
+
+<script type="text/javascript" language="Javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script><script type='text/javascript'>//<![CDATA[
+if (typeof jQuery == 'undefined') {
+    document.write(unescape("%3Cscript src='/script/JS/jquery-1.6.2.min.js' type='text/javascript' %3E%3C/script%3E"));
+}//]]></script>
+<script type="text/javascript" language="Javascript" src="http://s.codeproject.com/script/Articles/JS/article.min.js?dt=2.3.110815.1"></script>
+<script type="text/javascript" language="Javascript" src="/Script/JS/m.min.js?dt=2.3.110815.1"></script>
+<script type="text/javascript" language="Javascript">//<![CDATA[
+function markAllText(){
+ markTextInElement('stack','contentdiv');
+ markTextInElement('c++','contentdiv');
+}
+$(function(){markAllText()});
+var socialLinks = new social();
+socialLinks.PlaceholderId="ATD";socialLinks.ObjectId=6470;
+socialLinks.ObjectTypeId=2;
+socialLinks.addtoMethod=1;
+socialLinks.Horizontal=false;
+socialLinks.Showname=true;
+socialLinks.setupLinks("socialLinks", escape(document.location.href),escape(document.title), 100, 0, "small-text Bold", "AddTo");
+socialLinks.setupMenu();
+$(document).ready(function() {   $('.alert-bar').slideDown('fast');   $('.alert-bar a.close-notify').click(function() {      $('.alert-bar').slideUp('fast');        return false;    });});
+if($.LqmAds)$.LqmAds();
+var oSrchFlt = false, oSrchBox=false,srchBoxFoc=false;
+$(document).ready(function() {
+ InitWatermark('sb_tb', 'Search');
+ var sbar = $('#sb_tb'); 
+ var sfilter = $('#SearchFilter');
+ if (sbar && sfilter) {
+  sfilter.removeClass('popup'); sfilter.hide();
+  sbar.blur(function() { if (!oSrchFlt)sfilter.hide();srchBoxFoc=false; });
+  sbar.focus(function() { oSrchFlt=false;srchBoxFoc=true;sfilter.show(); });
+  sbar.mouseleave(function() { oSrchBox=false; });
+  sbar.mouseover(function() { oSrchBox=true; });
+  sfilter.mouseleave(function() { oSrchFlt=false; if (!srchBoxFoc&&!oSrchBox)sfilter.hide();});
+  sfilter.mouseover(function() { oSrchFlt=true; });
+ }
+});
+$(document).ready(function() { anchorAnimate(); });
+$("#ctl00_RateArticle_RateItemWrapper").removeClass("container-rating");$('#clear-rate_ctl00_RateArticle_RCD').click(function () { $('#ctl00_RateArticle_RCD').hide(); return false;});
+function ChkRtctl00_RateArticle(val, objId) {if (val<=3||true) {
+$('div[name=RateItem_' + objId + '] .rating-comment').css("display","");}
+else $('div[name=RateItem_' + objId + '] .rating-comment').css("display","none");}
+
+
+//]]>
+</script>
+
+
+
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-1735123-1']);
+	_gaq.push(['_trackPageview']);
+	_gaq.push(['_setDomainName', 'www.codeproject.com']);
+	_gaq.push(['_setSessionTimeout', '1200']); 
+
+	(function () {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+	})(); 
+</script>
+
+</body>
+</html>

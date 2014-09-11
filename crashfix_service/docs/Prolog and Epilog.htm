@@ -1,0 +1,747 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="ctl00_Head1"><title>
+	
+  Prolog and Epilog
+
+</title>
+
+
+
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+
+<meta name="DCS.dcsuri" content="/en-us/library/tawsa7cb(d=lightweight,l=en-us,v=VS.100).aspx" />
+
+<meta name="NormalizedUrl" content="http://msdn.microsoft.com/en-us/library/tawsa7cb(d=lightweight,l=en-us,v=VS.100).aspx" />
+
+<meta name="DCSext.ProductFamily" content="LIB_DG" />
+
+<meta name="DCSext.Product" content="VS_VC" />
+
+<meta name="DCSext.Title" content="Prolog and Epilog" />
+
+<meta name="VotingContextUrl" content="http://msdn.microsoft.com/en-us/library/tawsa7cb(l=en-us,v=VS.100).aspx" />
+
+<meta name="MN" content="D1DC116D-11:11:10 PM" />
+
+<meta name="Search.ShortId" content="tawsa7cb" />
+
+<meta name="Ms.Locale" content="en-us" />
+<link rel="canonical" href="http://msdn.microsoft.com/en-us/library/tawsa7cb.aspx" xmlns="http://www.w3.org/1999/xhtml" /><link href="http://i3.msdn.microsoft.com/Hash/e623f4bce75cdd606482eb78891bacd9.css" rel="stylesheet" type="text/css" xmlns="http://www.w3.org/1999/xhtml" /><link rel="stylesheet" type="text/css" href="http://i3.msdn.microsoft.com/Hash/a15fcf392bf954133123e209735029c3.css" media="print" title="printonly" xmlns="http://www.w3.org/1999/xhtml" /><link rel="alternate" media="print" href="http://msdn.microsoft.com/en-us/library/tawsa7cb(d=printer).aspx" xmlns="http://www.w3.org/1999/xhtml" /></head>
+<body>
+
+   
+    <div class="MetricsContainer">
+    
+    <div class="WebtrendsContainer">
+      
+
+<script type="text/javascript" language="javascript">
+//<![CDATA[
+  var literalNormalizedUrl = '/en-us/library/tawsa7cb(d=lightweight,l=en-us,v=VS.100).aspx';
+  var wt_nvr_ru = 'WT_NVR_RU';
+  var wt_fpcdom = '.microsoft.com';
+  var wt_domlist = 'msdn.microsoft.com';
+  var wt_pathlist = '';
+  var wt_paramlist = 'DCSext.mtps_devcenter';
+  var wt_siteid = 'MSDN';
+  var gDomain = 'm.webtrends.com';
+  var gDcsId = 'dcsmgru7m99k7mqmgrhudo0k8_8c6m';
+  var gFpc = 'WT_FPC';
+  if (document.cookie.indexOf(gFpc + "=") == -1) {
+    document.write("<scr" + "ipt type='text/javascript' src='" + "http" + (window.location.protocol.indexOf('https:') == 0 ? 's' : '') + "://" + gDomain + "/" + gDcsId + "/wtid.js" + "'><\\/scr" + "ipt>");
+  }
+  var detectedLocale = 'en-us';
+  var wtsp = 'msdnlib_devtools_lang';
+  var gTrackEvents = '0';
+/*]]>*/
+</script>
+<noscript><div><img alt="DCSIMG" id="Img1" width="1" height="1" src="http://m.webtrends.com/dcsmgru7m99k7mqmgrhudo0k8_8c6m/njs.gif?dcsuri=/nojavascript&amp;WT.js=No" /></div></noscript>
+
+
+    </div>
+    
+    <div class="OmnitureContainer">
+      
+
+
+
+<script type="text/javascript">
+  var omni_guid = '384e0a9f-7bfb-41c6-bb2b-d35f0a1066e7'; 
+</script>
+
+
+
+<noscript>
+    <a href="http://www.omniture.com" title="Web Analytics">
+        <img src="//msstonojsmsdn.112.2o7.net/b/ss/msstonojsmsdn/1/H.20.2--NS/0" height="1" width="1" border="0" alt="" /></a>
+</noscript>
+
+
+    </div>
+    
+  
+</div>
+  <script language="javascript" type="text/javascript" src="//js.microsoft.com/library/svy/sto/broker.js"></script>
+
+
+  <div class="header">
+    
+
+<table border="0" cellpadding="0" cellspacing="0" class="headerBar cl_lightweight_topnav_slice">
+		<tr>
+			<td class="leftSection cl_lightweight_header_leftSection_wave leftSectionImageClusterOverride">
+        <div class="tabContainer">
+          <a href="/en-us/" title="Home" class=" headerTab">Home</a>
+          <a href="/en-us/library" title="Library" class="headerTabSelected cl_lightweight_selected_tab_repeatX ">Library</a>
+          <a href="/en-us/bb188199.aspx" title="Learn" class=" headerTab">Learn</a>
+          <a href="/en-us/aa570309.aspx" title="Downloads" class=" headerTab">Downloads</a>
+          <a href="/en-us/aa570318.aspx" title="Support" class=" headerTab">Support</a>
+          <a href="/en-us/aa497440.aspx" title="Community" class=" headerTab">Community</a>
+          
+        </div>
+      </td>
+			<td class="rightSection cl_lightweight_header_rightSection_wave rightSectionImageClusterOverride">
+        <div class="tabContainer">
+            
+            <a href="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=11&amp;ct=1313475070&amp;rver=6.0.5276.0&amp;wp=MCLBI&amp;wlcxt=msdn%24msdn%24msdn&amp;wreply=http:%2F%2Fmsdn.microsoft.com%2Fen-us%2Flibrary%2Ftawsa7cb.aspx&amp;lc=1033&amp;cb=&amp;id=254354" title="Sign in">Sign in </a>
+            <span class="pipe">|</span>
+            <a href="http://msdn.microsoft.com/en-us/library/preferences/locale/?returnurl=%252fen-us%252flibrary%252ftawsa7cb.aspx" title="United States - English">United States - English </a>
+            <span class="pipe">|</span>
+            <a class="dispinline clip15x15" href="http://msdn.microsoft.com/en-us/library/preferences/experience/?returnurl=%252fen-us%252flibrary%252ftawsa7cb.aspx" title="Preferences"><img class="head_gear" src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" alt="" /></a>
+            <span class="pipe">|</span>
+            <a id="exportPrintLink" class="dispinline clip30x15 moveToDown" href="/en-us/library/tawsa7cb(d=printer).aspx" title="Print/Export"><img class="head_print_noarrow" src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" alt="" /></a>
+            
+            <div id="exportPrintLinkArrowDiv" class="exportPrintLinkArrow">
+            <a id="exportPrintLinkArrow" class="dispinline clip30x15 moveToDown" href="javascript:void(0);" title="Print/Export"><img class="head_print_arrow" src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" alt="" /></a>
+            </div>
+            
+        </div>
+			</td>
+	</tr>
+</table>
+
+  </div>
+    
+  <div class="contentPlaceHolder">
+    
+    
+    <script type="text/javascript" src="http://Ads.msn.com/library/dap.js"></script>
+    
+  <div class="navigation" id="Navigation" style="width:280px;padding-bottom:0px;">
+    <div class="searchcontainer">
+      
+<form id="SearchForm" action="http://social.msdn.microsoft.com/Search/en-us" method="get" style="margin: 0; padding: 0;" onsubmit="return checkSearchBox()">
+<div class="searchBoxContainer" style="">
+  <table class="searchBox" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td class="searchTextBoxTd">
+        <input id="SearchInput" type="text" maxlength="200" class="searchTextBox" name="query" />
+      </td>
+      <td class="searchButtonTd">
+          <input type="image" src="http://i.msdn.microsoft.com/Hash/0d0542f5f45cf9fc7273abd11cf5c0ee.gif" style="position: relative;" title="Search " />
+      </td>
+    </tr>
+  </table>
+</div>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+    if (!MTPS) var MTPS = {};
+    if (!MTPS.Watermarks) MTPS.Watermarks = {};
+    MTPS.Watermarks.SearchInput = {
+        "control": "SearchInput",
+        "defaultValue": "Search MSDN with Bing",
+        "defaultCSS": "searchTextBox",
+        "focusCSS": "searchTextBoxTrue"
+    };
+    function checkSearchBox() {
+        if (document.getElementById("SearchInput").value == MTPS.Watermarks.SearchInput.defaultValue) {
+            document.getElementById("SearchInput").value = "";
+        }
+    }
+ //]]>
+</script>
+
+
+    </div>
+    <div class="navcontainer">
+      
+<div class="nav">
+    
+    <div id="tocnav">
+        
+        <div class="toclevel0 ancestry">
+            
+            <div class="clip5x9 nav_root">
+                <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_nav_bullet" alt="" />
+            </div>
+            
+            <div class="nav_div_currentroot">
+                <a href="http://msdn.microsoft.com/en-us/library/ms123401.aspx" id="ms310241_MSDN.10_en-us" title="MSDN Library">MSDN Library</a>
+            </div>
+            
+            <div class="clip5x9 nav_arrows">
+                <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_nav_arrow" alt="" />
+            </div>
+            
+            <div class="nav_div_currentroot">
+                <a href="http://msdn.microsoft.com/en-us/library/aa187916.aspx" id="aa187916_MSDN.10_en-us" title="Development Tools and Languages">Development Tools and Languages</a>
+            </div>
+            
+            <div class="clip5x9 nav_arrows">
+                <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_nav_arrow" alt="" />
+            </div>
+            
+            <div class="nav_div_currentroot">
+                <a href="http://msdn.microsoft.com/en-us/library/dd831853.aspx" id="aa187917_MSDN.10_en-us" title="Visual Studio 2010">Visual Studio 2010</a>
+            </div>
+            
+            <div class="clip5x9 nav_arrows">
+                <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_nav_arrow" alt="" />
+            </div>
+            
+            <div class="nav_div_currentroot">
+                <a href="http://msdn.microsoft.com/en-us/library/52f3sw5c.aspx" id="dd429925_VS.100_en-us" title="Visual Studio">Visual Studio</a>
+            </div>
+            
+            <div class="clip5x9 nav_arrows">
+                <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_nav_arrow" alt="" />
+            </div>
+            
+            <div class="nav_div_currentroot">
+                <a href="http://msdn.microsoft.com/en-us/library/ee822860.aspx" id="dd548131_VS.100_en-us" title="Visual Studio Languages">Visual Studio Languages</a>
+            </div>
+            
+            <div class="clip5x9 nav_arrows">
+                <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_nav_arrow" alt="" />
+            </div>
+            
+            <div class="nav_div_currentroot">
+                <a href="http://msdn.microsoft.com/en-us/library/60k1461a.aspx" id="ms302012_VS.100_en-us" title="Visual C++">Visual C++</a>
+            </div>
+            
+            <div class="clip5x9 nav_arrows">
+                <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_nav_arrow" alt="" />
+            </div>
+            
+            <div class="nav_div_currentroot">
+                <a href="http://msdn.microsoft.com/en-us/library/h2k70f3s.aspx" id="bb158255_VS.100_en-us" title="64-Bit Programming with Visual C++">64-Bit Programming with Visual C++</a>
+            </div>
+            
+            <div class="clip13x9 nav_arrows">
+                <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_nav_dots" alt="" />
+            </div>
+            
+            <div class="nav_div_currentroot">
+                <a href="http://msdn.microsoft.com/en-us/library/7kcdt6fy.aspx" id="dd807248_VS.100_en-us" title="x64 Software Conventions">x64 Software Conventions</a>
+            </div>
+            
+        </div>
+        
+        <div class="toclevel1 children" style="border-bottom: 1px solid #bbbbbb;">
+            
+            <div class="clip13x9 nav_dots_current">
+                <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_nav_dots" alt="" />
+            </div>
+            
+            <div>
+                <a href="http://msdn.microsoft.com/en-us/library/ms235286.aspx" title="Overview of x64 Calling Conventions">Overview of x64 Calling Conventions</a>
+            </div>
+            
+            <div class="clip13x9 nav_dots_current">
+                <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_nav_dots" alt="" />
+            </div>
+            
+            <div>
+                <a href="http://msdn.microsoft.com/en-us/library/02c56cw3.aspx" id="dd807249_VS.100_en-us" title="Types and Storage">Types and Storage</a>
+            </div>
+            
+            <div class="clip13x9 nav_dots_current">
+                <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_nav_dots" alt="" />
+            </div>
+            
+            <div>
+                <a href="http://msdn.microsoft.com/en-us/library/9z1stfyw.aspx" title="Register Usage">Register Usage</a>
+            </div>
+            
+            <div class="clip13x9 nav_dots_current">
+                <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_nav_dots" alt="" />
+            </div>
+            
+            <div>
+                <a href="http://msdn.microsoft.com/en-us/library/9b372w95.aspx" id="dd807250_VS.100_en-us" title="Calling Convention">Calling Convention</a>
+            </div>
+            
+            <div class="clip13x9 nav_dots_current">
+                <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_nav_dots" alt="" />
+            </div>
+            
+            <div>
+                <a href="http://msdn.microsoft.com/en-us/library/x4ea06t0.aspx" id="dd807251_VS.100_en-us" title="Stack Usage">Stack Usage</a>
+            </div>
+            
+            <div class="clip13x9 nav_dots_current">
+                <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_nav_dots" alt="" />
+            </div>
+            
+            <div class="toclevel1 current">
+                <a href="http://msdn.microsoft.com/en-us/library/tawsa7cb.aspx" title="Prolog and Epilog">Prolog and Epilog</a>
+            </div>
+            
+            <div class="clip13x9 nav_dots_current">
+                <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_nav_dots" alt="" />
+            </div>
+            
+            <div>
+                <a href="http://msdn.microsoft.com/en-us/library/1eyas8tf.aspx" id="dd807252_VS.100_en-us" title="Exception Handling (x64)">Exception Handling (x64)</a>
+            </div>
+            
+            <div class="clip13x9 nav_dots_current">
+                <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_nav_dots" alt="" />
+            </div>
+            
+            <div>
+                <a href="http://msdn.microsoft.com/en-us/library/wbk4z78b.aspx" title="Intrinsics and Inline Assembly">Intrinsics and Inline Assembly</a>
+            </div>
+            
+            <div class="clip13x9 nav_dots_current">
+                <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_nav_dots" alt="" />
+            </div>
+            
+            <div>
+                <a href="http://msdn.microsoft.com/en-us/library/3hs5w5e3.aspx" title="Image Format">Image Format</a>
+            </div>
+            
+        </div>
+        
+    </div>
+    <img src="http://i.msdn.microsoft.com/Hash/030c41d9079671d09a62d8e2c1db6973.gif" alt="Separator" class="communityContentNavigationSeparator cl_lt_cc_line_top" />
+    
+    <div class="communityContentNavigation">
+        <div class="communityContentNavigationHeader">
+            Community Content</div>
+        
+        <div class="communityContentNavigationPost">
+            <div class="communityContentNavigationAvatarContainer">
+                <a class="communityContentNavigationLinkAvatar" href="#1" title=""><img alt="" class="cl_default_avatar" src="http://i1.social.microsoft.com/Image.avatr?size=small&amp;user=RobWDev"></img></a>
+            </div>
+            
+            <div class="communityContentNavigationLink">
+                <ul>
+                    <li><a href="#1" title="">
+                        Is this prolog/epilog acceptable...</a></li>
+                    <li>
+                        Coming from x86 asm.. BP would n...</li>
+                </ul>
+            </div>
+            
+        </div>
+        
+        <div class="communityContentNavigationMoreLink">
+            <a href="#CommunityContent" title="More...">More...</a></div>
+    </div>
+    
+</div>
+
+<div style="border-top: 1px solid #bbbbbb; float: left; width: 100%; height: 0px;     margin-top: 17px;">
+    <img src="http://i.msdn.microsoft.com/Hash/030c41d9079671d09a62d8e2c1db6973.gif" alt="Separator" class="communityContentNavigationSeparator cl_lt_cc_line_top" />
+</div>
+
+<script type="text/javascript"> 
+  //<![CDATA[
+  if (!MTPS) var MTPS = {};
+  MTPS.TopicNodes= {
+  
+            "_last": ''
+    };
+  //]]>
+</script>
+
+    </div>
+    
+    <div class="leftAdsContainer">
+        
+<div id="AdContainer37bb8af6-dde6-4c08-82e7-1b24e71810e7" class="AdContainer" style="width:180px; height:167px;">
+  <div class="AdsControlBar">
+    Advertisement
+    <div style="clear:both; height:0px"></div>
+  </div>
+  <div id="AdPanel37bb8af6-dde6-4c08-82e7-1b24e71810e7"></div>
+  <script type="text/javascript">
+    //<![CDATA[
+    (function(){
+      var windowOnload = window.onload || function(){};
+      window.onload = function(){
+        windowOnload();
+        _dapUtils.brLanguage = "en-us";
+        dapMgr.enableACB("AdPanel37bb8af6-dde6-4c08-82e7-1b24e71810e7", false);
+        dapMgr.renderAd("AdPanel37bb8af6-dde6-4c08-82e7-1b24e71810e7", "&AP=1087&PG=CMSVSD", 180, 150);
+      }
+    })();
+    //]]>
+  </script>
+  
+  <div style="clear:both; height:0px"></div>
+</div>
+
+    </div>
+    <div style="clear:both"></div>
+    
+  </div>
+  <div id="tocResizeContainer" style="visibility:hidden">
+  <a href="#" class="tocResize" id="TocResize" style="left:280px">
+    <img id="ResizeImageIncrease" class="cl_nav_resize_open" src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" title="Expand" alt="Expand" />
+      <img id="ResizeImageReset" class="cl_nav_resize_close" src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" style="display:none" title="Minimize" alt="Minimize" />
+  </a>
+  </div>
+  <div class="content">
+    <img class="TOC_Fade_Top cl_lw_toc_fade_top" src="http://i.msdn.microsoft.com/Hash/030c41d9079671d09a62d8e2c1db6973.gif" alt="" />
+    
+
+<div class="clip117x31 logo">
+  <a href="/en-us/default.aspx">
+    <img src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="msdn_body_logo" alt="MSDN" title="MSDN" />
+  </a>
+</div>
+
+    <div class="topicContainer" style="">
+      
+<div class="topic" xmlns="http://www.w3.org/1999/xhtml">
+  <h1 class="title">Prolog and Epilog</h1>
+  <div class="lw_vs">
+    <div id="curversion">
+      <strong>
+            Visual Studio 2010</strong>
+    </div>
+    <div id="versionclick" style="visibility:hidden">
+      <div id="vsseperator" class="cl_lw_vs_seperator"></div>
+      <div id="versionclick_c1"></div>
+      <div id="versionclick_c2">
+        <div class="">
+          <a id="vsLink" href="javascript:;">
+                    Other Versions
+                </a>
+        </div>
+        <div class="cl_vs_arrow clip10x10">
+          <img class="cl_lw_vs_arrow" id="vsArrow" alt="" src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" />
+        </div>
+      </div>
+      <div id="versionclick_c3"></div>
+    </div>
+    <ul id="vsPanel">
+      <li>
+        <a href="/en-us/library/tawsa7cb(v=VS.90).aspx" title="">Visual Studio 2008</a>
+      </li>
+      <li>
+        <a href="/en-us/library/tawsa7cb(v=VS.80).aspx" title="">Visual Studio 2005</a>
+      </li>
+    </ul>
+  </div>
+  <div style="clear:both;"></div>
+  
+  <div id="mainSection">
+    <div id="mainBody">
+      <p>
+        
+      </p> <div class="introduction"><p>Every function that allocates stack space, calls other functions, saves nonvolatile registers, or uses exception handling must have a prolog whose address limits are described in the unwind data associated with the respective function table entry (see <span><a href="http://msdn.microsoft.com/en-us/library/1eyas8tf.aspx">Exception Handling (x64)</a></span>). The prolog saves argument registers in their home addresses if required, pushes nonvolatile registers on the stack, allocates the fixed part of the stack for locals and temporaries, and optionally establishes a frame pointer. The associated unwind data must describe the action of the prolog and must provide the information necessary to undo the effect of the prolog code.</p><p>If the fixed allocation in the stack is more than one page (that is, greater than 4096 bytes), then it is possible that the stack allocation could span more than one virtual memory page and, therefore, the allocation must be checked before it is actually allocated. A special routine that is callable from the prolog and which does not destroy any of the argument registers is provided for this purpose.</p><p>The preferred method for saving nonvolatile registers is to move them onto the stack before the fixed stack allocation. If the fixed stack allocation were performed before the nonvolatile registers were saved, then most probably a 32-bit displacement would be required to address the saved register area (reportedly, pushes of registers are just as fast as moves and should remain so for the foreseeable future in spite of the implied dependency between pushes). Nonvolatile registers can be saved in any order. However, the first use of a nonvolatile register in the prolog must be to save it.</p><p>The code for a typical prolog might be:</p><div class="LW_CodeSnippetContainer" xmlns=""><a name="CodeSpippet0"></a><div class="LW_CodeSnippetContainerCodeCollection"><div class="LW_CodeSnippetToolBar"><div class="LW_CodeSnippetToolBarText" style="valign: top"><a class="CopyCode" style="display:none" title="Copy to clipboard." href="javascript:void(0)" data-copyelement="CodeSnippetContainerCode0">Copy</a></div></div><div id="CodeSnippetContainerCode0" class="LW_CodeSnippetContainerCode"><div style="color:Black;"><pre>
+mov       [RSP + 8], RCX
+push   R15
+push   R14
+push   R13
+sub      RSP, fixed-allocation-size
+lea      R13, 128[RSP]
+...
+</pre></div></div></div></div><p>This prolog stores the argument register RCX in its home location, saves nonvolatile registers R13-R15, allocates the fixed part of the stack frame, and establishes a frame pointer that points 128 bytes into the fixed allocation area. Using an offset allows more of the fixed allocation area to be addressed with one-byte offsets.</p><p>If the fixed allocation size is greater than or equal to one page of memory, then a helper function must be called before modifying RSP. This helper, __chkstk, is responsible for probing the to-be-allocated stack range, to ensure that the stack is extended properly. In that case, the previous prolog example would instead be:</p><div class="LW_CodeSnippetContainer" xmlns=""><a name="CodeSpippet1"></a><div class="LW_CodeSnippetContainerCodeCollection"><div class="LW_CodeSnippetToolBar"><div class="LW_CodeSnippetToolBarText" style="valign: top"><a class="CopyCode" style="display:none" title="Copy to clipboard." href="javascript:void(0)" data-copyelement="CodeSnippetContainerCode1">Copy</a></div></div><div id="CodeSnippetContainerCode1" class="LW_CodeSnippetContainerCode"><div style="color:Black;"><pre>
+mov       [RSP + 8], RCX
+push   R15
+push   R14
+push   R13
+mov      RAX,  fixed-allocation-size
+call   __chkstk
+sub      RSP, RAX
+lea      R13, 128[RSP]
+...
+</pre></div></div></div></div><p>The __chkstk helper will not modify any registers other than R10, R11, and the condition codes. In particular, it will return RAX unchanged and leave all nonvolatile registers and argument-passing registers unmodified.</p><p>Epilog code exists at each exit to a function. Whereas there is normally only one prolog, there can be many epilogs. Epilog code trims the stack to its fixed allocation size (if necessary), deallocates the fixed stack allocation, restores nonvolatile registers by popping their saved values from the stack, and returns.</p><p>The epilog code must follow a strict set of rules for the unwind code to reliably unwind through exceptions and interrupts. This reduces the amount of unwind data required, because no extra data is needed to describe each epilog. Instead, the unwind code can determine that an epilog is being executed by scanning forward through a code stream to identify an epilog.</p><p>If no frame pointer is used in the function, then the epilog must first deallocate the fixed part of the stack, the nonvolatile registers are popped, and control is returned to the calling function. For example,</p><div class="LW_CodeSnippetContainer" xmlns=""><a name="CodeSpippet2"></a><div class="LW_CodeSnippetContainerCodeCollection"><div class="LW_CodeSnippetToolBar"><div class="LW_CodeSnippetToolBarText" style="valign: top"><a class="CopyCode" style="display:none" title="Copy to clipboard." href="javascript:void(0)" data-copyelement="CodeSnippetContainerCode2">Copy</a></div></div><div id="CodeSnippetContainerCode2" class="LW_CodeSnippetContainerCode"><div style="color:Black;"><pre>
+add      RSP, fixed-allocation-size
+pop      R13
+pop      R14
+pop      R15
+ret
+</pre></div></div></div></div><p>If a frame pointer is used in the function, then the stack must be trimmed to its fixed allocation prior to the execution of the epilog. This is technically not part of the epilog. For example, the following epilog could be used to undo the prolog previously used:</p><div class="LW_CodeSnippetContainer" xmlns=""><a name="CodeSpippet3"></a><div class="LW_CodeSnippetContainerCodeCollection"><div class="LW_CodeSnippetToolBar"><div class="LW_CodeSnippetToolBarText" style="valign: top"><a class="CopyCode" style="display:none" title="Copy to clipboard." href="javascript:void(0)" data-copyelement="CodeSnippetContainerCode3">Copy</a></div></div><div id="CodeSnippetContainerCode3" class="LW_CodeSnippetContainerCode"><div style="color:Black;"><pre>
+lea      RSP, -128[R13]
+; epilogue proper starts here
+add      RSP, fixed-allocation-size
+pop      R13
+pop      R14
+pop      R15
+ret
+</pre></div></div></div></div><p>In practice, when a frame pointer is used, there is no good reason to adjust RSP in two steps, so the following epilog would be used instead:</p><div class="LW_CodeSnippetContainer" xmlns=""><a name="CodeSpippet4"></a><div class="LW_CodeSnippetContainerCodeCollection"><div class="LW_CodeSnippetToolBar"><div class="LW_CodeSnippetToolBarText" style="valign: top"><a class="CopyCode" style="display:none" title="Copy to clipboard." href="javascript:void(0)" data-copyelement="CodeSnippetContainerCode4">Copy</a></div></div><div id="CodeSnippetContainerCode4" class="LW_CodeSnippetContainerCode"><div style="color:Black;"><pre>
+lea      RSP, fixed-allocation-size – 128[R13]
+pop      R13
+pop      R14
+pop      R15
+ret
+</pre></div></div></div></div><p>These are the only legal forms for an epilog. It must consist of either an <span class="code">add RSP,constant</span> or <span class="code">lea RSP,constant[FPReg]</span>, followed by a series of zero or more 8-byte register pops and a return or a jmp. (Only a subset of jmp statements are allowable in the epilog. These are exclusively of the class of jmps with ModRM memory references where ModRM mod field value 00. The use of jmps in the epilog with ModRM mod field value 01 or 10 is prohibited. See Table A-15 in the AMD x86-64 Architecture Programmer’s Manual Volume 3: General Purpose and System Instructions, for more info on the allowable ModRM references.). No other code can appear. In particular, nothing can be scheduled within an epilog, including loading of a return value.</p><p>Note that, when a frame pointer is not used, the epilog must use <span class="code">add RSP,constant</span> to deallocate the fixed part of the stack. It may not use <span class="code">lea RSP,constant[RSP]</span> instead. This restriction exists so the unwind code has fewer patterns to recognize when searching for epilogs.</p><p>Following these rules allows the unwind code to determine that an epilog is currently being executed and to simulate execution of the remainder of the epilog to allow recreating the context of the calling function.</p></div><div xmlns=""><script type="text/javascript">if (!MTPS) var MTPS = {};if (!MTPS.LocalizedStrings) MTPS.LocalizedStrings = {}; 
+              MTPS.LocalizedStrings.ExpandButtonTooltip = 'Expand'; 
+              MTPS.LocalizedStrings.CollapseButtonTooltip = 'Collapse';</script><div class="LW_CollapsibleArea_TitleDiv"><div><a href="javascript:void(0)" class="LW_CollapsibleArea_TitleAhref" title="Collapse"><img src="http://i.msdn.microsoft.com/Hash/030c41d9079671d09a62d8e2c1db6973.gif" class="cl_CollapsibleArea_expanding LW_CollapsibleArea_Img" /><span class="LW_CollapsibleArea_Title">See Also</span></a><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div></div><div class="sectionblock"><a id="seeAlsoToggle" xmlns="http://www.w3.org/1999/xhtml">
+  
+</a>
+<h4 class="subHeading" xmlns="http://www.w3.org/1999/xhtml">Reference</h4>
+<div class="seeAlsoStyle" xmlns="http://www.w3.org/1999/xhtml">
+  <span>
+    <a href="http://msdn.microsoft.com/en-us/library/7kcdt6fy.aspx">x64 Software Conventions</a>
+  </span>
+</div></div></div></div>
+  </div>
+</div>
+    </div>
+    
+    <div class="topicEndLine">
+    </div>
+    <div id="CommunityContent" class="CommunityContent">
+      
+<div class="CommunityContentContainer">
+    <div id="CommunityContentHeader" class="CommunityContentHeader">
+      <div class="CommunityContentHeaderTitleContainer">
+        <span class="CommunityContentHeaderTitle h1">Community Content</span>
+          
+        <a href="http://msdn.microsoft.com/en-us/library/community/add/tawsa7cb.aspx" title="Add">Add</a>
+          
+        </div>
+        <div class="CommunityContentFaq">
+            <a href="/en-us/library/community-edits.rss?topic=tawsa7cb|en-us|VS.100" title="Annotations"><img class="cl_rss_button" alt="Annotations" src="http://i.msdn.microsoft.com/Hash/030c41d9079671d09a62d8e2c1db6973.gif" /></a>
+            <a href="/en-us/library/community-msdnwikifaq.aspx" title="FAQ">FAQ</a>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+    
+    
+    <div class="Annotation">
+      <a name="1"></a>
+      <div class="AnnotationTitle h3">
+              <span>Is this prolog/epilog acceptable? </span>
+                
+        </div> 
+        <div class="AnnotationBody">
+            Coming from x86 asm.. BP would normally be the frame pointer. Is the prolog/epilog below incorrect? On the left is the pair given in the text above and on the right is my modified one:
+$0$0
+$0
+$0&lt;pre&gt;$0
+$0
+$0mov    [RSP + 8], RCX                  mov    [RSP + 8], RCX$0
+$0push   R15                             push   R15$0
+$0push   R14                             push   R14$0
+$0push   R13                             push   R13$0
+$0                                       push   RBP$0
+$0sub    RSP, fixed-size                 mov    RBP, RSP$0
+$0lea    RBP, 128[RSP]                   sub    RSP, fixed-size$0
+$0$0
+$0
+$0lea    RSP, -128[RBP]                  add    RSP, fixed-size$0
+$0add    RSP, fixed-size                 mov    RSP, RBP$0
+$0                                       pop    RBP$0
+$0pop    R13                             pop    R13$0
+$0pop    R14                             pop    R14$0
+$0pop    R15                             pop    R15$0
+$0ret                                    ret$0
+$0
+$0&lt;/pre&gt;$0
+$0$0
+$0
+$0The reason I ask is there is the phrase "These are the only legal forms for an epilog<span>".</span>$0
+        </div>
+        <div class="AnnotationHistory">
+            <a href="http://msdn.microsoft.com/en-us/library/community/history/tawsa7cb.aspx?id=1" title="History" target="_blank">History</a>
+        </div>
+        
+        <div class="HistoryGraphic">
+        <img src="http://i.msdn.microsoft.com/Hash/030c41d9079671d09a62d8e2c1db6973.gif" class="cl_rt_cc_line_top" alt="" />
+        </div>
+        <div class="ModificationHistory">
+             <div class="AnnotationAddedContainer">
+             <a class="AddedUserAvatar" href="http://msdn.microsoft.com/en-us/library/community/user/1918936.aspx" title=""><img alt="" height="34" src="http://i1.social.microsoft.com/Image.avatr?size=small&amp;user=RobWDev" width="34"></img></a>
+               
+                <ul class="AddedUserData">
+                    <li>7/8/2011</li>
+                    <li><a href="http://msdn.microsoft.com/en-us/library/community/user/1918936.aspx">RobWDev</a> </li>
+                </ul>
+            </div>
+            
+            
+              <div class="AnnotationEditedContainer">
+              <a class="EditedUserAvatar" href="http://msdn.microsoft.com/en-us/library/community/user/1918936.aspx" title=""><img alt="" height="25" src="http://i1.social.microsoft.com/Image.avatr?size=small&amp;user=RobWDev" width="25"></img></a>            
+              <ul>
+              <li>
+              7/8/2011
+              </li>
+              <li>
+              <a href="http://msdn.microsoft.com/en-us/library/community/user/1918936.aspx">RobWDev</a>
+              </li></ul>
+              </div>
+            
+        </div>
+        
+    </div>
+    
+
+</div>
+    </div>
+    
+  </div>
+  
+  <div style="clear:both; width:100%; height:0px"></div>
+  <div class="bottomAdsContainer">
+    
+<div id="AdContainer5638b12d-e60b-4ceb-aa49-06b763e8ccd0" class="AdContainer" style="width:728px; height:107px;">
+  <div class="AdsControlBar">
+    Advertisement
+    <div style="clear:both; height:0px"></div>
+  </div>
+  <div id="AdPanel5638b12d-e60b-4ceb-aa49-06b763e8ccd0"></div>
+  <script type="text/javascript">
+    //<![CDATA[
+    (function(){
+      var windowOnload = window.onload || function(){};
+      window.onload = function(){
+        windowOnload();
+        _dapUtils.brLanguage = "en-us";
+        dapMgr.enableACB("AdPanel5638b12d-e60b-4ceb-aa49-06b763e8ccd0", false);
+        dapMgr.renderAd("AdPanel5638b12d-e60b-4ceb-aa49-06b763e8ccd0", "&AP=1390&PG=CMSVSB", 728, 90);
+      }
+    })();
+    //]]>
+  </script>
+  
+  <div style="clear:both; height:0px"></div>
+</div>
+
+  </div>
+  <div style="clear:both"></div>
+  
+  </div>
+  <div class="footer">
+    
+
+<div id="footer" class="footerContainer cl_footer_slice">
+  <div class="footerLogoContainer">
+    <div class="footerContent">
+    <div class="copyright">
+      © 2011 Microsoft. All rights reserved.</div>
+    <div class="footerLogo cl_footer_logo"></div>
+    <a href="/cc300389.aspx">Terms of Use</a><span class="pipe"> | </span>
+    <a href="http://www.microsoft.com/library/toolbar/3.0/trademarks/en-us.mspx">Trademarks</a><span class="pipe"> | </span>
+    <a href="http://www.microsoft.com/info/privacy.mspx">Privacy Statement</a>
+    <span class="pipe">| </span>
+    <span class="FeedbacklinkDisabled" id="FeedbacklinkDisabled">Feedback</span>
+    <a id="Feedbacklink" title="Feedback" class="FeedbackLink" href="http://social.msdn.microsoft.com/Forums/en-US/libraryfeedback/threads">
+      Feedback
+        <span class="FeedbackButton clip20x21" id="FeedbackButton">
+          <img id="feedBackImg" class="cl_footer_feedback_icon" src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" alt="Feedback" />
+        </span>
+      </a>
+    
+  <div id="FeedbackContainer" class="FeedbackContainer">
+    <form method="post" action="/en-us/library/feedback/add/tawsa7cb.aspx">
+    <div class="FeedbackTitleContainer">
+        <div class="FeedbackTitle">
+            Feedback</div>
+        <div class="FeedbackCancel">
+            <a href="javascript:;" onclick="document.getElementById('FeedbackContainer').style.display = 'none';">x</a>
+            </div>
+    </div>
+    <div class="FeedbackData">
+        <div class="FeedbackInfoText">
+            Tell us about your experience...
+        </div>
+        <div class="QuestionText">
+            Did the page load quickly?
+        </div>
+        <div class="AnswerText">
+            
+            <span>
+                Yes<span>
+                    <input id="searchBox" name="searchBox" type="radio" value="1" /></span></span>
+            
+            <span>
+                No<span>
+                    <input id="searchBox" name="searchBox" type="radio" value="0" /></span></span>
+            
+        </div>
+        <div class="QuestionText">
+            Do you like the page design?
+        </div>
+        <div class="AnswerText">
+            
+            <span>
+                Yes<span>
+                    <input id="tabbedCode" name="tabbedCode" type="radio" value="1" /></span></span>
+            
+            <span>
+                No<span>
+                    <input id="tabbedCode" name="tabbedCode" type="radio" value="0" /></span></span>
+            
+        </div>
+        <div class="QuestionText">
+            How useful is this topic?
+        </div>
+        <div class="FeedbackGraphicHolder clip269x23">            
+                <img alt="" src="http://i3.msdn.microsoft.com/Hash/1fcb39def60c02db8c304225220aa123.png" class="cl_online_scale FeedbackSiderGraphic" />
+        </div>        
+            <div class="RadioButtonHolder"><div class="RateRadioOne">
+                    <input id="topicUseful" name="topicUseful" title="Really disliked it" type="radio" value="1" />
+                </div>
+               <div class="RateRadio">
+                    <input id="topicUseful" name="topicUseful" title="Disliked it" type="radio" value="2" />
+                </div>
+               <div class="RateRadio">
+                    <input id="topicUseful" name="topicUseful" title="OK" type="radio" value="3" />
+                </div>
+               <div class="RateRadio">
+                    <input id="topicUseful" name="topicUseful" title="Good" type="radio" value="4" />
+                </div>
+               <div class="RateRadioLast">
+                    <input id="topicUseful" name="topicUseful" title="Really Good" type="radio" value="5" />
+                </div>
+               
+            </div>            
+        <div class="QuestionText">
+            Tell us more
+        </div>
+        <div class="FeedbackTextAreaContainer">
+            <textarea id="feedbackText" data-maxlength="4000" name="feedbackText" cols="25" rows="5" class="FeedbackTextArea"></textarea>
+            
+            <textarea id="feedbackDescription" name="feedbackDescription" cols="25" rows="10" style="display:none;">Enter description here.</textarea>
+            <input type="hidden" id="feedbackPriority" name="feedbackPriority" value="" />
+            <input type="hidden" id="feedbackSourceUrl" name="feedbackSourceUrl" value="" />
+            <input type="hidden" id="ClientIP" name="ClientIP" value="" />
+            <input type="hidden" id="ClientOS" name="ClientOS" value="" />
+            <input type="hidden" id="ClientBrowser" name="ClientBrowser" value="" />
+            <input type="hidden" id="ClientTime" name="ClientTime" value="" />
+            <input type="hidden" id="ClientTimeZone" name="ClientTimeZone" value="" />
+            
+            
+        </div>
+        <div>
+            <input type="submit" value="Send" class="FeedbackSubmit" onclick="document.getElementById('feedbackDescription').value='';document.getElementById('feedBackVersion').value = '-1';" />
+        </div>
+    </div>
+    <input type="hidden" id="returnUrl" name="returnUrl" value="http://msdn.microsoft.com/en-us/library/tawsa7cb.aspx" />
+    
+    
+    <input type="hidden" id="feedBackVersion" name="feedBackVersion" value="1" />
+    
+  </form> 
+</div>
+
+    </div>
+  </div>
+</div>
+
+  </div>
+ 
+<script type="text/javascript" language="javascript" src="http://i2.msdn.microsoft.com/Hash/8c37ae5af06d04795b740449553e275e.js" xmlns="http://www.w3.org/1999/xhtml"></script></body>
+</html>

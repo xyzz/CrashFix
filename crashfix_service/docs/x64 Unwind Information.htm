@@ -1,0 +1,929 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head><meta http-equiv="X-UA-Compatible" content="IE=9; IE=8" /><meta name="robots" content="index,follow" />
+<meta name="keywords" content="x64 AMD64 64bit windows C++ unwind pdata xdata stackwalk exception handling" />
+<meta name="GENERATOR" content="Telligent Community 5.6.583.19431 (Build: 5.6.583.19431)" />
+<link rel="pingback" href="http://blogs.msdn.com/b/freik/pingback.aspx" />
+<link rel="alternate" type="application/rss+xml" title="Site Home (RSS 2.0)" href="http://blogs.msdn.com/rss.aspx"  />
+<link rel="alternate" type="application/rss+xml" title="Kevin Frei&#39;s Comments (RSS 2.0)" href="/members/FreiK/comments/rss.aspx"  />
+<link rel="alternate" type="application/rss+xml" title="Kevin Frei&#39;s Activities (RSS 2.0)" href="/members/FreiK/activities/rss.aspx"  />
+<link rel="alternate" type="application/rss+xml" title="Activities of People Kevin Frei Follows (RSS 2.0)" href="/members/FreiK/activities/followersrss.aspx"  />
+<link rel="alternate" type="application/rss+xml" title="Kevin Frei&#39;s Groups Activities (RSS 2.0)" href="/members/FreiK/activities/groupsrss.aspx"  />
+<link rel="alternate" type="application/rss+xml" title="FreiK&#39;s WebLog (RSS 2.0)" href="http://blogs.msdn.com/b/freik/rss.aspx"  />
+<link rel="alternate" type="application/atom+xml" title="FreiK&#39;s WebLog (Atom 1.0)" href="http://blogs.msdn.com/b/freik/atom.aspx"  />
+<link rel="alternate" type="application/rss+xml" title="FreiK&#39;s WebLog - All Comments (RSS 2.0)" href="http://blogs.msdn.com/b/freik/rsscomments.aspx"  />
+<link rel="alternate" type="application/rss+xml" title="X64 Unwind Information - Comments for this post (RSS 2.0)" href="http://blogs.msdn.com/b/freik/rsscomments.aspx?WeblogPostID=509372"  />
+
+            <link rel="stylesheet" href="/themes/generic/css/layout.css" type="text/css" media="screen" />
+        
+          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+          <link rel="shortcut icon" type="image/ico" href="/themes/wireframe/favicon.ico" />
+          <link type="text/css" rel="stylesheet" href="/themes/wireframe/css/screen.css" media="screen,print" />
+        
+          <link type="text/css" rel="stylesheet" href="/themes/blogs/wireframe/css/wireframe.css" media="screen,print" />		
+          <link type="text/css" rel="stylesheet" href="/themes/wireframe/css/DynamicStyle.aspx?PreviewKey=0" media="screen,print" />
+          <link type="text/css" rel="stylesheet" href="/themes/blogs/wireframe/css/DynamicStyle.aspx?WeblogID=4184&PreviewKey=0" media="screen,print" />
+        
+          <!--[if lte IE 6]>
+              <link type="text/css" rel="stylesheet" href="/themes/wireframe/css/ie6.css" media="screen,print" />
+          <![endif]-->
+          <link type="text/css" rel="stylesheet" href="/themes/wireframe/css/print.css" media="print" />
+        <meta name="msvalidate.01" content="B717AD6FC29D3A844832AF011B5F9E4C" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blogs.msdn.com/b/freik/rsd.ashx" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" title="WLWManifest" href="http://blogs.msdn.com/b/freik/wlwmanifest.ashx" />
+<title>
+	X64 Unwind Information - FreiK&#39;s WebLog - Site Home - MSDN Blogs
+</title></head>
+	<body spellcheck="true">
+		<form name="aspnetForm" method="post" action="/b/freik/archive/2006/01/04/509372.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div>
+<input type="hidden" name="ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha_answer" id="ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha_answer" value="" />
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha_encrypted" id="ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha_encrypted" value="4+m3m5Aoth3zSTKCkwbPwJb0x1lcljhwkLP0WVswSu4=" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTM5OTAxNDYyNWRkvI787cXLvh9XHlDReEjVejxzcZ4=" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=Z2cQcTXWgTIacDQe5RRNWmFyimLHJt8vzSXe1uPSng4eqr0myJHiayeAq1crklEPpVKsHC4W0kCtInsSLWolE5Uo5p41&amp;t=634505630674973875" type="text/javascript"></script>
+
+
+<script src="/WebResource.axd?d=SOm_d8KPCvLZqYHrhruKr9DdER9uVeTCF1FNDrQsmkkW6AGoFUpVPsp_sTVI0yBnuCqmAGaw9mn1GN6KHTm-O-scKjBDPWhJUPaoE5GX-W_PceNeDrCYaZsBFYwMz8SJcVcGWXF1earb2kCelpGh_yHCFNurOjx3n2A7T22-FJOIrny2temFXRG8ehi8UGCKQTTzSM4cj0CEdSfmhseuKk27Fmk1&amp;t=634547080206241858" type="text/javascript"></script>
+<script src="/WebResource.axd?d=X_bemaoIL4hjGUz9ZLneLqw-9c9VLtsWZNcpFAvJZjyKqy0p35kk2J5MVTgZ0_e7dzVplzG4gPuhYGCSEZ9_2V48ALIbJSP67YqRe_uBJ_EZoaemm2d7CXOUW-nZ8_pxnmZG0zD-4rwjao05LtAkIZm3fBDpXoPLWyORtmFV3KS69tTk0&amp;t=634547080209837373" type="text/javascript"></script>
+<script src="/WebResource.axd?d=3GU3tjSEW1ECXKvAUZHsxDFAslEZgbJjoLfCXBVUTswP5j5YYgW1hzjXqjzKD2dwNn0_t62E4VjYXqkzlUOlcdFK8Z_Brbo2xSEHJwdXoWqZ2JKysmKSDqwNmwzMbkFAkkWixyHGSjXGuv05u78Pi5NT0vd1V1i0XAu44rGfRSX4FePt0&amp;t=634547080209837373" type="text/javascript"></script>
+<script src="/WebResource.axd?d=ZNAKjLeYJhqT_oJ98OwZwVJzbm3UJOEc5LdYje7ix7F87IHOHrdtwh0VGbHW1w50Wi1G774JMTJOjcODrws7U3QA83DLFF0NxSeh0X7TA1drh1FHRbbpemnlRUet9k4QWDfNyUfoZvWBZm4x8hX6igDXjctw10e4qulgpzBxItVQN2eu0&amp;t=634547080206241858" type="text/javascript"></script><script type="text/javascript" src="/utility/jquery/jquery-1.5.2.min.js"></script>
+<script src="/WebResource.axd?d=6FRFqSBfWW_ZCmFE0BqdIlvcr4zxqdiaWN8vp2XHPAhpG0AD0_NxkFQ1CcKGC40FJPxdj4F8A7tYf9Z_yaF3WsmUxjEtOVMNJXB8Kwa3_EVNAC48gN_yerZiw_aK8Oz17MWCcfozfjgs_8aIixBDL-2IeZQx3Xlbop7fBCJv5wwZ9pQJ0&amp;t=634547080209837373" type="text/javascript"></script>
+<script src="/WebResource.axd?d=-I9opVMlYERsOWADr5Ja4RssDj9bjzJHgxNjPQ9OjvoFh9msYez2FDTy088QYu1C72c0WsRQFRwLvbjkl5W-5nUXl_DP64ke9Lcb62qn5BUa-Pc2HN1pvm_BxvRFy0R5YH4IK1QyICM_8SECrbjcS3m5T6W1PwtrsEZAgYO-WlfqJYLwakPjAePpK_rDp4hCPrtBXA2&amp;t=634547080209837373" type="text/javascript"></script>
+<script src="/WebResource.axd?d=HaOPiNm1e0sLVdYesQz9mxWwGXMPQMB4pwvUsGB8ZJGyRNswfv6H9HTF-JKe-U2Y1vxDijsXcYELa58DHCNpyH_92CgFm0Ufhn79o8ERhzVbFsOVbA3l7FI1LLkkpikqzv90nK2u1s9OJzHVD9CVAFXD88fLNAeJyjBJ4gdZzh9UGdLy0&amp;t=634547080206241858" type="text/javascript"></script>
+<script src="/WebResource.axd?d=5h4uDIKw0jfgLvo3lCMA-4uYbYFLjWH-CYL_-M2qsXt9DrFoEenc0y52xIhQOIuH3vbY259X3nftMHddV3CFRlcHaaTZaWGgUpmuHdITXpKI9rvCcKFLHbyvpaIOj0Z3daJZkb5OxqyK8MexioOup8dp9HMMcUIaOaV45OQR7pBZLMmbWyMtl_nN2Z62vnk7be3DkGA0e424SusmrWa2Gh69sQk1&amp;t=634547080207023488" type="text/javascript"></script><script type="text/javascript" src="/utility/jquery/autoresize.jquery.min.js"></script>
+<script src="/WebResource.axd?d=ahlDYNbDLqewiDAWERYywUOtVFS2G5LIDpqT1GeuLSeL9pZ00_hrjGdFvqY_kyCXvYVPgnStzP15cHQkWAzWlCzgdszLOoROgHYM-Q8BV8Z6UyC80&amp;t=634505630674973875" type="text/javascript"></script>
+<script src="/WebResource.axd?d=g8NlLbN_osz0sxxr-Bna0nHqaizsNTSphFqtHKkDWqiKQsKKuaAQOVQypJLBFBqEvJaa9dJ2zwQ2JliJ5HhivoDHWcQuKR5yA8KFCBHClR8-sqBOFF19sdL8EztLKXVazT-I1lAPYxzE8AVMmxl9C1bu8SgYgaRi4JnPS9I7huwwIo9w0&amp;t=634547080209837373" type="text/javascript"></script>
+<script src="/WebResource.axd?d=uV5jECGiS8_GGPpJV2cuiPaxOggI_Y2EpUA7ib1PBadUMhq0cmHRiSADtsCT3nmnKrLT5MkAP8h8F3UMJW_2Z3BSuXdlF27_BqU2j91NEX9nvMQ-sYjrkuE32_4xlcSeX4lK-LKMuS9zQ2YdbgN2JBkNqRRQwxIqGO6XxMTzGcqEcljS5LsQy6GnlKQRDlppAf2smw2&amp;t=634547080206241858" type="text/javascript"></script>
+<script src="/WebResource.axd?d=6DtyjlTHYsWSfgn8LS123dLXJsjyvfjZ0Oia-72mAUZG1gOZ3jrGqp_gFPDiYWMqrm5wwHYCagmkeYSJJ8aCdv3j2skd6GY_-ZfcrbUegYvAtAuSLp7uYLU4AAZHCIHpZyVriNhxlPfYHlAdweplddfOsLQ1&amp;t=634544478840973424" type="text/javascript"></script>
+<script src="/WebResource.axd?d=TjiNY1rmv8W4Kzz4QZNyp2P63E6t793JZRNHHbvHuWrJaqpghfU8youCEpBAslnDhi_lkdjijHgIojxgUIqfM-y1jhUZUA-jM-Afdq2fsvIyNiGpZ-YmVXiUSdcBUkhRxJsxknB8hZRBkMJhhgaW8RIio1ZUVIB-8C07L5RKMfEOZZh00&amp;t=634547080206241858" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+//]]>
+</script>
+
+			
+            
+                
+            
+            <div class="header-fragments-header"></div>
+<div class="header-fragments"><div class="header-fragment-outer top-bar wireframe-header-fragment-outer wireframe-top-bar"><div class="header-fragment-inner top-bar wireframe-header-fragment-inner wireframe-top-bar"><div class="header-fragment welcome-message" id="header-fragment-247403536">
+
+
+<!-- always render -->
+</div><div class="header-fragment login-logout" id="header-fragment-247403537">
+
+
+
+
+
+        <div class="navigation-list-header"></div>
+        <ul class="navigation-list">
+
+            <li class="navigation-item">
+                <span id="ctl00_header_fragment_247403537__9b616d_ctl00_ctl02_ctl05_WLIDLoginButton1" class="internal-link live-id-button"><a href="https://login.live.com/login.srf?wa=wsignin1.0&rpsnv=11&ct=1322734461&rver=6.0.5286.0&wp=MBI&wreply=http:%2F%2Fblogs.msdn.com%2Fb%2Ffreik%2Farchive%2F2006%2F01%2F04%2F509372.aspx&lc=1033&id=271611">Sign In</a></span>
+            </li>
+        </ul>
+        <div class="navigation-list-footer"></div>
+    </div><div class="header-fragment user-welcome-without-login" id="header-fragment-247403538">
+
+ &nbsp;<!-- always render -->
+
+</div></div></div><div class="header-fragment-outer wireframe-header-fragment-outer site-banner"><div class="header-fragment-inner wireframe-header-fragment-inner site-banner"><div class="header-fragment site-banner" id="header-fragment-247403539">
+
+
+<div class="site-banner-header"></div>
+<div class="site-banner">
+    
+    
+    
+            <div class="site-logo"><a href="/">
+                    <img src="/themes/MSDN2/images/MSDN/logo_msdn.png" alt="" style="border-width:0px;" />
+                </a></div>
+        
+</div>
+<div class="site-banner-footer"></div></div></div></div><div class="header-fragment-outer wireframe-header-fragment-outer search"><div class="header-fragment-inner wireframe-header-fragment-inner search"><div class="header-fragment search" id="header-fragment-247403540">
+
+<script src="/Utility/HeaderFragments/Core/Search.js?Version=5.6.583.19431&amp;LastChanged=634544730814402084" type="text/javascript"></script>
+
+<script type="text/javascript">
+	// <![CDATA[
+	var Core_Search_AjaxEndpoint = '/Utility/HeaderFragments/Core/SearchAjax.asmx'
+	var Core_Search_NoSearchResults = 'No results found'
+
+	var ctl00_header_fragment_247403540={"wrapperId":"header-fragment-247403540","variableName":"ctl00_header_fragment_247403540","parameter":{"popupId":"ctl00_header_fragment_247403540__9b616d_ctl00_SearchPopup","textBoxId":"ctl00_header_fragment_247403540__9b616d_ctl00_SearchText","searchResultWrapperHtmlBlock":"{SearchResults}","searchGroupHtmlBlock":"\r\n\t\t<div class=\"content-list-header\"></div>\r\n\t\t<div class=\"content-list-name\">{ContentName}</div>\r\n\t\t<ul class=\"content-list\">\r\n\t\t\t{ContentItems}\r\n\t\t</ul>\r\n\t\t<div class=\"content-list-footer\"></div>\r\n\t\t","searchItemHtmlBlock":"<li class=\"content-item\"><a href=\"{Link}\" class=\"internal-link {LinkType}\"><span></span>{Title}</a></li>\t\t","searchSearchingHtmlBlock":"<div class=\"message loading\">Searching...</div>","searchNoResultsHtmlBlock":"<div class=\"message norecords\">No results found</div>","showAllHtmlBlock":"<a href=\"{ShowAllLink}\" class=\"internal-link search\"><span></span>Show All...</a>","searchErrorHtmlBlock":"<div class=\"message error\">Search is currently unavailable.</div>","searchOptionsPopup":"ctl00_header_fragment_247403540__9b616d_ctl00_SearchOptionsPopup","searchOptionName":"ctl00_header_fragment_247403540__9b616d_ctl00_filter","lastKeyCode":"","timeout":""}};
+		
+	$(document).ready(function() {
+		Core_Search_Register(ctl00_header_fragment_247403540);
+	});
+	// ]]>
+</script>
+
+<div class="field-list-header">
+</div>
+<fieldset class="field-list">
+	<ul class="field-list">
+		<li class="field-item"><span class="field-item-input"><input name="ctl00$header_fragment_247403540$_9b616d$ctl00$SearchText" type="text" maxlength="64" size="15" id="ctl00_header_fragment_247403540__9b616d_ctl00_SearchText" class="search empty" /></span></li>
+		
+	</ul>
+</fieldset>
+<div class="field-list-footer">
+</div>
+<div id="ctl00_header_fragment_247403540__9b616d_ctl00_SearchPopup" style="position:absolute;visibility:hidden;left:-5000px;"></div>
+
+</div></div></div><div class="header-fragment-outer wireframe-header-fragment-outer group-navigation"><div class="header-fragment-inner wireframe-header-fragment-inner group-navigation"><div class="header-fragment group-navigation" id="header-fragment-247403541">
+
+<script src="/Utility/HeaderFragments/Core/GroupNavigation.js?Version=5.6.583.19431" type="text/javascript"></script>
+    
+<div id="ctl00_header_fragment_247403541__9b616d_ctl00_ctl00_ParentGroupListContainer" class="parent-container" style="width: 100%">
+<div class="parent-sub-container">
+	
+            <div class="navigation-list-header"></div>
+            <ul class="navigation-list parent">
+            <li class="navigation-item" style="display: none;">
+                <a href="/">MSDN Blogs</a>
+            </li>
+        
+            <li class="navigation-item entry" style="display: none;">
+				
+						<a class="internal-link view-group" href="/Microsoft_Blog_Images/"><span></span>Microsoft Blog Images</a>
+					
+            </li>
+        
+			
+            <li class="navigation-item last">
+				<a id="MoreLink" style="display:none;" onmouseover="Core_GroupNavigation_MoreShowNav(ctl00_header_fragment_247403541, true, this)" onmouseout="Core_GroupNavigation_MoreMouseOutPopup(ctl00_header_fragment_247403541, true, this)" href="#">More ...</a>
+            </li>
+            </ul>
+            <div class="navigation-list-footer"></div>
+        
+</div>
+</div>
+<div id="ctl00_header_fragment_247403541__9b616d_ctl00_ctl00_GroupNavigationPopup" style="position:absolute;visibility:hidden;left:-5000px;"></div>
+<div id="ctl00_header_fragment_247403541__9b616d_ctl00_ctl00_ParentMore" style="display: none;">
+    <div class="content-list-header"></div>
+    <ul id="ParentMoreListheader-fragment-247403541" class="content-list">
+    </ul>
+    <div class="content-list-footer"></div>
+</div>
+<div id="ctl00_header_fragment_247403541__9b616d_ctl00_ctl00_ChildMore" style="display: none;">
+    <div class="content-list-header"></div>
+    <ul id="ChildMoreListheader-fragment-247403541" class="content-list">
+    </ul>
+    <div class="content-list-footer"></div>
+</div>
+	
+<script type="text/javascript">
+    // <![CDATA[
+    
+    var Core_GroupNavigation_AjaxEndpoint = '/Utility/HeaderFragments/Core/GroupNavigationAjax.asmx';
+        
+    var ctl00_header_fragment_247403541={"wrapperId":"header-fragment-247403541","variableName":"ctl00_header_fragment_247403541","parameter":{"currentGroupId":0,"popupMenuId":"ctl00_header_fragment_247403541__9b616d_ctl00_ctl00_GroupNavigationPopup","popupParentMoreId":"ctl00_header_fragment_247403541__9b616d_ctl00_ctl00_ParentMore","popupChildMoreId":"ctl00_header_fragment_247403541__9b616d_ctl00_ctl00_ChildMore","popupWrapperID":"popup-ctl00_header_fragment_247403541__9b616d_ctl00_ctl00_GroupNavigationPopup","mouseInPopup":false,"popupPopulated":false,"errorHtml":"<div class=\"message error\">An error occured while attempting to load groups.</div>","loadingHtml":"<div class=\"message loading\">Loading...</div>","groupNavigationContentWrapperHtmlBlock":"<div id=\"popup-ctl00_header_fragment_247403541__9b616d_ctl00_ctl00_GroupNavigationPopup\">{GroupNavigationContent}</div>","groupNavigationListHtmlBlock":"<div class=\"multiple-column-list-header\"></div>\n<div class=\"multiple-column-list columns-{ColumnsCount}\">{Columns}</div>\n<div class=\"multiple-column-list-footer\"></div>","columnWrapperHtmlBlock":"<div class=\"multiple-column-item column-{ColumnId}\">{T1GroupsData}</div>","t1GroupHtmlBlock":"\r\n\t\t<div class=\"content-list-header\"></div>\r\n\t\t<div class=\"content-list-name{NameClass}\">{Name}</div>\r\n\t\t<ul class=\"content-list\">\r\n\t\t\t{Groups}\r\n\t\t</ul>\r\n\t\t<div class=\"content-list-footer\"></div>\r\n\t","t2GroupHtmlBlock":"<li class=\"content-item{ItemClass}\">{Item}</li>","viewAllHtmlBlock":"<a href=\"{Url}\" class=\"internal-link view-all\">{Text}</a>","linkHtmlBlock":"<a href=\"{Url}\" class=\"{MoreClass}\">{Name}</a>","searchResultItemHtmlBlock":"<li class=\"content-item\"><a href=\"{Url}\">{Name}</a></li>","viewMoreText":"and {MoreText} more..."}};
+
+	$(document).ready(function() {
+		Core_GroupNavigation_SetMenuItems("#ctl00_header_fragment_247403541__9b616d_ctl00_ctl00_ParentGroupListContainer", true, "ParentMoreListheader-fragment-247403541");
+		Core_GroupNavigation_SetMenuItems("#ctl00_header_fragment_247403541__9b616d_ctl00_ctl00_ChildGroupListContainer", false, "ChildMoreListheader-fragment-247403541");
+	});
+
+	$(window).resize(function() {
+		Core_GroupNavigation_SetMenuItems("#ctl00_header_fragment_247403541__9b616d_ctl00_ctl00_ParentGroupListContainer", true, "ParentMoreListheader-fragment-247403541");
+		Core_GroupNavigation_SetMenuItems("#ctl00_header_fragment_247403541__9b616d_ctl00_ctl00_ChildGroupListContainer", false, "ChildMoreListheader-fragment-247403541");
+	});
+    // ]]>
+</script></div></div></div></div>
+<div class="header-fragments-footer"></div>
+			
+    <div class="content-fragment-page post" id="ctl00_content_ctl00_page"><div class="layout">
+<div class="layout-header"></div>
+<div class="layout-content header-top-content-left-sidebar-right" id="ctl00_content_ctl00_layout">
+<div class="layout-region header" id="ctl00_content_ctl00_header">
+<div class="layout-region-inner header"><div class="content-fragment blog-title full-border" id="fragment-3493">
+<div class="content-fragment-inner wireframe-content-fragment-inner"><div class="content-fragment-top wireframe-content-fragment-top"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div><div class="content-fragment-content">
+<h1 class="title">
+	    
+			        
+			    
+	                X64 Unwind Information
+			    
+	</h1></div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom wireframe-content-fragment-bottom"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div></div></div>
+<div id="fragment-3486"></div>
+</div>
+</div>
+<div class="layout-region right-sidebar" id="ctl00_content_ctl00_right-sidebar">
+<div class="layout-region-inner right-sidebar"><div class="content-fragment blog-links no-wrapper-with-spacing with-header" id="fragment-3487">
+<div class="content-fragment-inner wireframe-content-fragment-inner"><div class="content-fragment-top wireframe-content-fragment-top"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div><div class="content-fragment-header"><div>Common Tasks</div></div>
+<div class="content-fragment-content">
+
+		<div class="navigation-list-header"></div>
+		<ul class="navigation-list">
+	<li class="navigation-item"><a class="internal-link view-application" href="/b/freik/"><span></span>Blog Home</a></li><li class="navigation-item"><a class="internal-link view-contact" href="/b/freik/contact.aspx"><span></span>Email Blog Author</a></li><li id=""RssComments""" class="navigation-item"><a class="internal-link rss" href="/b/freik/rsscomments.aspx"><span></span>RSS for comments</a></li><li class="navigation-item"><a class="internal-link rss" href="/b/freik/rss.aspx"><span></span>RSS for posts</a></li>
+		</ul>
+		<div class="navigation-list-footer"></div>
+	</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom wireframe-content-fragment-bottom"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div></div></div>
+<div class="content-fragment search-form no-wrapper-with-spacing with-header" id="fragment-3488">
+<div class="content-fragment-inner wireframe-content-fragment-inner"><div class="content-fragment-top wireframe-content-fragment-top"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div><div class="content-fragment-header"><div>Search</div></div>
+<div class="content-fragment-content">
+
+
+
+        <div class="field-list-header"></div>
+        <fieldset class="field-list">
+            <ul class="field-list">
+                <li class="field-item search">
+                    <div>
+                         <span class="field-item-input"><input name="ctl00$content$ctl00$w_3488$_9b616d$ctl00$ctl01$ctl01$Keywords" type="text" maxlength="64" size="45" id="ctl00_content_ctl00_w_3488__9b616d_ctl00_ctl01_ctl01_Keywords" onfocus="if(this.defaultValue==this.value) this.value='';" onblur="if(this.value=='') this.value=this.defaultValue;" /></span>
+                    </div>
+                    <span id="ctl00_content_ctl00_w_3488__9b616d_ctl00_ctl01_ctl01_Validator" style="color:Red;display:none;"><span class="field-item-validation">*</span></span>
+
+
+                    <a href="#" onclick="ToggleAdvancedSearch(ctl00_content_ctl00_w_3488, this)" id="ctl00_content_ctl00_w_3488_AdvancedOptions" class="internal-link advanced-search"><span></span>Advanced search options...</a>
+                </li>
+                <li class="field-item search-type">
+                    <label for="ctl00_content_ctl00_w_3488__9b616d_ctl00_ctl01_ctl01_ContentTypes" class="field-item-header">Search In:</label>
+                    <span class="field-item-input">
+                        <select name="ctl00$content$ctl00$w_3488$_9b616d$ctl00$ctl01$ctl01$ContentTypes" id="ctl00_content_ctl00_w_3488__9b616d_ctl00_ctl01_ctl01_ContentTypes">
+	<option value="">Everything</option>
+	<option value="blog">Blogs</option>
+	<option value="forum">Forums</option>
+	<option value="user">People</option>
+	<option value="group">Groups</option>
+	<option value="fileapp,forumapp,blogapp,wikiapp">Places</option>
+	<option value="page">Pages</option>
+
+</select>
+                    </span>
+                </li>
+                <li class="field-item date-range">
+                    <label for="ctl00_content_ctl00_w_3488__9b616d_ctl00_ctl01_ctl01_DatingBackTo" class="field-item-header">Date range:</label>
+                    <span class="field-item-input"><select name="ctl00$content$ctl00$w_3488$_9b616d$ctl00$ctl01$ctl01$DatingBackTo" id="ctl00_content_ctl00_w_3488__9b616d_ctl00_ctl01_ctl01_DatingBackTo">
+	<option value="-1">All Time</option>
+	<option value="-365">Last Year</option>
+	<option value="-185">Last 6 Months</option>
+	<option value="-95">Last 3 Months</option>
+	<option value="-35">Last Month</option>
+	<option value="-7">Last Week</option>
+	<option value="-2">Last Two Days</option>
+
+</select></span>
+                </li>
+                
+                <li class="field-item searchbutton">
+                    <span class="field-item-input"><a id="ctl00_content_ctl00_w_3488__9b616d_ctl00_ctl01_ctl01_SearchButton" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$content$ctl00$w_3488$_9b616d$ctl00$ctl01$ctl01$SearchButton&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))">Search</a></span>
+                </li>
+            </ul>
+        </fieldset>
+        <div class="field-list-footer">
+            <span style="display:inline-block"><input type="radio" name="SearchTypeRadio" value="ThisBlog" id="ThisBlog" checked /><label for="ThisBlog" id="ThisBlogText">Search this blog</label></span>
+            <span style="display:inline-block"><input type="radio" name="SearchTypeRadio" value="AllBlogs" id="AllBlogs" /><label for="AllBlogs" id="AllBlogsText">Search all blogs</label></span>
+        </div>
+
+    
+
+
+<script type="text/javascript">
+
+// Hide the radio buttons and text if we aren't on a blog
+$(document).ready(function() {
+            
+    // try to get the blog id, if we fail, then we aren't on a blog and just use the regular search approach       
+    var sectionID = 4184;
+
+    if (sectionID == -1)
+    {
+        var tbObj = document.getElementById("ThisBlog");
+        var tbObjText = document.getElementById("ThisBlogText");
+        var abObj = document.getElementById("AllBlogs");
+        var abObjText = document.getElementById("AllBlogsText");
+        
+        if (tbObj != 'undefined' && abObj != 'undefined' && abObjText != 'undefined' && tbObjText != 'undefined')
+        {
+            tbObj.style.display = 'none';
+            tbObjText.style.display = 'none';
+            abObj.style.display = 'none';
+            abObjText.style.display = 'none';
+        }
+    }
+}
+);
+
+// Setup on keypress event for the search box     
+var ctl00_content_ctl00_w_3488={"wrapperId":"fragment-3488","variableName":"ctl00_content_ctl00_w_3488","parameter":{"keywords":"ctl00_content_ctl00_w_3488__9b616d_ctl00_ctl01_ctl01_Keywords","search":"ctl00_content_ctl00_w_3488__9b616d_ctl00_ctl01_ctl01_SearchButton"}};
+    
+    $("#" + ctl00_content_ctl00_w_3488.parameter.keywords).bind("keypress", function(event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            var tb = $(event.target);
+            tb.blur();   
+            
+            // try to get the blog id, if we fail, then we aren't on a blog and just use the regular search approach       
+            var sectionID = 4184;
+            if (sectionID != -1 && document.getElementById("ThisBlog").checked==true)
+            {
+                window.location = "/search/SearchResults.aspx?q=" + encodeURIComponent($("#" + ctl00_content_ctl00_w_3488.parameter.keywords).attr("value")) + "&sections=" + sectionID;
+            }
+            else
+            {
+                window.location = $("#" + ctl00_content_ctl00_w_3488.parameter.search).attr("href");
+            }
+        }
+    });
+    
+    function ToggleAdvancedSearch(context, e)
+    {
+        var wrapper = $("#" + context.wrapperId);
+        var advancedSearchLink = $("#" + context.variableName + "_AdvancedOptions", wrapper);
+        if (advancedSearchLink.text() == 'Advanced search options...')
+        {
+            advancedSearchLink.text('Hide advanced options...');
+            $("ul.field-list", wrapper).addClass('advanced-search advanced-search__field-list');
+        }
+        else
+        {
+            advancedSearchLink.text('Advanced search options...');
+            $("ul.field-list", wrapper).removeClass('advanced-search advanced-search__field-list');
+        }
+    }
+</script></div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom wireframe-content-fragment-bottom"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div></div></div>
+<div class="content-fragment tag-cloud no-wrapper-with-spacing with-header" id="fragment-3490">
+<div class="content-fragment-inner wireframe-content-fragment-inner"><div class="content-fragment-top wireframe-content-fragment-top"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div><div class="content-fragment-header"><div>Tags</div></div>
+<div class="content-fragment-content">
+<div class="tag-list-header"></div><ul class="tag-list">
+<li class="tag-item level-6"><a href="http://blogs.msdn.com/b/freik/archive/tags/Bugs/" rel="tag">Bugs</a></li>
+<li class="tag-item level-1"><a href="http://blogs.msdn.com/b/freik/archive/tags/Developer+Info/" rel="tag">Developer Info</a></li>
+<li class="tag-item level-4"><a href="http://blogs.msdn.com/b/freik/archive/tags/X64+ABI+Info/" rel="tag">X64 ABI Info</a></li>
+</ul>
+<div class="tag-list-footer"></div>
+</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom wireframe-content-fragment-bottom"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div></div></div>
+<div class="content-fragment blog-archive-list no-wrapper-with-spacing with-header" id="fragment-3491">
+<div class="content-fragment-inner wireframe-content-fragment-inner"><div class="content-fragment-top wireframe-content-fragment-top"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div><div class="content-fragment-header"><div>Archives</div></div>
+<div class="content-fragment-content">
+
+		<div class="content-list-header"></div>
+		<div class="content-list-name">Archives</div>
+		<ul class="content-list">
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2009/02.aspx">February 2009</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2008/06.aspx">June 2008</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2008/04.aspx">April 2008</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2008/02.aspx">February 2008</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2007/09.aspx">September 2007</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2007/06.aspx">June 2007</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2007/03.aspx">March 2007</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2006/12.aspx">December 2006</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2006/10.aspx">October 2006</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2006/09.aspx">September 2006</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2006/07.aspx">July 2006</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2006/05.aspx">May 2006</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2006/04.aspx">April 2006</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2006/03.aspx">March 2006</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2006/01.aspx">January 2006</a> (3)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2005/12.aspx">December 2005</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2005/11.aspx">November 2005</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2005/10.aspx">October 2005</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2005/09.aspx">September 2005</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2005/07.aspx">July 2005</a> (3)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2005/06.aspx">June 2005</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2005/03.aspx">March 2005</a> (2)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2005/01.aspx">January 2005</a> (1)</li>
+	
+		<li class="content-item"><a class="internal-link view-post-archive-list" href="/b/freik/archive/2004/11.aspx">November 2004</a> (3)</li>
+	
+		</ul>
+		<div class="content-list-footer"></div>
+	
+</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom wireframe-content-fragment-bottom"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div></div></div>
+</div>
+</div>
+<div class="layout-region content" id="ctl00_content_ctl00_content">
+<div class="layout-region-inner content"><div class="content-fragment blog-bread-crumbs no-wrapper-with-spacing" id="fragment-14026">
+<div class="content-fragment-inner wireframe-content-fragment-inner"><div class="content-fragment-top wireframe-content-fragment-top"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div><div class="content-fragment-content">
+
+
+<div class="breadcrumb-list-header"></div>
+<div class="breadcrumb-list">
+	<span class="breadcrumb-item"><a class="internal-link view-home" href="/">MSDN Blogs</a></span>
+  
+	
+
+	
+			<span class="separator"> > </span>
+			<span class="breadcrumb-item">
+		<a href="/b/freik/">FreiK&#39;s WebLog</a>
+			</span>
+		
+	
+	
+			<span class="separator"> > </span>
+			<span class="breadcrumb-item">
+		<a href="/b/freik/archive/2006/01/04/509372.aspx">X64 Unwind Information</a>
+			</span>
+		
+
+	
+</div>
+<div class="breadcrumb-list-footer"></div>
+</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom wireframe-content-fragment-bottom"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div></div></div>
+<div class="content-fragment blog-post no-wrapper-with-spacing" id="fragment-3495">
+<div class="content-fragment-inner wireframe-content-fragment-inner"><div class="content-fragment-top wireframe-content-fragment-top"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div><div class="content-fragment-content">
+
+<div class="full-post-header"></div>
+<div class="full-post">
+	<h3 class="post-name">X64 Unwind Information</h3>
+	
+    <div class="post-author">
+        <span class="avatar"><a href="/4184/ProfileUrlRedirect.ashx"><img src="http://i1.social.microsoft.com/profile/u/avatar.jpg?displayname=kevin+frei&amp;size=large" alt="" style="border-width:0px;max-height:32px;max-width:32px;" /></a></span>
+        
+        <span class="profile-usercard-hover" data-profile-userid="24a86492-04fe-478b-8d43-49174aba0679">
+            <span class="user-name"><a class="internal-link view-user-profile" href="/4184/ProfileUrlRedirect.ashx"><span></span>Kevin Frei</a></span>
+        
+            
+        </span>
+    </div>
+    <div class="post-date">
+        <span class="value">
+            4 Jan 2006 4:48 PM
+        </span>
+    </div>
+    <div class="post-attributes">
+        <div class="attribute-list-header"></div>
+        <ul class="attribute-list">
+             <li class="attribute-item post-reply-count">
+                <span class="attribute-name">Comments</span>
+                <span class="attribute-value"><a href="#comments" class="internal-link view-replies"><span></span>3</a></span>
+             </li>
+        </ul>
+        <div class="attribute-list-footer"></div>
+    </div>
+    <div class="post-content user-defined-markup"><FONT size=2>
+<P>I've had a fairly large number of e-mails with various people both inside &amp; outside Microsoft explaining the AMD64 unwind data. I generally push them at the ABI documentation (which I've linked to in <A href="/freik/archive/2005/03/17/398200.aspx">this</A> entry). But the ABI documentation really requires a complete reading before you can really understand how the unwind information all fits together. So, in an attempt to make dealing with unwind information, I'm going to attempt a more 'chatty' explanation of unwind data.</P>
+<P><FONT size=4><STRONG>Background</STRONG></FONT></P>
+<P><FONT size=3><STRONG>The 2 phase exception model</STRONG></FONT></P>
+<P>Both Win32 &amp; Win64 have a 2 phase exception model. The first phase walks the list of functions that _might_ handle an exception, asking them if they will _actually_ handle the particular exception that occurred (this is done by calling filter functions). During this phase, the filter functions either return EXCEPTION_CONTINUE_SEARCH (0) which indicates that this handler will not handle the exception, EXCEPTION_HANDLE_EXCEPTION (1), which indicates that this handler will handle the exception. One other option is EXCEPTION_RESUME_EXECUTION (-1) that I won't mention (look it up in MSDN if you're curious).</P>
+<P><FONT size=3><STRONG>Why do you need unwind data?</STRONG></FONT></P>
+<P>First, you should probably understand WHY the Windows AMD64 ABI requires unwind data. In Win32 x86 land, when an exception occurs, the OS just looks at a pointer at fs:0 which is the head of a linked list of information regarding what to do in the event of an exception. Each function that requires any sort of attention when an exception occurs needs to create a node on this linked list. This node must contain all information necessary to handle the two phase exception mechanism of Win32. For Windows for AMD64, the way the functions that need to be invoked during exception handling are discovered not by walking a linked list, but crawling the stack. Thus, the stack must _always_ be in a state that can be statically walked. To accomplish this, there are 2 fundamental issues: how to discover the stack frame size of a function, and how to recover non-volatile (aka caller saved) register values. This is exactly what AMD64 unwind data describes. The trouble most people run into, though, is that even if your function doesn't need to do anything if an exception occurs, the function may be called by a function that does, and it may then call a function that will throw an exception. If this is the case, when the exception is thrown, the function's stack frame must be fully described. As an added bonus, because all stack frames are accurately described, there's never any reason to use a frame pointer unless absolutely necessary due to something like _alloca or __declspec(align(&gt;16)).</P>
+<P>So, even if you just have a tiny little function that only calls another function, you still need unwind data, or when an exception occurs, your process will simply be terminated.</P>
+<P><STRONG><FONT size=3>OK, What is unwind data?</FONT></STRONG></P>
+<P>Simply put, it's a meta-language that describes what, when, and how a function's frame is built. There are opcodes that indicate when &amp; by how much the stack pointer has been adjusted, when &amp; where a non-volatile register has been saved, or when, where, and to what offset a frame pointer has been set. When you're writing assembly code for ML64, there are predefined macros to help describe this stuff:</P>
+<P><FONT face="Courier New">PROC FRAME [optional handler address]</FONT></P>
+<P><FONT face="Courier New">.ALLOCSTACK size</FONT></P>
+<P><FONT face="Courier New">.PUSHFRAME [code]</FONT></P>
+<P><FONT face="Courier New">.PUSHREG reg</FONT></P>
+<P><FONT face="Courier New">.SAVEREG reg, offset</FONT></P>
+<P><FONT face="Courier New">.SAVEXMM128 reg, offset</FONT></P>
+<P><FONT face="Courier New">.SETFRAME reg, offset</FONT></P>
+<P><FONT face="Courier New">.ENDPROLOG</FONT></P>
+<P>Note that all those offsets are actually restricted to be properly aligned. The .SAVEREG offset must be a multiple of 8, while .SAVEXMM128 offset must be a multiple of 16. The .SETFRAME offset must be a multiple of 16, and must be between 16 and 240. In addition, all frame manipulation must be completed in the first 254 bytes of the function. If you want to push registers saves &amp; restores further into the function, you must use chained unwind info, which will have to be the subject of another blog entry...</P>
+<P>Looking up the directives on MSDN will give you examples of how they're all used. If you feel like authoring code that conforms to the prologue unwind descriptors is restrictive, you'll love the epilogue requirements. All function epilogues must look like this:</P>
+<P><FONT face="Courier New">(optional) lea rsp, [frame ptr + frame size] or add rsp, frame size</FONT></P>
+<P><FONT face="Courier New">pop reg (zero or more)</FONT></P>
+<P><FONT face="Courier New">ret (or jmp)</FONT></P>
+<P>No other instructions may occur betwen the first lea/add and the final jmp or ret. At first glance, this may seem like you can't restore any XMM registers. The trick is that all non-volatile registers except those that you want to restore using a pop must be restored prior to entry to the epilogue. The reason this works is that if the OS has to unwind an epilogue, it already has the correct values in all the registers except the ones that are restored via pop, so things really do work out well.</P>
+<P>One other note: if the final jmp isn't an ip-relative jmp, but an indirect jmp, it must be preceded by the REX prefix, to indicate to the OS unwind routines that the jump is headed outside of the function, otherwise, the OS assumes it's a jump to a different location inside the same function.</P>
+<P>From here, I think I might see what kind of questions pop up, and go from there. I'll also add a future entry to describe how to use chained unwind information to allow you to save registers later in the function that the first 254 bytes (although I _think_ this requires that you need to author your own .pdata &amp; .xdata which is a whole lot more complicated...)</P>
+<P>-Kev</P></FONT><div style="clear:both;"></div></div>
+    <div class="post-attachment-viewer">
+		
+    </div>
+    <div class="post-actions">
+        <div class="navigation-list-header"></div>
+        <ul class="navigation-list">
+            <!---->
+            <li class="navigation-item"><a class="internal-link view-replies" href="/b/freik/archive/2006/01/04/509372.aspx#comments"><span></span>3 Comments</a></li>
+            
+            
+        </ul>
+        <div class="navigation-list-footer"></div>
+    </div>
+    <div class="post-tags"><div id="ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01_Container" style="display: none;"><div class="tags-editor"><textarea id="ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01_Tags" style="width: 97%; height: 100%;" rows="2" cols="30"></textarea><div style="white-space: nowrap; padding-top: 4px;"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><input type="button" onclick="Telligent_Modal.Open('\/utility\/TagSelector.aspx?TagEditor=ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01_TagEditor',400,300,null);;return false;" value="Select Tags..." /></td><td align="right"><input type="button" onclick="ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01.Save(); return false;" value="Save" /><input type="button" onclick="ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01.Close(); return false;" value="Cancel" /></td></tr></table></div></div></div><span id="ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl02"><a href="http://blogs.msdn.com/b/freik/archive/tags/Developer+Info/" rel="tag">Developer Info</a>, <a href="http://blogs.msdn.com/b/freik/archive/tags/X64+ABI+Info/" rel="tag">X64 ABI Info</a></span><input type="hidden" name="ctl00$content$ctl00$w_3495$_9b616d$ctl00$ctl15$ctl02" id="ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl02_State" value="nochange" /></div>
+</div>
+<div class="full-post-footer"></div></div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom wireframe-content-fragment-bottom"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div></div></div>
+<div class="content-fragment social-media-sharing no-wrapper-with-spacing" id="fragment-3496">
+<div class="content-fragment-inner wireframe-content-fragment-inner"><div class="content-fragment-top wireframe-content-fragment-top"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div><div class="content-fragment-content">
+
+<link href="/CustomWidgets/SocialMediaSharingUC/resources/sharethis.css" rel="stylesheet" type="text/css" /> 
+<script src="/CustomWidgets/SocialMediaSharingUC/resources/ShareThis.js" type="text/javascript"></script>
+<div class="ShareThisMainPanel">
+	<div id="ctl00_content_ctl00_w_3496__9b616d_ctl00_a2ff6af9_bc09_427f_89cc_7beee26f34c2" class="ShareThis_ChildRootPanel" onmouseover="ShareThisChildRootPanelOnmouseOver(this.id);" onmouseout="ShareThisChildRootPanelOnmouseOut(this.id);">
+		<div id="ctl00_content_ctl00_w_3496__9b616d_ctl00_ShareThisBtnCollPanel_e5cc9f0a9aa84b5b8a556e171f12fe4c" class="tierOnePanel">
+			<div class="buttonPanel">
+				<a title="Share on Facebook" class="iconsOnPanel" href="http://www.facebook.com/sharer.php?u=http://blogs.msdn.com/b/freik/archive/2006/01/04/509372.aspx&amp;t=X64+Unwind+Information" target="_blank"><img title="Share on Facebook" src="/CustomWidgets/SocialMediaSharingUC/Resources/facebook.gif" style="border-width:0px;" /></a>
+			</div><div class="buttonPanel">
+				<a title="Share on Twitter" class="iconsOnPanel" href="http://twitter.com/home?status=X64+Unwind+Information : http://blogs.msdn.com/b/freik/archive/2006/01/04/509372.aspx" target="_blank"><img title="Share on Twitter" src="/CustomWidgets/SocialMediaSharingUC/Resources/twitter.gif" style="border-width:0px;" /></a>
+			</div><div class="buttonPanel">
+				<a title="Share on Digg" class="iconsOnPanel" href="http://digg.com/submit?url=http://blogs.msdn.com/b/freik/archive/2006/01/04/509372.aspx&amp;title=X64+Unwind+Information" target="_blank"><img title="Share on Digg" src="/CustomWidgets/SocialMediaSharingUC/Resources/digg.gif" style="border-width:0px;" /></a>
+			</div><div class="buttonPanel">
+				<a title="Share on del.icio.us" class="iconsOnPanel" href="http://del.icio.us/post?url=http://blogs.msdn.com/b/freik/archive/2006/01/04/509372.aspx&amp;title=X64+Unwind+Information" target="_blank"><img title="Share on del.icio.us" src="/CustomWidgets/SocialMediaSharingUC/Resources/delicious.gif" style="border-width:0px;" /></a>
+			</div>
+		</div><div id="ctl00_content_ctl00_w_3496__9b616d_ctl00_ShareThisBtnCollPanel_24451cb0e4e64d2984b13ac9cdeef922" class="tierTwoPanel" onclick="TierTwoPanelOnclick(this.id);" onkeypress="if (event.keyCode == 13) TierTwoPanelOnclick(this.id);" onmouseover="TierTwoPanelOnmouseOver(this.id);" onmouseout="TierTwoPanelOnmouseOut(this.id);">
+			<div id="ctl00_content_ctl00_w_3496__9b616d_ctl00_ShareThisBtnCollPanel_a81127d97a17421fb5cdb8f14d8fda0c" class="tierTwoRowPanel">
+				<div class="buttonPanel">
+					<a title="Share on Reddit" class="iconsOnPanel" href="http://www.reddit.com/submit?url=http://blogs.msdn.com/b/freik/archive/2006/01/04/509372.aspx&amp;title=X64+Unwind+Information" target="_blank"><img title="Share on Reddit" src="/CustomWidgets/SocialMediaSharingUC/Resources/reddit.gif" style="border-width:0px;" /></a>
+				</div><div class="buttonPanel">
+					<a title="Share on LinkedIn" class="iconsOnPanel" href="http://www.linkedin.com/shareArticle?mini=true&amp;ro=true&amp;url=http://blogs.msdn.com/b/freik/archive/2006/01/04/509372.aspx&amp;title=X64+Unwind+Information&amp;summary=&amp;source=Microsoft&amp;armin=armin" target="_blank"><img title="Share on LinkedIn" src="/CustomWidgets/SocialMediaSharingUC/Resources/linkedin.gif" style="border-width:0px;" /></a>
+				</div><div class="buttonPanel">
+					<a title="Share on Slashdot" class="iconsOnPanel" href="http://slashdot.org/bookmark.pl?url=http://blogs.msdn.com/b/freik/archive/2006/01/04/509372.aspx&amp;title=X64+Unwind+Information" target="_blank"><img title="Share on Slashdot" src="/CustomWidgets/SocialMediaSharingUC/Resources/slashdot.gif" style="border-width:0px;" /></a>
+				</div><div class="buttonPanel">
+					<a title="Share on MySpace" class="iconsOnPanel" href="http://www.myspace.com/Modules/PostTo/Pages/?u=http://blogs.msdn.com/b/freik/archive/2006/01/04/509372.aspx&amp;t=X64+Unwind+Information" target="_blank"><img title="Share on MySpace" src="/CustomWidgets/SocialMediaSharingUC/Resources/myspace.gif" style="border-width:0px;" /></a>
+				</div>
+			</div><div id="ctl00_content_ctl00_w_3496__9b616d_ctl00_ShareThisBtnCollPanel_73e2d82de56c412b88847cd025c2675d" class="tierTwoRowPanel">
+				<div class="buttonPanel">
+					<a title="Share on Technorati" class="iconsOnPanel" href="http://technorati.com/faves/?add=http://blogs.msdn.com/b/freik/archive/2006/01/04/509372.aspx" target="_blank"><img title="Share on Technorati" src="/CustomWidgets/SocialMediaSharingUC/Resources/technorati.gif" style="border-width:0px;" /></a>
+				</div><div class="buttonPanel">
+					<a title="Share on FriendFeed" class="iconsOnPanel" href="http://friendfeed.com/?url=http://blogs.msdn.com/b/freik/archive/2006/01/04/509372.aspx&amp;title=X64+Unwind+Information" target="_blank"><img title="Share on FriendFeed" src="/CustomWidgets/SocialMediaSharingUC/Resources/friendfeed.gif" style="border-width:0px;" /></a>
+				</div><div class="buttonPanel">
+					<a title="Share on Messenger" class="iconsOnPanel" href="http://profile.live.com/badge?url=http://blogs.msdn.com/b/freik/archive/2006/01/04/509372.aspx&amp;title=X64+Unwind+Information" target="_blank"><img title="Share on Messenger" src="/CustomWidgets/SocialMediaSharingUC/Resources/messenger.png" style="border-width:0px;" /></a>
+				</div><div class="buttonPanel">
+					<a title="Share on StumbleUpon" class="iconsOnPanel" href="http://www.stumbleupon.com/submit?url=http://blogs.msdn.com/b/freik/archive/2006/01/04/509372.aspx&amp;title=X64+Unwind+Information" target="_blank"><img title="Share on StumbleUpon" src="/CustomWidgets/SocialMediaSharingUC/Resources/stumbleupon.gif" style="border-width:0px;" /></a>
+				</div>
+			</div>
+		</div>
+	</div><div id="ctl00_content_ctl00_w_3496__9b616d_ctl00_ShowMoreLessButtonsPanel_52c00934_e856_4edf_bfbe_a221adad6e05" tabindex="1" class="ShowMoreLessButtonsPanel" onclick="ShowMoreLessButtonsPanelOnClick(this.id);" onkeypress="if (event.keyCode == 13) ShowMoreLessButtonsPanelOnClick(this.id);" onmouseover="ShowMoreLessButtonsPanelOnmouseOver(this.id);" onmouseout="ShowMoreLessButtonsPanelOnmouseOut(this.id);">
+		<a class="buttonMoreLess" id="btn_more"><img title="More" src="/CustomWidgets/SocialMediaSharingUC/Resources/more.gif" src="" style="border-width:0px;" /></a><a class="buttonMoreLess" id="btn_less"><img title="Less" src="/CustomWidgets/SocialMediaSharingUC/Resources/less.gif" src="" style="border-width:0px;" /></a>
+	</div>
+</div><div class="ShareClearFloatsPanel">
+
+</div></div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom wireframe-content-fragment-bottom"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div></div></div>
+<div class="content-fragment captcha-blog-post-comment-form no-wrapper-with-spacing" id="fragment-3497">
+<div class="content-fragment-inner wireframe-content-fragment-inner"><div class="content-fragment-top wireframe-content-fragment-top"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div><div class="content-fragment-content">
+
+    
+            <div class="field-list-header"></div>
+            <fieldset class="field-list">
+                <legend class="field-list-description">Leave a Comment</legend>
+                <ul class="field-list">
+                    <li id="ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_NameField" class="field-item">
+                        <label for="ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbName" class="field-item-header">Name</label>
+                        <span class="field-item-input"><input name="ctl00$content$ctl00$w_3497$_9b616d$ctl00$ctl00$ctl00$ctl05$bpCommentForm$ctl05$tbName" type="text" size="60" id="ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbName" /></span>
+                        <span id="ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbNameRFV" style="color:Red;display:none;"><span class="field-item-validation">*</span></span>
+                    </li>
+                    <li class="field-item post-body">
+                        <label for="ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbComment" class="field-item-header">Comment</label>
+                        <span class="field-item-input"><textarea name="ctl00$content$ctl00$w_3497$_9b616d$ctl00$ctl00$ctl00$ctl05$bpCommentForm$ctl05$tbComment" rows="2" cols="20" id="ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbComment" style="height:100px;"></textarea></span>
+                        <span id="ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbCommentRFV" style="color:Red;display:none;"><span class="field-item-validation">* Please enter a comment</span></span>
+                    </li>
+                    <li class="field-item">
+                        
+                           <span id="ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha" style="color:Red;display:none;">*</span><span id="ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha_subtext_captcha">Please add 4 and 8 and type the answer here: <input type="text" name="ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha_visibleanswer" value="" /></span>
+
+
+                    </li>
+                    <li class="field-item">
+                        <script type="text/javascript">
+                            function postComment(anchor) {
+                                if (Page_ClientValidate('BlogPostCommentForm-ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00')) {
+                                    $(anchor).hide();
+                                    $(anchor).parent()
+                                             .html('<a class="internal-link add-reply" style="color:#c7c7c7;"><span></span>Publishing</a>');
+                                }
+                            }
+                        </script>
+                        <span class="field-item-input"><a onclick="postComment(this);" id="ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_btnSubmit" class="internal-link add-reply" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$content$ctl00$w_3497$_9b616d$ctl00$ctl00$ctl00$ctl05$bpCommentForm$ctl05$btnSubmit&quot;, &quot;&quot;, true, &quot;BlogPostCommentForm-ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00&quot;, &quot;&quot;, false, true))"><span></span>Post</a></span>
+                    </li>
+                </ul>
+            </fieldset>
+            <div class="field-list-footer"></div>
+        
+    
+</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom wireframe-content-fragment-bottom"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div></div></div>
+<div class="content-fragment blog-feedback-list no-wrapper-with-spacing" id="fragment-3498">
+<div class="content-fragment-inner wireframe-content-fragment-inner"><div class="content-fragment-top wireframe-content-fragment-top"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div><div class="content-fragment-content">
+
+
+
+
+<script type="text/javascript">
+	// <![CDATA[
+	$(document).ready(function() {
+	$(document).bind('telligent_blogs_commentposted', function(e, message) { 
+	            window.setTimeout(new Function(ctl00_content_ctl00_w_3498__9b616d_ctl00_ctl00_DelayedFeedbackList.Reload()), 100); 
+	            return true; 
+	    });
+	    ctl00_content_ctl00_w_3498__9b616d_ctl00_ctl00_DelayedFeedbackList.Reload();
+	});
+// ]]>
+</script>
+
+	
+
+<div id="ctl00_content_ctl00_w_3498__9b616d_ctl00_ctl00_DelayedFeedbackList"><input type="hidden" name="ctl00$content$ctl00$w_3498$_9b616d$ctl00$ctl00$DelayedFeedbackList" value="true:" />
+	    
+			    <a name="comments"></a>
+			    <div class="content-list-header"></div>
+			    <div class="content-list-name">
+				    
+						    <a class="internal-link rss" href="/b/freik/rsscomments.aspx?WeblogPostID=509372"><span></span>Comments</a>
+					    
+			    </div>
+			    <ul class="content-list">
+		    
+			    
+					    <li class="content-item">
+						    <div class="full-post-outer wireframe-full-post-outer"><div class="full-post-header"><div class="r wireframe-r"></div></div>
+						    <div class="full-post"><div class="full-post-inner wireframe-full-post-inner">
+				    
+			    <div class="post-author">
+				    
+				    <span class="avatar"><img src="/utility/anonymous.gif" alt="" style="border-width:0px;max-height:32px;max-width:32px;" /></span>
+                    <span class="profile-usercard-hover" data-profile-userid='00000000-0000-0000-0000-000000000000'>
+				        
+				        <span class="user-name"><a title="TrackBack" rel="nofollow" href="http://kernelmustard.com/2006/04/11/a-couple-more-x64-articles/">Kernel Mustard  &raquo; Blog Archive   &raquo; A couple more x64 articles</a></span>
+                    </span>
+			    </div>
+			    <div class="post-date">
+				    <span class="value">11 Apr 2006 12:56 PM</span>
+			    </div>
+			    <div class="post-content user-defined-markup">PingBack from <a rel="nofollow" target="_new" href="http://kernelmustard.com/2006/04/11/a-couple-more-x64-articles/">http://kernelmustard.com/2006/04/11/a-couple-more-x64-articles/</a></div>
+			    <div class="post-actions">
+				    
+			    </div>
+			    
+						    </div>
+						    </div><div class="full-post-footer"><div class="r wireframe-r"></div></div></div>
+					    </li>
+				    
+		    
+			    
+					    <li class="content-item">
+						    <div class="full-post-outer wireframe-full-post-outer"><div class="full-post-header"><div class="r wireframe-r"></div></div>
+						    <div class="full-post"><div class="full-post-inner wireframe-full-post-inner">
+				    
+			    <div class="post-author">
+				    
+				    <span class="avatar"><img src="/utility/anonymous.gif" alt="" style="border-width:0px;max-height:32px;max-width:32px;" /></span>
+                    <span class="profile-usercard-hover" data-profile-userid='00000000-0000-0000-0000-000000000000'>
+				        
+				        <span class="user-name">kim</span>
+                    </span>
+			    </div>
+			    <div class="post-date">
+				    <span class="value">11 Aug 2010 1:42 AM</span>
+			    </div>
+			    <div class="post-content user-defined-markup"><p>It is a very good writing!</p>
+<p>And, how about in Linux? I am meeting the trouble now. </p>
+<p>Or, any suggestion?</p>
+<div style="clear:both;"></div></div>
+			    <div class="post-actions">
+				    
+			    </div>
+			    
+						    </div>
+						    </div><div class="full-post-footer"><div class="r wireframe-r"></div></div></div>
+					    </li>
+				    
+		    
+			    
+					    <li class="content-item user-is-author">
+						    <div class="full-post-outer wireframe-full-post-outer"><div class="full-post-header user-is-author"><div class="r wireframe-r"></div></div>
+						    <div class="full-post user-is-author"><div class="full-post-inner wireframe-full-post-inner">
+				    
+			    <div class="post-author">
+				    <span class="avatar"><a href="/4184/ProfileUrlRedirect.ashx"><img src="http://i1.social.microsoft.com/profile/u/avatar.jpg?displayname=kevin+frei&amp;size=large" alt="" style="border-width:0px;max-height:32px;max-width:32px;" /></a></span>
+				    
+                    <span class="profile-usercard-hover" data-profile-userid='24a86492-04fe-478b-8d43-49174aba0679'>
+				        <span class="user-name"><a class="internal-link view-user-profile" href="/4184/ProfileUrlRedirect.ashx"><span></span>Kevin Frei</a></span>
+				        
+                    </span>
+			    </div>
+			    <div class="post-date">
+				    <span class="value">11 Aug 2010 7:39 AM</span>
+			    </div>
+			    <div class="post-content user-defined-markup"><p>@kim:</p>
+<p>Sorry, I know nothing about how stack unwinding works for Linux. &nbsp;I&#39;ve heard that it involves Dwarf2 debug info some how, but have never bothered to confirm that fact...</p>
+<div style="clear:both;"></div></div>
+			    <div class="post-actions">
+				    
+			    </div>
+			    
+						    </div>
+						    </div><div class="full-post-footer user-is-author"><div class="r wireframe-r"></div></div></div>
+					    </li>
+				    
+		    
+			    </ul>
+			    <div class="content-list-footer"></div>
+		     
+	    <div class="pager">
+        <span class="summary">Page 1 of 1 (3 items)</span>
+    </div>
+	</div>
+</div>
+<div class="content-fragment-footer"></div>
+<div class="content-fragment-bottom wireframe-content-fragment-bottom"><div class="r1 wireframe-r1"></div><div class="r2 wireframe-r2"></div><div class="r3 wireframe-r3"></div><div class="r4 wireframe-r4"></div></div></div></div>
+</div>
+</div>
+</div>
+<div class="layout-footer"></div>
+</div></div>
+
+			<div class="footer-fragments-header"></div>
+<div class="footer-fragments"><div class="footer-fragment copyright-info" id="footer-fragment-247403536">
+
+<ul class="footer-fragment-links">
+    <li class="message copyright">© 2011 Microsoft Corporation.</li>
+	<li class="message termsOfService"><a href="http://msdn.microsoft.com/cc300389">Terms of Use</a> </li>
+    <li class="message trademarks"><a href="http://www.microsoft.com/library/toolbar/3.0/trademarks/en-us.mspx">Trademarks</a> </li>
+    <li class="message privacy"><a href="http://www.microsoft.com/info/privacy.mspx">Privacy Statement</a> </li>
+    <li class="message abuse">
+    
+            <a id="ctl00_footer_fragment_247403536__9b616d_ctl00_ctl00_ctl01_lnkAbuse" href="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$footer_fragment_247403536$_9b616d$ctl00$ctl00$ctl01$lnkAbuse&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, true))">Report Abuse</a>
+        
+    </li>
+    
+</ul></div><div class="footer-fragment omniture-footer-fragment" id="footer-fragment-247403537">
+
+
+<script type="text/javascript" src="/utility/js/omni_rsid_msdn_current.js"></script>
+        <noscript><a href="http://www.omniture.com" title="Web Analytics"><img
+        src="http://msstomsdnblogs.112.2O7.net/b/ss/msstomsdnblogs/1/H.20.2--NS/0"
+        height="1" width="1" border="0" alt="" /></a></noscript>
+
+</div></div>
+<div class="footer-fragments-footer"></div>
+		
+<script type="text/javascript">
+//<![CDATA[
+var Page_Validators =  new Array(document.getElementById("ctl00_content_ctl00_w_3488__9b616d_ctl00_ctl01_ctl01_Validator"), document.getElementById("ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbNameRFV"), document.getElementById("ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbCommentRFV"), document.getElementById("ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha"));
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+var ctl00_content_ctl00_w_3488__9b616d_ctl00_ctl01_ctl01_Validator = document.all ? document.all["ctl00_content_ctl00_w_3488__9b616d_ctl00_ctl01_ctl01_Validator"] : document.getElementById("ctl00_content_ctl00_w_3488__9b616d_ctl00_ctl01_ctl01_Validator");
+ctl00_content_ctl00_w_3488__9b616d_ctl00_ctl01_ctl01_Validator.display = "Dynamic";
+ctl00_content_ctl00_w_3488__9b616d_ctl00_ctl01_ctl01_Validator.evaluationfunction = "CustomValidatorEvaluateIsValid";
+var ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbNameRFV = document.all ? document.all["ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbNameRFV"] : document.getElementById("ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbNameRFV");
+ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbNameRFV.controltovalidate = "ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbName";
+ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbNameRFV.display = "Dynamic";
+ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbNameRFV.validationGroup = "BlogPostCommentForm-ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00";
+ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbNameRFV.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbNameRFV.initialvalue = "";
+var ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbCommentRFV = document.all ? document.all["ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbCommentRFV"] : document.getElementById("ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbCommentRFV");
+ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbCommentRFV.controltovalidate = "ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbComment";
+ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbCommentRFV.display = "Dynamic";
+ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbCommentRFV.validationGroup = "BlogPostCommentForm-ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00";
+ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbCommentRFV.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbCommentRFV.initialvalue = "";
+var ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha = document.all ? document.all["ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha"] : document.getElementById("ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha");
+ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha.errormessage = "*";
+ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha.display = "Dynamic";
+ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha.validationGroup = "BlogPostCommentForm-ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00";
+//]]>
+</script>
+
+<script type="text/javascript">
+// <![CDATA[
+ctl00_content_ctl00 = new ContentFragmentPageCustomCallback('ctl00_content_ctl00',new Function('mode','parameters','callback','errorCallback','context','ctl00_content_ctl00_ctl00._doCallback(mode+\':\'+parameters,callback,context,errorCallback);'));
+// ]]>
+</script>
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://blogs.msdn.com/b/freik/archive/2006/01/04/509372.aspx"
+dc:identifier="http://blogs.msdn.com/b/freik/archive/2006/01/04/509372.aspx"
+dc:title="X64 Unwind Information"
+trackback:ping="http://blogs.msdn.com/b/freik/trackback.ashx?WeblogPostID=509372" />
+</rdf:RDF>
+-->
+<script type="text/javascript">
+// <![CDATA[
+Telligent_Modal.Configure('\/utility\/loading.htm',['modal'],['modal-title','modal-title-2','modal-title-3','modal-title-4'],['modal-close'],['modal-content','modal-content-2'],['modal-footer','modal-footer-2','modal-footer-3'],['modal-resize'],['modal-mask'],10000,false,true,true);
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+window.ctl00_header_fragment_247403540__9b616d_ctl00_SearchPopup = new Telligent_PopupPanel('ctl00_header_fragment_247403540__9b616d_ctl00_SearchPopup','menu search-content results','downright',100,null,null,true,'ctl00_header_fragment_247403540__9b616d_ctl00_SearchPopup',null,null);
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+window.ctl00_header_fragment_247403541__9b616d_ctl00_ctl00_GroupNavigationPopup = new Telligent_PopupPanel('ctl00_header_fragment_247403541__9b616d_ctl00_ctl00_GroupNavigationPopup','menu group-navigation-content','down',100,null,null,false,'ctl00_header_fragment_247403541__9b616d_ctl00_ctl00_GroupNavigationPopup',new Function('Core_GroupNavigation_MouseOverPopup(ctl00_header_fragment_247403541)'),new Function('Core_GroupNavigation_MouseOutPopup(ctl00_header_fragment_247403541)'));
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+window.ctl00_content_ctl00_ctl00 = new Telligent_CallbackManager('ctl00_content_ctl00_ctl00','ctl00$content$ctl00$ctl00','aspnetForm');
+// ]]>
+</script>
+<script type="text/javascript">
+//<![CDATA[
+
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+        //]]>
+</script>
+<script type="text/javascript">
+// <![CDATA[
+window.ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01 = new Telligent_InlineEditor('ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01','ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01_Container',new Function('id', 'p', 'ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01_InlineTagEditor.SetInlineEditorPanelAndParameter(id,p);'),new Function('return ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01_InlineTagEditor.GetContent();'),new Function('c', 'ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01_InlineTagEditor.SetContent(c);'),null,new Function('ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01_InlineTagEditor.Focus();'),new Function('w', 'h', 'ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01_InlineTagEditor.Resize(w,h);'),300,90);
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+var ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01_TagEditor = new TagEditor('ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01_TagEditor',[['Bugs','Bugs'],['Developer Info','Developer Info'],['X64 ABI Info','X64 ABI Info']],'ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01_Tags');
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+var ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01_InlineTagEditor = new InlineTagEditor('ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01_InlineTagEditor','ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01','ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01_Container','ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01_Tags');
+// ]]>
+</script><script type="text/javascript">
+// <![CDATA[
+window.ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl02 = new Telligent_InlineEditorPanel('ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl02','ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl02','ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl02_State','ctl00_content_ctl00_w_3495__9b616d_ctl00_ctl15_ctl01',false,null,null,null);
+// ]]>
+</script>
+<script type="text/javascript">
+//<![CDATA[
+$('#ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_tbComment').autoResize({animate : false,extraSpace : 0,limit : 3000});//]]>
+</script>
+<script type="text/javascript">
+subtext_invisible_captcha_hideFromJavascriptEnabledBrowsers('ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha_subtext_captcha');
+</script><script type="text/javascript">
+subtext_invisible_captcha_setAnswer(4, 8, 'ctl00_content_ctl00_w_3497__9b616d_ctl00_ctl00_ctl00_ctl05_bpCommentForm_ctl05_invisibleCaptcha_answer');
+</script><script type="text/javascript">
+// <![CDATA[
+window.ctl00_content_ctl00_w_3498__9b616d_ctl00_ctl00_DelayedFeedbackList = new DelayedContent('ctl00_content_ctl00_w_3498__9b616d_ctl00_ctl00_DelayedFeedbackList','ctl00_content_ctl00_w_3498__9b616d_ctl00_ctl00_DelayedFeedbackList','ctl00_content_ctl00._customCallback(\'fragment-3498\',\'ctl00$content$ctl00$w_3498$_9b616d$ctl00$ctl00$DelayedFeedbackList\',argument,null,callback,null)',true,true,null);
+// ]]>
+</script></form>
+      
+    <script type="text/javascript">
+        $(window).load(function () {
+            $.getScript('http://widgets.membership.microsoft.com/v1/loader.js?brand=msdn&lang=en-US', function () {
+            });
+        });
+    </script>
+    
+	</body>
+</html>

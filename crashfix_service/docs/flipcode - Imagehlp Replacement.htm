@@ -1,0 +1,1071 @@
+<html>
+<head><title>flipcode - Imagehlp Replacement</title>
+<style type="text/css">
+
+
+a.menulink:link    {color: #b9ffd0; }
+a.menulink:visited {color: #b9ffd0; }
+a.menulink:active  {color: #b9ffd0; }
+
+a.menulinkempty:link    {color: #b9ffd0; }
+a.menulinkempty:visited {color: #b9ffd0; }
+a.menulinkempty:active  {color: #b9ffd0; }
+a.menulinkempty:link, a.menulinkempty:visited, a.menulinkempty:active {text-decoration: none}
+
+a.orangelink:link    { color:#FFAB04; }
+a.orangelink:visited { color:#FFAB04; }
+a.orangelink:active  { color:#FFAB04; }
+
+a.palegreen:link    {color: #b9ffd0; }
+a.palegreen:visited {color: #b9ffd0; }
+a.palegreen:active  {color: #b9ffd0; }
+
+a.bluelink:link    { color:#03F0FF; }
+a.bluelink:visited { color:#03F0FF; }
+a.bluelink:active  { color:#03F0FF; }
+
+a.softyellow:link     { color:#FFFCA9; }
+a.softyellow:visited  { color:#FFFCA9; }
+a.softyellow:active   { color:#FFFCA9; }
+
+a.nounderline:link        {color: #FFFCA9; }
+a.nounderline:visited     {color: #FFFCA9; }
+a.nounderline:active      {color: #FFFCA9; }
+a.nounderline:link, a.nounderline:visited, a.nounderline:active {text-decoration: none}
+
+<!--
+#code_comment { font-family:Courier,Courier New; font-size:12px; color:#007f00; }
+#code_text    { font-family:Courier,Courier New; font-size:12px; color:#000000; }
+#code_keyword { font-family:Courier,Courier New; font-size:12px; color:#0000FF; }
+-->
+
+</style>
+</head>
+<body bgcolor="#000000" text="#ffffff" link="#FFFCA9" vlink="#FFFCA9" alink="#FFFCA9">
+<center>
+<script type="text/javascript"><!--
+google_ad_client = "pub-3512250068614659";
+//728x90, created 1/8/08
+google_ad_slot = "8394943283";
+google_ad_width = 728;
+google_ad_height = 90;
+//--></script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+<br>
+
+<br><center><img src="logo_toolbox.png"></center>
+
+<font face="Verdana" size=2>This section of the <a href="index.shtml">archives</a> stores flipcode's complete Developer Toolbox collection,
+featuring a variety of mini-articles and source code contributions from our readers.</font>
+<br><br>
+
+<center>
+<table width="80%" bgcolor="#1D2530" border=0 cellspacing=0 cellpadding=0>
+<tr><td>
+<center><table cellspacing=0 cellpadding=2 border=0 width="100%"><tr><td background="comments_bar2.jpg" bgcolor="#333333" width="100" valign="center"><font size=1>&nbsp;</font></td></tr></table></center>
+<center>
+<font size=1><br></font>
+
+<center>
+
+<table width="95%" bgcolor="#000000" border=0 cellspacing=0 cellpadding=20>
+<tr><td>
+<font face="Verdana, Tahoma, Helvetica" size=2>
+
+<table width="100%" cellspacing=0 cellpadding=0 border=0 style="table-layout:fixed;">
+<tr><td width="50"><img src="icon_articles.png"></td>
+<td width="100%"><font face="Verdana, Tahoma, Helvetica" size=2><font color="#ffffcc">
+<font color="#ffffff" size=2><b> &nbsp; Imagehlp Replacement</b></font><br>
+ &nbsp; Submitted by <!--GO AWAY SPAM!!!--><script language="javascript">document.write('<a href=\"mailto:' +  '' + '' + ''    
++''    
++''    
++''    
++''    
++ 'AndrewP' + ''    
++''    
++ '@' + 'redlemon' + ''    
++''    
++''    
++''    
++''    
++''    
++ '.' + ''    
++''    
++''    
++''    
++ 'com\">' + 'Andrew Paterson' + '</a>')</script></font></font></td></tr></table>
+<font size=1><br><img src="line_grey.png"><br><br></font>
+There's been a few submissions to cotd and totd that use the imagehlp
+library to generate symbol information; to output the call stack when an
+assert fires, or to store the call stack for memory leak tracking. This code
+does away entirely with imagehlp by directly accessing CodeView information
+in a PE file. It doesn't require you to link a huge bunch of obscure
+functions from a dll, and it's fairly fast too.<br><br>
+There's a few shortcomings in this code - it doesn't cope with pdb files
+(pdb files apparently use a modified CodeView format that Microsoft haven't
+publicly released - uncheck the 'Use Progam Database' checkbox in Project
+Settings->Link->Customize if you are using Visual Studio), and it's not been
+rigorously tested (i.e. it seems to be ok on a few projects here at work but
+in the real world... who knows).<br><br>
+Here's all you need to do to output the current call stack to the debug
+output window (in a double-click-to-take-me-there format) :<br><br>
+<center><div style="width:100%; overflow:auto; background-color:#FFFFFF; border:solid 1px #c0c0c0;"><table width="100%" bgcolor="#ffffff" cellspacing=0 cellpadding=12 border=0><tr><td width="100%" bgcolor="#ffffff"><pre><font face="Courier, Courier New" color="#000000">{
+	GPEMap			tmpMap;
+	<font color="#0000ff">const</font> <font color="#0000ff">int</font>		TestStackSize = 7;
+	<font color="#0000ff">void</font> *			TestStack[TestStackSize];
+	GPEMap::CodeSourceData	TestStackSource[TestStackSize];<br><br>	<font color="#007f00">//	Get the first 7 address on the stack (parameter 2 is the number of addresses to skip (note that
+</font>	<font color="#007f00">//	_WalkTheStack automatically skips itself))
+</font>	<font color="#0000ff">if</font> (GPEMap::_WalkTheStack(TestStackSize,0,TestStack))
+	{
+		<font color="#007f00">//	Get the name, source file and line number of each of the addresses
+</font>		tmpMap.GetStackWalkCodeSource(TestStackSize,(<font color="#0000ff">const</font> <font color="#0000ff">void</font>**)TestStack,TestStackSource);
+	}
+} </font></pre></td></tr></table></div></center>
+<br><br><br>One or two caveats : The GPEMap constructor makes a memory map of an entire
+executable file so it's not a wise idea to use it in an inner loop or
+anything. Making it a global or class static in debug builds seems like a
+good idea. At the moment, only CodeView debug symbols are used, but there
+are hooks in for COFF stuff too. Finally, _WalkTheStack assumes that frame
+pointers are stored in the EBP register, so don't call this the Frame
+Pointer Omission optimization on.<br><br>        
+</font>
+</font>
+</td>
+</tr>
+</table>
+
+<font size=1><br></font>
+<table width="95%" bgcolor="#000000" border=0 cellspacing=0 cellpadding=20 style="table-layout:fixed;">
+<tr><td>
+<font face="Verdana, Tahoma, Helvetica" size=2>
+<b>Currently browsing [<a href="GPEMap.zip">GPEMap.zip</a>]</b> (11,478 bytes) - <i>[GPEMap.cpp] - (27,900 bytes)</i><br><br><center><div style="width:100%; overflow:auto; background-color:#FFFFFF; border:solid 1px #c0c0c0;"><table width="100%" bgcolor="#ffffff" cellspacing=0 cellpadding=12 border=0><tr><td width="100%" bgcolor="#ffffff"><pre><font face="Courier, Courier New" color="#000000">
+<font color="#0000ff">#include</font> "GPEMap.h"<br><br><font color="#0000ff">#include</font> &lt;stdio.h>
+<font color="#0000ff">#include</font> &lt;malloc.h><br><br>
+<font color="#007f00">//
+</font><font color="#007f00">//	Internal Image Data structures
+</font><font color="#007f00">//
+</font>
+<font color="#0000ff">#pragma</font> pack(push,1)
+<font color="#0000ff">struct</font> ImageDebugDirectory
+{
+    <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_Characteristics;
+    <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_TimeDateStamp;
+    <font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>	m_MajorVersion;
+    <font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>	m_MinorVersion;
+    <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_Type;
+    <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_SizeOfData;
+    <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_AddressOfRawData;
+    <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_PointerToRawData;				<font color="#007f00">//	The important bit - pointer to the debug directory's data
+</font>													<font color="#007f00">//	in the PE file
+</font>};	<font color="#007f00">//ImageDebugDirectory - Analagous to IMAGE_DEBUG_DIRECTORY with all the unnecessary stuff
+</font>	<font color="#007f00">//chopped out
+</font>
+<font color="#0000ff">struct</font> ImageDosStubHeader
+{
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>	m_Magic;						<font color="#007f00">//	DOS signature ('MZ')
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>	m_Filler[29];					<font color="#007f00">//	Don't need to know this stuff (see MSDN for details)
+</font>    <font color="#0000ff">long</font>			m_LFA;							<font color="#007f00">//	File address of new exe header
+</font>
+}; <font color="#007f00">//ImageDosStubHeader - Analagous to IMAGE_DOS_HEADER, with all the useless crap chopped out
+</font>
+<font color="#0000ff">struct</font> ImageDataDirectory
+{<br><br>	<font color="#0000ff">unsigned</font> <font color="#0000ff">long</font>	m_VAddr;						<font color="#007f00">//	Data virtual offset from m_pMapAddress
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">long</font>	m_Size;							<font color="#007f00">//	Size of the data
+</font>
+}; <font color="#007f00">//ImageDataDirectory - Analogous to IMAGE_DATA_DIRECTORY (this is an internal structure in &lt;winnt.h>)
+</font>
+<font color="#0000ff">struct</font> ImageNTHeaders
+{<br><br>    <font color="#0000ff">unsigned</font> <font color="#0000ff">long</font>			m_Signature;			<font color="#007f00">//	PE file signature ('PE\0\0')
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>			m_FileHdrFiller[10];	<font color="#007f00">//	Don't need to know this shit (see MSDN for details)
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>			m_OpFileHdrFiller[48];	<font color="#007f00">//	Don't need to know this shit (see MSDN for details)
+</font>	ImageDataDirectory		m_DataDirectory[16];	<font color="#007f00">//	PE data directories (resources, debug data, etc.)
+</font>													<font color="#007f00">//	(debug is at offset 144 from m_OpFileHdrFiller - i.e.
+</font>													<font color="#007f00">//	position 6 in this array - see MSDN help for
+</font>													<font color="#007f00">//	IMAGE_DATA_DIRECTORY)
+</font>
+};	<font color="#007f00">//ImageNTHeaders - Analagous to IMAGE_NT_HEADERS in &lt;dbghelp.h>, except with all the unnecessary
+</font>	<font color="#007f00">//stuff chopped out
+</font><br><br>
+<font color="#007f00">//
+</font><font color="#007f00">//	Internal CV Data structures
+</font><font color="#007f00">//
+</font><br><br><font color="#0000ff">struct</font> CVSignature
+{
+	<font color="#0000ff">char</font>				m_Signature[4];				<font color="#007f00">//	CV signature ('NB11' or 'NB09')
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>		m_FilePos;					<font color="#007f00">//	File position (CV base file address)
+</font>}; <font color="#007f00">//CVSignature - CodeView type and file position reference
+</font>
+<font color="#0000ff">struct</font> CVSubSection
+{
+    <font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>		m_SubSection;				<font color="#007f00">//	Subsection type (sst...)
+</font>    <font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>		m_ModuleIndex;				<font color="#007f00">//	Module index
+</font>    <font color="#0000ff">int</font>					m_LFO;						<font color="#007f00">//	Large file offset of subsection
+</font>    <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>		m_SubSectionSize;			<font color="#007f00">//	Number of bytes in subsection
+</font>}; <font color="#007f00">//CVSubSection - CodeView subsection
+</font><br><br><font color="#0000ff">struct</font> CVDirHeader
+{
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>		m_DirHeader;				<font color="#007f00">//	Length of this structure
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>		m_DirEntry;					<font color="#007f00">//	Number of bytes in each directory entry
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>		m_NumDirEntries;			<font color="#007f00">//	Number of directory entries
+</font>	<font color="#0000ff">int</font>					m_NextDir;					<font color="#007f00">//	Offset from the base of next directory (unused)
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>		m_Flags;					<font color="#007f00">//	Status flags
+</font>}; <font color="#007f00">//CVDirHeader - Section directory header
+</font>
+<font color="#0000ff">struct</font> CVSrcModuleHeader
+{
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>	m_NumFiles;						<font color="#007f00">//	Number of source files contained in this module
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>	m_NumSegs;						<font color="#007f00">//	Number of base segments in this module
+</font>}; <font color="#007f00">//CVSrcModuleHeader - Source module (.obj) header
+</font>
+<font color="#0000ff">struct</font> CVSymTableHeader
+{
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>	m_SymHashFnc;					<font color="#007f00">//	Symbol hash function (must be 12)
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>	m_AddrHashFnc;					<font color="#007f00">//	Address hash function (must be 10)
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_NumSymBytes;					<font color="#007f00">//	Number of bytes in the upcoming $$SYMBOL table
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_NumSymHashBytes;				<font color="#007f00">//	Number of bytes in the symbol hash table
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_NumAddrHashBytes;				<font color="#007f00">//	Number of bytes in the address hash table
+</font>}; <font color="#007f00">//CVSymTableHeader
+</font>
+<font color="#0000ff">struct</font> CVSymData
+{
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_TypeID;						<font color="#007f00">//	Type identifier for the symbol
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_Offset;						<font color="#007f00">//	Offset of the symbol
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>	m_Segment;						<font color="#007f00">//	Symbol segment
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">char</font>	m_NameLen;						<font color="#007f00">//	Length of the symbol name
+</font>	<font color="#0000ff">char</font>			m_Name[512];					<font color="#007f00">//	Symbol name (not really 512 characters, but I only
+</font>													<font color="#007f00">//	ever use this structure to reinterpret the data
+</font>													<font color="#007f00">//	pointer, never as a stack or heap object)
+</font>
+}; <font color="#007f00">//CVSymData - variable names in the $$SYMBOL table (S_LDATA32 and S_GDATA32)
+</font>
+<font color="#0000ff">struct</font> CVSymProcStart
+{
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_Parent;						<font color="#007f00">//	
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_End;
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_Next;
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_ProcLength;
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_DbgStart;
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_DbgEnd;
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_ProcType;
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_Offset;
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>	m_Segment;
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">char</font>	m_Flags;
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">char</font>	m_NameLen;
+	<font color="#0000ff">char</font>			m_Name[512];
+}; <font color="#007f00">//CVSymProcStart - proc start in a $$SYMBOL table (S_LPROC32 and S_GPROC32)
+</font>
+<font color="#0000ff">struct</font> CVSymProcRef
+{
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_Checksum;
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_SymOffset;
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>	m_Module;
+}; <font color="#007f00">//CVSymProcRef - proc reference in global $$SYMBOL tables (S_PROCREF)
+</font>
+<font color="#0000ff">struct</font> CVAddrHashOffset
+{
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_CurSymOffset;
+	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	m_CurMemOffset;
+}; <font color="#007f00">//CVAddrHashOffset - used in the address sort table in global symbol tables
+</font>
+<font color="#0000ff">#pragma</font> pack(pop)<br><br><br><br><font color="#007f00">//
+</font><font color="#007f00">//	CV Enums
+</font><font color="#007f00">//
+</font>
+<font color="#0000ff">enum</font> ModuleType
+{
+	<font color="#007f00">//	Module identifiers
+</font>	eMT_sstModule			=	0x120,
+	eMT_sstTypes			=	0x121,
+	eMT_sstPublic			=	0x122,
+	eMT_sstPublicSym		=	0x123,
+	eMT_sstSymbols			=	0x124,
+	eMT_sstAlignSym			=	0x125,
+	eMT_sstSrcLnSeg			=	0x126,
+	eMT_sstSrcModule		=	0x127,
+	eMT_sstLibraries		=	0x128,
+	eMT_sstGlobalSym		=	0x129,
+	eMT_sstGlobalPub		=	0x12a,
+	eMT_sstGlobalTypes		=	0x12b,
+	eMT_sstMPC				=	0x12c,
+	eMT_sstSegMap			=	0x12d,
+	eMT_sstSegName			=	0x12e,
+	eMT_sstPreComp			=	0x12f,
+	eMT_unused				=	0x130,
+	eMT_sstOffsetMap16		=	0x131,
+	eMT_sstOffsetMap32		=	0x132,
+	eMT_sstFileIndex		=	0x133,
+	eMT_sstStaticSym		=	0x134,<br><br>	<font color="#007f00">//	Module type range
+</font>	eMT_lastModule,
+	eMT_firstModule			= eMT_sstModule,<br><br>	<font color="#007f00">//	Maximum module types
+</font>	eModuleTypes			= eMT_lastModule - eMT_firstModule<br><br>}; <font color="#007f00">//ModuleType
+</font><br><br><font color="#0000ff">enum</font> SType
+{
+	<font color="#007f00">//	Symbol type identifiers (ripped from MSDN)
+</font>	S_COMPILE		= 0x0001,
+	S_SSEARCH		= 0x0005,
+	S_END			= 0x0006,
+	S_SKIP			= 0x0007,
+	S_CVRESERVE		= 0x0008,
+	S_OBJNAME		= 0x0009,
+	S_ENDARG		= 0x000a,
+	S_COBOLUDT		= 0x000b,
+	S_MANYREG		= 0x000c,
+	S_RETURN		= 0x000d,
+	S_ENTRYTHIS		= 0x000e,
+	S_REGISTER		= 0x1001,
+	S_CONSTANT		= 0x1002,
+	S_UDT			= 0x1003,
+	S_COBOLUDT2		= 0x1004,
+	S_MANYREG2		= 0x1005,
+	S_BPREL32		= 0x1006,
+	S_LDATA32		= 0x1007,
+	S_GDATA32		= 0x1008,
+	S_PUB32			= 0x1009,
+	S_LPROC32		= 0x100a,
+	S_GPROC32		= 0x100b,
+	S_THUNK32		= 0x0206,
+	S_BLOCK32		= 0x0207,
+	S_WITH32		= 0x0208,
+	S_LABEL32		= 0x0209,
+	S_CEXMODEL32	= 0x020a,
+	S_VFTTABLE32	= 0x100c,
+	S_REGREL32		= 0x100d,
+	S_LTHREAD32		= 0x100e,
+	S_GTHREAD32		= 0x100f,
+	S_LPROCMIPS		= 0x1010,
+	S_GPROCMIPS		= 0x1011,
+	S_PROCREF		= 0x0400,
+	S_DATAREF		= 0x0401,
+	S_ALIGN			= 0x0402,<br><br>	S_FIRST			= S_COMPILE,
+	S_LAST			= S_ALIGN
+};<br><br><br><br><br><br><br><br><font color="#007f00">//
+</font><font color="#007f00">//	Global Utility Functions
+</font><font color="#007f00">//
+</font>
+TCHAR * _StringifyOSError(<font color="#0000ff">const</font> <font color="#0000ff">int</font> BufferSize,TCHAR * pBuffer,<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">long</font> ErrCode = -1)
+{
+	<font color="#007f00">//	_StringifyOSError fills up to BufferSize character in pBuffer with either the stringified
+</font>	<font color="#007f00">//	version either GetLastError(), or ErrCode if it's not -1
+</font>
+	<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">long</font>	ActErrCode	= ErrCode == -1 ? GetLastError() : ErrCode;<br><br>	FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+				  NULL,
+				  ActErrCode,
+				  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), <font color="#007f00">// Default language
+</font>				  LPTSTR(pBuffer),
+				  BufferSize,
+				  NULL);<br><br>	<font color="#007f00">//	FormatMessage seems to add newlines to the end of the string buffer. This is unacceptable!
+</font>	{
+		<font color="#0000ff">const</font> <font color="#0000ff">int</font>	NewBufLen = strlen(pBuffer);<br><br>		<font color="#0000ff">if</font> (pBuffer[NewBufLen - 1] == _T('\n'))
+		{
+			pBuffer[NewBufLen - 1] = _T('\0');
+		}<br><br>		<font color="#0000ff">if</font> (pBuffer[NewBufLen - 2] == _T('\r'))
+		{
+			pBuffer[NewBufLen - 2] = _T('\0');
+		}
+	}<br><br>	<font color="#0000ff">return</font> pBuffer;
+} <font color="#007f00">//_StringifyOSError
+</font>
+<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">char</font> * _GetDataPtr(<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">char</font> * & pDataPtr,<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> NumBytes)
+{
+	<font color="#007f00">//	_GetDataPtr - Stores pDataPtr, increments pDataPtr by NumByte, then returns the stored pDataPtr
+</font>	<font color="#007f00">//	(useful for parsing the memory mapped file).
+</font>
+	<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">char</font> * pOldDataPtr = pDataPtr;
+	pDataPtr += NumBytes;
+	<font color="#0000ff">return</font> pOldDataPtr;
+} <font color="#007f00">//_GetDataPtr
+</font>
+<font color="#0000ff">template</font> &lt;<font color="#0000ff">class</font> T> <font color="#0000ff">const</font> T * _GetCastDataPtr(<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">char</font> * & pDataPtr,<font color="#0000ff">const</font> <font color="#0000ff">int</font> Count = 1,T * pDummy = 0)
+{
+	<font color="#007f00">//	_GetCastDataPtr - Templated version of _GetDataPtr - Count specifies the number of T's expected at pDataPtr
+</font>
+	<font color="#0000ff">return</font> (<font color="#0000ff">const</font> T*)_GetDataPtr(pDataPtr,<font color="#0000ff">sizeof</font>(T) * Count);
+} <font color="#007f00">//_GetCastDataPtr
+</font>
+<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> _ConvertAddrToMap(<font color="#0000ff">const</font> <font color="#0000ff">void</font> * pAddr,<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> SystemPageSize)
+{
+	<font color="#007f00">//	_ConvertAddrToMap - Convert pAddr to the map file using VirtualQuery
+</font>
+	MEMORY_BASIC_INFORMATION	tmpMem;
+	VirtualQuery(pAddr,&tmpMem,<font color="#0000ff">sizeof</font>(tmpMem));<br><br>	<font color="#007f00">//	The difference in the allocation base and the base address tells us by how much pAddr was rounded down
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> Mod = (((<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>)tmpMem.BaseAddress - (<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>)tmpMem.AllocationBase) / SystemPageSize) - 1;<br><br>	<font color="#0000ff">return</font> ((<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>)(pAddr) - (<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>)tmpMem.BaseAddress) + (Mod * SystemPageSize);
+} <font color="#007f00">//_ConvertAddrToMap
+</font><br><br><br><br><font color="#007f00">//
+</font><font color="#007f00">//	GPEMap Methods
+</font><font color="#007f00">//
+</font><br><br>GPEMap::GPEMap()
+{<br><br>	Init();<br><br>	<font color="#0000ff">const</font> <font color="#0000ff">int</font>	MaxModuleFilenameLen = 512;
+	TCHAR		ModulePEFile[MaxModuleFilenameLen];<br><br>	<font color="#0000ff">if</font> (GetModuleFileName(0,ModulePEFile,MaxModuleFilenameLen) > 0)
+	{
+		<font color="#007f00">//	Try to open the pe file and process it
+</font>		<font color="#0000ff">if</font> (OpenPEFile(ModulePEFile) && ProcessPEFile())
+		{
+			m_bOK = <font color="#0000ff">true</font>;
+		}
+	}
+	<font color="#0000ff">else</font>
+	{
+		<font color="#0000ff">const</font> <font color="#0000ff">int</font>	OSErrLen = 512;
+		TCHAR		OSErr[OSErrLen];
+		OutputErrorF(_T("GPEMap::GPEMap - GetModuleFilename failed (OS Error = '%s')"),
+					 _StringifyOSError(OSErrLen,OSErr));
+	}<br><br>} <font color="#007f00">//GPEMap::GPEMap
+</font><br><br>GPEMap::GPEMap(<font color="#0000ff">const</font> TCHAR * pPEFileToMap)
+{<br><br>	Init();<br><br>	<font color="#007f00">//	Try to open the pe file and process it
+</font>	<font color="#0000ff">if</font> (OpenPEFile(pPEFileToMap) && ProcessPEFile())
+	{
+		m_bOK = <font color="#0000ff">true</font>;
+	}<br><br>} <font color="#007f00">//GPEMap::GPEMap
+</font>
+<font color="#0000ff">void</font> GPEMap::Init()
+{
+	<font color="#007f00">//	Initialize file mapping members
+</font>	m_bOK				= <font color="#0000ff">false</font>;
+	m_hFile				= 0;
+	m_hMapFile			= 0;
+	m_pMapAddress		= 0;<br><br>	<font color="#007f00">//	COFF
+</font>	m_pCOFFDbgDir		= 0;<br><br>	<font color="#007f00">//	CodeView
+</font>	m_pCVDbgDir			= 0;
+	m_pCVGlobalSym		= 0;
+	m_pCVSrcMods		= 0;
+	m_pCVAlignSym		= 0;
+	m_NumCVSrcMods		= 0;
+	m_NumCVAlignSyms	= 0;<br><br>	<font color="#007f00">//	Initialize the system page size
+</font>	{
+		SYSTEM_INFO	tmpSysInfo;
+		GetSystemInfo(&tmpSysInfo);
+		m_SystemPageSize = tmpSysInfo.dwPageSize;
+	}
+} <font color="#007f00">//GPEMap::Init
+</font>
+<font color="#0000ff">bool</font> GPEMap::OpenPEFile(<font color="#0000ff">const</font> TCHAR * pPEFileToMap)
+{<br><br>	<font color="#007f00">//	OpePEFile - Opens pPEFileToMap in a standard file, then creates a memory map of it. The base address
+</font>	<font color="#007f00">//	of the map is stored in m_pMapAddress
+</font>
+	<font color="#007f00">//	OS error storage
+</font>	<font color="#0000ff">const</font> <font color="#0000ff">int</font>	OSErrLen	= 256;
+	TCHAR		OSErr[OSErrLen];<br><br>	<font color="#007f00">//	Open up the PE file
+</font>	OFSTRUCT	FileInfo;
+	m_hFile = (HANDLE)OpenFile(pPEFileToMap,&FileInfo,OF_READ);
+	<font color="#0000ff">if</font> (m_hFile != HANDLE(HFILE_ERROR))
+	{<br><br>		<font color="#007f00">//	Create a file mapping 
+</font>		m_hMapFile = CreateFileMapping(HANDLE(m_hFile),			<font color="#007f00">//	Current file handle. 
+</font>									   NULL,					<font color="#007f00">//	Default security
+</font>									   PAGE_READONLY,			<font color="#007f00">//	Read/write permission. 
+</font>									   0,						<font color="#007f00">//	Max. object size
+</font>									   0,						<font color="#007f00">//	Size of hFile
+</font>									   _T("EXEMap"));			<font color="#007f00">//	Name of mapping object. 
+</font> 
+		<font color="#0000ff">if</font> (m_hMapFile == NULL)
+		{ 
+			OutputErrorF(_T("GPEMap::GPEMap - Failed to open map file (OS Error = '%s')"),
+						 _StringifyOSError(OSErrLen,OSErr));
+		}
+		<font color="#0000ff">else</font>
+		{
+			<font color="#007f00">//	Create a view of the file
+</font>			m_pMapAddress = (<font color="#0000ff">unsigned</font> <font color="#0000ff">char</font>*)MapViewOfFile(m_hMapFile,		<font color="#007f00">//	Handle to mapping object
+</font>														  FILE_MAP_READ,	<font color="#007f00">//	Read/write permission
+</font>														  0,				<font color="#007f00">//	Max. object size
+</font>														  0,				<font color="#007f00">//	Size of hFile
+</font>														  0);				<font color="#007f00">//	Map entire file
+</font>
+			<font color="#0000ff">if</font> (m_pMapAddress == NULL) 
+			{ 
+				OutputErrorF(_T("GPEMap::GPEMap - Could not map view of file (OS Error = '%s')"),
+							 _StringifyOSError(OSErrLen,OSErr)); 
+			}
+			<font color="#0000ff">else</font>
+			{
+				<font color="#0000ff">return</font> <font color="#0000ff">true</font>;
+			}<br><br>		}<br><br>	}
+	<font color="#0000ff">else</font>
+	{
+		OutputErrorF(_T("GPEMap::GPEMap - Failed to open PE file (OS Error = '%s'"),
+					 _StringifyOSError(OSErrLen,OSErr));
+	}<br><br>	<font color="#0000ff">return</font> <font color="#0000ff">false</font>;
+} <font color="#007f00">//GPEMap::OpenPEFile
+</font>
+<font color="#0000ff">bool</font> GPEMap::ProcessPEFile()
+{
+	<font color="#007f00">//	ProcessPEFile - Sets up precalculated file pointers for quicker symbol lookup. At the moment,
+</font>	<font color="#007f00">//	only the CodeView debug format is supported
+</font>
+	<font color="#007f00">//	Access the debug directories
+</font>	<font color="#0000ff">unsigned</font> <font color="#0000ff">long</font>	DataSize;
+	<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">char</font> *	pDirEntry;
+	
+	<font color="#007f00">//	Get a pointer to the first debug directory.
+</font>	{
+		<font color="#007f00">//	Initial structure = a dos stub header, then image nt headers, which contains the pointers
+</font>		<font color="#007f00">//	to the image directories (resources, debug data, import and export tables, and other stuff).
+</font>		<font color="#007f00">//	The debug directories should be at position 6 (offset 144) in this array
+</font>		<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">char</font> *		pDataPtr	= m_pMapAddress;
+		<font color="#0000ff">const</font> ImageDosStubHeader *	pDosHdr		= _GetCastDataPtr&lt;ImageDosStubHeader>(pDataPtr);
+		<font color="#0000ff">const</font> ImageNTHeaders *		pNT			= (ImageNTHeaders*)(m_pMapAddress + pDosHdr->m_LFA);
+		pDirEntry								= m_pMapAddress + pNT->m_DataDirectory[6].m_VAddr;
+		DataSize								= pNT->m_DataDirectory[6].m_Size;
+	}<br><br>	<font color="#007f00">//	If we got some debug directory data...
+</font>	<font color="#0000ff">if</font> ((pDirEntry != m_pMapAddress) && (DataSize > 0))
+	{
+		<font color="#007f00">//	... process it
+</font>		<font color="#0000ff">const</font> ImageDebugDirectory  *	pDebugDir		= (ImageDebugDirectory*)pDirEntry;
+		<font color="#0000ff">const</font> <font color="#0000ff">int</font>						NumDebugDirs	= <font color="#0000ff">int</font>(DataSize) / <font color="#0000ff">sizeof</font>(ImageDebugDirectory);<br><br>		<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; NumDebugDirs; i++, pDebugDir++)
+		{
+			<font color="#0000ff">switch</font> (pDebugDir->m_Type)
+			{
+				<font color="#007f00">//	Unprocessed debug directories
+</font>				<font color="#0000ff">case</font> IMAGE_DEBUG_TYPE_UNKNOWN	:
+				<font color="#0000ff">case</font> IMAGE_DEBUG_TYPE_FPO		:
+				<font color="#0000ff">case</font> IMAGE_DEBUG_TYPE_MISC		:
+				<font color="#0000ff">case</font> IMAGE_DEBUG_TYPE_EXCEPTION	:
+				<font color="#0000ff">case</font> IMAGE_DEBUG_TYPE_FIXUP		:
+				<font color="#0000ff">case</font> IMAGE_DEBUG_TYPE_BORLAND	:	<font color="#0000ff">break</font>;<br><br>				<font color="#007f00">//	Processed debug directories
+</font>				<font color="#0000ff">case</font> IMAGE_DEBUG_TYPE_COFF		:
+					ProcessCOFFDbgDir(pDebugDir);	<font color="#007f00">//	TODO...
+</font>					<font color="#0000ff">break</font>;<br><br>				<font color="#0000ff">case</font> IMAGE_DEBUG_TYPE_CODEVIEW	:
+					ProcessCVDbgDir(pDebugDir);
+					<font color="#0000ff">break</font>;
+			};
+		}
+	}<br><br>	<font color="#0000ff">return</font> UsingCOFF() || UsingCV();
+} <font color="#007f00">//GPEMap::ProcessPEFile
+</font>
+<font color="#0000ff">void</font> GPEMap::ClosePEFile()
+{
+	<font color="#007f00">//	Close down the file handles and stuff
+</font>	<font color="#0000ff">if</font> (m_pMapAddress)
+	{
+		UnmapViewOfFile(m_pMapAddress);
+		CloseHandle(m_hMapFile);
+		CloseHandle(m_hFile);<br><br>		m_pMapAddress	= 0;
+		m_hMapFile		= 0;
+		m_hFile			= 0;
+	}<br><br>} <font color="#007f00">//GPEMap::ClosePEFile
+</font>
+<font color="#0000ff">void</font> GPEMap::ProcessCVDbgDir(<font color="#0000ff">const</font> ImageDebugDirectory * pDebugDir)
+{
+	<font color="#007f00">//assert(UsingCV());
+</font>	
+	<font color="#007f00">//	Verify the CV signature before we do anything else
+</font>	m_pLFO		= m_pMapAddress + pDebugDir->m_PointerToRawData;
+	m_pCVSig	= (<font color="#0000ff">const</font> CVSignature *)m_pLFO;
+	<font color="#0000ff">if</font> (!CheckCVSig(*((<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>*)&m_pCVSig->m_Signature)))
+	{
+		<font color="#0000ff">return</font>;
+	}<br><br>
+	<font color="#0000ff">const</font> CVDirHeader	*	pCVDirHeader;
+	<font color="#0000ff">const</font> CVSubSection	*	pCVSubSections;<br><br>	<font color="#007f00">//	Read in the directory header and subsections
+</font>	<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">char</font> *	pDataPtr	= m_pLFO + m_pCVSig->m_FilePos;
+	pCVDirHeader						= _GetCastDataPtr&lt;CVDirHeader>(pDataPtr);
+	pCVSubSections						= _GetCastDataPtr&lt;CVSubSection>(pDataPtr);<br><br>
+	<font color="#007f00">//	Run through and process each of the debug directories
+</font>
+	{
+		<font color="#0000ff">const</font> <font color="#0000ff">int</font>				MaxSrcMods = 1024;
+		<font color="#0000ff">const</font> CVSubSection *	SrcModList[MaxSrcMods];
+		<font color="#0000ff">const</font> CVSubSection *	AlignSymList[MaxSrcMods];<br><br>		<font color="#007f00">//	Parse each subsection
+</font>		<font color="#0000ff">for</font> (<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> i = 0; i &lt; pCVDirHeader->m_NumDirEntries; i++)
+		{
+			<font color="#0000ff">const</font> CVSubSection * pSubSection = &(pCVSubSections[i]);
+			<font color="#0000ff">switch</font> (ModuleType(pSubSection->m_SubSection))
+			{
+				<font color="#0000ff">case</font> eMT_sstModule		:
+				<font color="#0000ff">case</font> eMT_sstTypes		:
+				<font color="#0000ff">case</font> eMT_sstPublic		:
+				<font color="#0000ff">case</font> eMT_sstPublicSym	:
+				<font color="#0000ff">case</font> eMT_sstSymbols		:
+				<font color="#0000ff">case</font> eMT_sstSrcLnSeg	:
+				<font color="#0000ff">case</font> eMT_sstLibraries	:
+				<font color="#0000ff">case</font> eMT_sstGlobalPub	:
+				<font color="#0000ff">case</font> eMT_sstGlobalTypes	:
+				<font color="#0000ff">case</font> eMT_sstMPC			:
+				<font color="#0000ff">case</font> eMT_sstSegMap		:
+				<font color="#0000ff">case</font> eMT_sstSegName		:
+				<font color="#0000ff">case</font> eMT_sstPreComp		:
+				<font color="#0000ff">case</font> eMT_unused			:
+				<font color="#0000ff">case</font> eMT_sstOffsetMap16	:
+				<font color="#0000ff">case</font> eMT_sstOffsetMap32	:
+				<font color="#0000ff">case</font> eMT_sstFileIndex	:
+				<font color="#0000ff">case</font> eMT_sstStaticSym	:	<font color="#007f00">/* Boring */</font> <font color="#0000ff">break</font>;
+					
+				<font color="#0000ff">case</font> eMT_sstAlignSym	:
+					{
+						<font color="#007f00">//	Alignment symbols table - this is somewhat glossed over in the documentation, but
+</font>						<font color="#007f00">//	it seems that for each module, there's a matching one of these that contains all
+</font>						<font color="#007f00">//	the symbol information for it.
+</font>						AlignSymList[m_NumCVAlignSyms++] = pSubSection;
+						<font color="#0000ff">break</font>;
+					}; <font color="#007f00">//case eMT_sstAlignSym
+</font>
+				<font color="#0000ff">case</font> eMT_sstSrcModule	:
+					{
+						<font color="#007f00">//	Module source table - there's one of these per module in PE file
+</font>						SrcModList[m_NumCVSrcMods++] = pSubSection;
+						<font color="#0000ff">break</font>;
+					}; <font color="#007f00">//case eMT_sstSrcModule
+</font>
+				<font color="#0000ff">case</font> eMT_sstGlobalSym	: 
+					{
+						<font color="#007f00">//	This is the global symbol lookup table - instead of searching each module for a
+</font>						<font color="#007f00">//	proc address, this table contains an address sort list that allows you to look
+</font>						<font color="#007f00">//	up the address directly in one of the alignment symbol tables. Note that there's
+</font>						<font color="#007f00">//	only one of these per PE file, although there's also a static symbol table and a 
+</font>						<font color="#007f00">//	public symbol table (eMT_sstStaticSym and eMT_sstPublic) that are supposed to
+</font>						<font color="#007f00">//	do the same sort of thing.
+</font>						<font color="#007f00">//assert(m_pCVGlobalSym);
+</font>						m_pCVGlobalSym = pSubSection;
+						<font color="#0000ff">break</font>;
+					}; <font color="#007f00">//case eMT_sstGlobalSym
+</font>			};
+		}
+		
+		<font color="#007f00">//	Transfer SrcModList and AlignSymList to m_pCVSrcMods and m_pCVAlignSym respectively
+</font>		{
+			<font color="#0000ff">int</font> i;
+			m_pCVSrcMods	= <font color="#0000ff">new</font> <font color="#0000ff">const</font> CVSubSection *[m_NumCVSrcMods];
+			m_pCVAlignSym	= <font color="#0000ff">new</font> <font color="#0000ff">const</font> CVSubSection *[m_NumCVAlignSyms];
+			<font color="#0000ff">for</font> (i = 0; i &lt; m_NumCVSrcMods;		m_pCVSrcMods[i]	= SrcModList[i],i++);
+			<font color="#0000ff">for</font> (i = 0; i &lt; m_NumCVAlignSyms;	m_pCVAlignSym[i]= AlignSymList[i],i++);
+		}
+	}<br><br>	
+	m_pCVDbgDir	= pDebugDir;
+} <font color="#007f00">//GPEMap::ProcessCVDbgDir
+</font>
+<font color="#0000ff">void</font> GPEMap::ProcessCOFFDbgDir(<font color="#0000ff">const</font> ImageDebugDirectory * pDebugDir)
+{
+	<font color="#007f00">//	TODO...
+</font>	
+} <font color="#007f00">//GPEMap::ProcessCOFFDbgDir
+</font><br><br><font color="#0000ff">void</font> GPEMap::OutputErrorF(<font color="#0000ff">const</font> TCHAR * pError,...) <font color="#0000ff">const</font>
+{
+	TCHAR	FullMsg[1024];<br><br>	va_list	VArgs;
+	va_start(VArgs,pError);
+	_vsnprintf(FullMsg,1024,pError,VArgs);
+	va_end(VArgs);<br><br>	MessageBox(0,FullMsg,_T("GPEMap Error"),MB_OK);
+} <font color="#007f00">//GPEMap::OutputErrorF
+</font><br><br><font color="#0000ff">bool</font> GPEMap::CheckCVSig(<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> Sig)
+{<br><br>	<font color="#0000ff">if</font> ((Sig == (<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>)'11BN') ||
+		(Sig == (<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>)'90BN'))	<font color="#007f00">//	I think NB09 is ok too...
+</font>	{
+		<font color="#0000ff">return</font> <font color="#0000ff">true</font>;
+	}<br><br>	<font color="#0000ff">if</font> (Sig == (<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>)'01BN')
+	{
+		<font color="#007f00">//	The PDB format is based on a modified CodeView structure that is not publicly available. Please
+</font>		<font color="#007f00">//	mail me at andrewp@redlemon.com if you know anything about it...
+</font>		OutputErrorF(_T("GPEMap::CheckCVSig - GPEMap does not support external program databases. If you are\n")
+					 _T("using Visual Studio 6.0 then remove the check from 'Use Program Database' in\n")
+					 _T("Project Settings->Link->Customize\n"));
+		<font color="#0000ff">return</font> <font color="#0000ff">false</font>;<br><br>	}
+	<font color="#0000ff">else</font>
+	{
+		<font color="#007f00">//	(should be ok for unicode)
+</font>		OutputErrorF(_T("GPEMap::CheckCVSig - Unsupported codeview format ('%c%c%c%c')\n"),
+					 ((<font color="#0000ff">char</font>*)&Sig)[0],((<font color="#0000ff">char</font>*)&Sig)[1],((<font color="#0000ff">char</font>*)&Sig)[2],((<font color="#0000ff">char</font>*)&Sig)[3]);
+	}<br><br>	<font color="#0000ff">return</font> <font color="#0000ff">false</font>;
+} <font color="#007f00">//GPEMap::CheckCVSig
+</font>
+<font color="#0000ff">bool</font> GPEMap::GetCVCodeSource(<font color="#0000ff">const</font> <font color="#0000ff">void</font> * pAddr,GPEMap::CodeSourceData * pData) <font color="#0000ff">const</font>
+{
+	<font color="#007f00">//	Map pAddr
+</font>	<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>	AddrUInt	= _ConvertAddrToMap(pAddr,m_SystemPageSize);<br><br>	<font color="#007f00">//	Find the source information for AddrUInt
+</font>	<font color="#0000ff">if</font> (!CVLookupAddrSrc(AddrUInt,pData))
+	{
+		<font color="#0000ff">return</font> <font color="#0000ff">false</font>;
+	}<br><br>	<font color="#007f00">//	Find the symbol information for AddrUInt
+</font>	<font color="#0000ff">return</font> CVLookupAddrSym(AddrUInt,pData);
+} <font color="#007f00">//GPEMap::GetCVCodeSource
+</font>
+<font color="#0000ff">bool</font> GPEMap::CVLookupAddrSym(<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> AddrUInt,CodeSourceData * pData) <font color="#0000ff">const</font>
+{
+	<font color="#0000ff">if</font> (!m_pCVGlobalSym)
+	{
+		<font color="#0000ff">return</font> <font color="#0000ff">false</font>;
+	}<br><br>	<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">char</font> *		pGlobalSymBase	= m_pLFO + m_pCVGlobalSym->m_LFO,
+						*		pDataPtr		= pGlobalSymBase;
+	<font color="#0000ff">const</font> CVSymTableHeader *	pSymTableHdr	= _GetCastDataPtr&lt;CVSymTableHeader>(pDataPtr);
+	<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">char</font> *		pSymTable		= pDataPtr;<br><br>	<font color="#007f00">//assert(SymHashFnc == 10);
+</font>	<font color="#007f00">//assert(AddrHashFnc == 12);
+</font>
+	pDataPtr = pDataPtr + (pSymTableHdr->m_NumSymBytes + pSymTableHdr->m_NumSymHashBytes);
+	<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>	NumSegs			= *_GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>>(pDataPtr,2 <font color="#007f00">/* (incl. padding) */</font>);
+	<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> *	pSegTable		= _GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>>(pDataPtr,NumSegs);
+	<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> *	pOffsetCounts	= _GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>>(pDataPtr,NumSegs);
+	<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> *	pOffsetTable	= _GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>>(pDataPtr,NumSegs * 2);<br><br>	pData->m_Fnc[0] = _T('\0');<br><br>	<font color="#007f00">//	TODO : Binary search
+</font>	<font color="#0000ff">for</font> (<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> CurSeg = 0; CurSeg &lt; NumSegs; CurSeg++)
+	{
+		<font color="#0000ff">const</font> CVAddrHashOffset * pCurOff = (CVAddrHashOffset*)pOffsetTable;<br><br>		<font color="#0000ff">for</font> (<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> i = 0; i &lt; pOffsetCounts[CurSeg]; i++)
+		{<br><br>			<font color="#0000ff">if</font> ((AddrUInt >= pCurOff[0].m_CurMemOffset) && (AddrUInt &lt;= pCurOff[1].m_CurMemOffset))
+			{
+				<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">char</font> *	pSymData	= pSymTable + pCurOff[0].m_CurSymOffset;
+				<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>	SymLen		= *_GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>>(pSymData);
+				<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>	SymType		= *_GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>>(pSymData);<br><br>				<font color="#0000ff">switch</font> (SymType)
+				{
+					<font color="#0000ff">case</font> S_PROCREF	:
+						{
+							<font color="#0000ff">const</font> CVSymProcRef *	pProcRef	= (CVSymProcRef*)pSymData;
+							<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">char</font> *	pModAddr	= m_pLFO + m_pCVAlignSym[pProcRef->m_Module-1]->m_LFO;
+							<font color="#0000ff">const</font> CVSymProcStart *	pProcData	= (CVSymProcStart *)&(pModAddr[pProcRef->m_SymOffset+4]);<br><br>							_sntprintf(pData->m_Fnc,eMaxFncName,_T("%.*s"),pProcData->m_NameLen,pProcData->m_Name);<br><br>							<font color="#0000ff">return</font> <font color="#0000ff">true</font>;
+						};<br><br>					<font color="#007f00">//	Can also do S_DATAREF for variables (see MSDN documentation and CVSymData for details)
+</font>				};<br><br>				<font color="#007f00">//	Unhandled symbol type...
+</font>
+				<font color="#0000ff">return</font> <font color="#0000ff">false</font>;
+			}<br><br>			pCurOff++;
+		}
+	}<br><br>
+	<font color="#0000ff">return</font> <font color="#0000ff">false</font>;
+} <font color="#007f00">//GPEMap::CVLookupAddrSym
+</font>
+<font color="#0000ff">bool</font> GPEMap::CVLookupAddrSrc(<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> AddrUInt,CodeSourceData * pData) <font color="#0000ff">const</font>
+{
+	<font color="#007f00">//	Run through the source module subsections
+</font>	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; m_NumCVSrcMods; i++)
+	{
+		<font color="#007f00">//	Goto the i'th module source section
+</font>		<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">char</font> *		pSrcModBase		= m_pLFO + m_pCVSrcMods[i]->m_LFO,
+							*		pDataPtr		= pSrcModBase;<br><br>		<font color="#007f00">//	Get the module header information and the base source and segment data
+</font>		<font color="#0000ff">const</font> CVSrcModuleHeader *	pSrcModHdr		= _GetCastDataPtr&lt;CVSrcModuleHeader>(pDataPtr);
+		<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> *		pBaseSrcPtrs	= _GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>>(pDataPtr,pSrcModHdr->m_NumFiles);
+		<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> *		pBaseSegPairs	= _GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>>(pDataPtr,pSrcModHdr->m_NumSegs * 2);
+		<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">short</font> *		pBaseSegs		= _GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>>(pDataPtr,pSrcModHdr->m_NumSegs);<br><br>
+		<font color="#007f00">//	TODO : Quick check of base seg pairs to reject this module fast
+</font>		<font color="#0000ff">bool</font> bInModule = <font color="#0000ff">false</font>;
+		<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> * pCurBasePair = pBaseSegPairs;
+		<font color="#0000ff">for</font> (<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> qs = 0; qs &lt; pSrcModHdr->m_NumSegs; qs++)
+		{
+			<font color="#0000ff">if</font> ((AddrUInt >= pCurBasePair[0]) && (AddrUInt &lt;= pCurBasePair[1]))
+			{
+				bInModule = <font color="#0000ff">true</font>;
+				<font color="#0000ff">break</font>;
+			}
+			pCurBasePair += 2;
+		}<br><br>		<font color="#0000ff">if</font> (!bInModule)
+		{
+			<font color="#007f00">//	Address is not in this module... goto the next one
+</font>			<font color="#0000ff">continue</font>;
+		}<br><br>
+		<font color="#007f00">//	RUn through the source files
+</font>		<font color="#0000ff">for</font> (<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> f = 0; f &lt; pSrcModHdr->m_NumFiles; f++)
+		{
+			<font color="#007f00">//	Goto the data for this source file
+</font>			pDataPtr = pSrcModBase + pBaseSrcPtrs[f];<br><br>			<font color="#007f00">//	Get the name, line and segment information for this file
+</font>			<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>	NumSegs		= *_GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>>(pDataPtr);
+			<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>	Pad			= *_GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>>(pDataPtr);
+			<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> *	pSrcLines	= _GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>>(pDataPtr,NumSegs);
+			<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> *	pSegPairs	= _GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>>(pDataPtr,NumSegs * 2);<br><br>			<font color="#007f00">//	the documentation lies! FNameLen is only one byte...
+</font>			<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">char</font>		FNameLen	= *_GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">char</font>>(pDataPtr);
+			<font color="#0000ff">const</font> <font color="#0000ff">char</font> *			pFName		= _GetCastDataPtr&lt;<font color="#0000ff">char</font>>(pDataPtr,FNameLen);<br><br>			<font color="#007f00">//	Run through the file segments
+</font>			<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> * pCurPair = pSegPairs;
+			<font color="#0000ff">for</font> (<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> s = 0; s &lt; NumSegs; s++)
+			{
+				<font color="#0000ff">if</font> ((AddrUInt >= pCurPair[0]) && (AddrUInt&lt;= pCurPair[1]))
+				{
+					<font color="#007f00">//	Found it! Find the line number it appears on
+</font>					<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">char</font> *		pTmpDataPtr	= pSrcModBase + pSrcLines[s];
+					<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>		Seg			= *_GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>>(pTmpDataPtr);
+					<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>		Pair		= *_GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>>(pTmpDataPtr);
+					<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> *		pOffsets	=  _GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>>(pTmpDataPtr,Pair);
+					<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">short</font> *		pLines		=  _GetCastDataPtr&lt;<font color="#0000ff">unsigned</font> <font color="#0000ff">short</font>>(pTmpDataPtr,Pair);<br><br>					<font color="#007f00">//	Find the matching offset
+</font>					<font color="#0000ff">for</font> (<font color="#0000ff">int</font> o = 0; o &lt; Pair; o++)
+					{
+						<font color="#0000ff">if</font> (pOffsets[o] >= AddrUInt)
+						{
+							_sntprintf(pData->m_File,eMaxSourceFileName,_T("%.*s"),FNameLen,pFName);
+							pData->m_Line = pLines[o == 0 ? o : o-1];<br><br>							<font color="#0000ff">return</font> <font color="#0000ff">true</font>;
+						}
+					}<br><br>					<font color="#0000ff">return</font> <font color="#0000ff">false</font>;
+				}<br><br>				pCurPair += 2;
+			}
+		}
+	}<br><br>	<font color="#0000ff">return</font> <font color="#0000ff">false</font>;
+} <font color="#007f00">//GPEMap::CVLookupAddrSrc
+</font>
+<font color="#0000ff">bool</font> GPEMap::GetCodeSource(<font color="#0000ff">const</font> <font color="#0000ff">void</font> * pAddr,CodeSourceData * pData) <font color="#0000ff">const</font>
+{
+	<font color="#0000ff">if</font> (!IsOK())
+	{
+		<font color="#0000ff">return</font> <font color="#0000ff">false</font>;
+	}<br><br>	<font color="#007f00">//assert(pData);
+</font>
+	<font color="#007f00">//	Initialize pData
+</font>	pData->m_File[0]	= _T('\0');
+	pData->m_Line		= 0;
+	pData->m_Fnc[0]		= _T('\0');<br><br>	<font color="#007f00">//	Process either using CodeView or COFF
+</font>	<font color="#0000ff">if</font> (UsingCV())
+	{
+		<font color="#0000ff">return</font> GetCVCodeSource(pAddr,pData);
+	}
+	<font color="#0000ff">else</font> <font color="#0000ff">if</font> (UsingCOFF())
+	{
+		<font color="#007f00">//	TODO...
+</font>	}<br><br>
+	<font color="#0000ff">return</font> <font color="#0000ff">false</font>;
+} <font color="#007f00">//GPEMap::GetCodeSource
+</font>
+<font color="#0000ff">bool</font> GPEMap::GetStackWalkCodeSource(<font color="#0000ff">const</font> <font color="#0000ff">int</font>			NumCalls,
+									<font color="#0000ff">const</font> <font color="#0000ff">void</font> * *		pStackAddrs,
+									CodeSourceData *	pData) <font color="#0000ff">const</font>
+{
+	<font color="#007f00">//	Run through the stack address array
+</font>	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; NumCalls; i++)
+	{
+		<font color="#0000ff">if</font> (pStackAddrs[i])
+		{
+			<font color="#007f00">//	Find the source file,line and procedure / data name
+</font>			<font color="#0000ff">if</font> (!GetCodeSource(pStackAddrs[i],&(pData[i])))
+			{
+				<font color="#0000ff">return</font> <font color="#0000ff">false</font>;
+			}<br><br>			<font color="#007f00">//	Helpful...
+</font>			TCHAR tmpStr[256];
+			sprintf(tmpStr,_T("%s(%d) : Found in '%s'\n"),pData[i].m_File,pData[i].m_Line,pData[i].m_Fnc);
+			OutputDebugString(tmpStr);
+		}
+	}<br><br>	<font color="#0000ff">return</font> <font color="#0000ff">true</font>;
+} <font color="#007f00">//GPEMap::GetStackWalkCodeSource
+</font><br><br>GPEMap::~GPEMap()
+{
+	<font color="#0000ff">if</font> (IsOK())
+	{
+		ClosePEFile();<br><br>		<font color="#007f00">//	Delete the source module and alignment symbols arrays
+</font>		<font color="#0000ff">if</font> (m_pCVSrcMods)
+		{
+			<font color="#0000ff">delete</font> []m_pCVSrcMods;
+		}<br><br>		<font color="#0000ff">if</font> (m_pCVAlignSym)
+		{
+			<font color="#0000ff">delete</font> []m_pCVAlignSym;
+		}
+	}<br><br>} <font color="#007f00">//GPEMap::~GPEMap
+</font>
+<font color="#0000ff">bool</font> GPEMap::_WalkTheStack(<font color="#0000ff">const</font> <font color="#0000ff">int</font>	NumCallsToCheck,
+						   <font color="#0000ff">const</font> <font color="#0000ff">int</font>	NumCallsToSkip,
+						   <font color="#0000ff">void</font> * *		pStackAddrs)
+{
+	<font color="#007f00">//	Check the parameters
+</font>	<font color="#0000ff">if</font> (!NumCallsToCheck || !pStackAddrs)
+	{
+		<font color="#0000ff">return</font> <font color="#0000ff">false</font>;
+	}<br><br>	<font color="#007f00">//	Initialize the stack walk variables and clear out the stack address array
+</font>	<font color="#0000ff">int</font> CurStackIn	= 0;
+	<font color="#0000ff">int</font> CurSkip		= 0;
+	<font color="#0000ff">int</font> ParentEBP;<br><br>	<font color="#0000ff">for</font> (<font color="#0000ff">int</font> i = 0; i &lt; NumCallsToCheck; pStackAddrs[i++] = 0);<br><br>	<font color="#007f00">//	Store the parent EBP to begin with
+</font>	<font color="#0000ff">__asm</font> MOV ParentEBP, EBP<br><br>	<font color="#0000ff">do</font>
+	{
+		<font color="#007f00">//	Get the caller pointer and move on to the caller parent
+</font>		<font color="#0000ff">void</font> * pCaller = *((<font color="#0000ff">void</font>**)ParentEBP + 1);
+		ParentEBP = *((<font color="#0000ff">int</font>*)ParentEBP);<br><br>		<font color="#007f00">//	Either skip or store the caller in the stack address array
+</font>		<font color="#0000ff">if</font> (CurSkip &lt; NumCallsToSkip)
+		{
+			CurSkip++;
+		}
+		<font color="#0000ff">else</font>
+		{
+			pStackAddrs[CurStackIn++] = pCaller;
+		}
+		
+		<font color="#007f00">//	Until ParentEBP is null or we've reached the end of the stack address array
+</font>	} <font color="#0000ff">while</font> ((ParentEBP != 0) && (CurStackIn &lt; NumCallsToCheck));<br><br>
+	<font color="#0000ff">return</font> <font color="#0000ff">true</font>;
+} <font color="#007f00">//GPEMap::_WalkTheStack
+</font><br><br>
+<font color="#0000ff">#ifdef</font> _TESTING<br><br>	<font color="#007f00">//
+</font>	<font color="#007f00">//	TESTING 
+</font>	<font color="#007f00">//
+</font>
+	<font color="#0000ff">class</font> TestClass
+	{
+	<font color="#0000ff">public</font> :
+		<font color="#0000ff">void</font> FinalDoStuff(GPEMap * pMap)
+		{
+			<font color="#0000ff">const</font> <font color="#0000ff">int</font>				TestStackSize = 7;
+			<font color="#0000ff">void</font> *					TestStack[TestStackSize];
+			GPEMap::CodeSourceData	TestStackSource[TestStackSize];<br><br>			<font color="#0000ff">if</font> (GPEMap::_WalkTheStack(TestStackSize,0,TestStack))
+			{
+				pMap->GetStackWalkCodeSource(TestStackSize,(<font color="#0000ff">const</font> <font color="#0000ff">void</font>**)TestStack,TestStackSource);
+			}
+		}<br><br>		<font color="#0000ff">static</font> <font color="#0000ff">void</font> _PenultimateDoStuff(GPEMap * pMap)
+		{
+			TestClass t;
+			t.FinalDoStuff(pMap);
+		}
+	};<br><br>	<font color="#0000ff">void</font> _DoMoreStuff(GPEMap * pMap)
+	{
+		TestClass::_PenultimateDoStuff(pMap);
+	}<br><br>	<font color="#0000ff">void</font> _DoStuff(GPEMap * pMap)
+	{
+		_DoMoreStuff(pMap);
+	}<br><br>	<font color="#0000ff">void</font> _TestGPEMap(<font color="#0000ff">const</font> TCHAR * pPEFile)
+	{
+		<font color="#0000ff">if</font> (pPEFile)
+		{
+			GPEMap	tmpMap(pPEFile);<br><br>			_DoStuff(&tmpMap);
+		}
+		<font color="#0000ff">else</font>
+		{
+			GPEMap tmpMap;
+			_DoStuff(&tmpMap);
+		}
+	}<br><br><font color="#0000ff">#endif</font>
+ </font></pre></td></tr></table></div></center>
+</font>
+</td>
+</tr>
+</table><font size=1><br></font>
+<table width="95%" bgcolor="#000000" border=0 cellspacing=0 cellpadding=20 style="table-layout:fixed;">
+<tr><td>
+<font face="Verdana, Tahoma, Helvetica" size=2>
+<b>Currently browsing [<a href="GPEMap.zip">GPEMap.zip</a>]</b> (11,478 bytes) - <i>[GPEMap.h] - (4,954 bytes)</i><br><br><center><div style="width:100%; overflow:auto; background-color:#FFFFFF; border:solid 1px #c0c0c0;"><table width="100%" bgcolor="#ffffff" cellspacing=0 cellpadding=12 border=0><tr><td width="100%" bgcolor="#ffffff"><pre><font face="Courier, Courier New" color="#000000">
+<font color="#0000ff">#ifndef</font> _GPEMAP_HEADER
+<font color="#0000ff">#define</font> _GPEMAP_HEADER<br><br><font color="#0000ff">#include</font> &lt;tchar.h>
+<font color="#0000ff">#include</font> &lt;windows.h><br><br>
+<font color="#007f00">/*<br><br>	*** EXAMPLE USAGE ***<br><br>	1) To get the name of a function :
+		{
+			GPEMap					tmpMap;
+			GPEMap::CodeSourceData	tmpData;
+			if (tmpMap.GetCodeSource(_SomeFunction,&tmpData))
+			{
+				<font color="#007f00">//	tmpData now contains the filename, linenumber and name of _SomeFunction...
+</font>			}
+		}<br><br>	2) o <br><br>*/</font><br><br><font color="#007f00">//
+</font><font color="#007f00">//	Testing...
+</font><font color="#007f00">//
+</font>
+<font color="#007f00">//	Comment this out to remove the testing functions
+</font><font color="#0000ff">#define</font> _TESTING<br><br><font color="#0000ff">#ifdef</font> _TESTING<br><br>	<font color="#0000ff">extern</font> <font color="#0000ff">void</font> _TestGPEMap(<font color="#0000ff">const</font> TCHAR * pPEFile);<br><br><font color="#0000ff">#endif</font><br><br>
+<font color="#007f00">//
+</font><font color="#007f00">//	Forward Struct Declarations
+</font><font color="#007f00">//
+</font><br><br><font color="#0000ff">struct</font> ImageDebugDirectory;
+<font color="#0000ff">struct</font> CVSignature;
+<font color="#0000ff">struct</font> CVSubSection;<br><br>
+<font color="#007f00">//
+</font><font color="#007f00">//	Classes
+</font><font color="#007f00">//
+</font>
+<font color="#0000ff">class</font> GPEMap
+{
+	<font color="#0000ff">public</font> :<br><br>		<font color="#007f00">//
+</font>		<font color="#007f00">//	Enums
+</font>		<font color="#007f00">//
+</font>
+		<font color="#0000ff">enum</font>
+		{
+			eMaxSourceFileName	= 512,				<font color="#007f00">//	Max. size of the source filename
+</font>			eMaxFncName			= 256				<font color="#007f00">//	Max. size of the enclosing function name
+</font>		};<br><br>		<font color="#007f00">//
+</font>		<font color="#007f00">//	Structs
+</font>		<font color="#007f00">//
+</font>
+		<font color="#0000ff">struct</font> CodeSourceData
+		{
+			TCHAR	m_File[eMaxSourceFileName];		<font color="#007f00">//	Source file containing the code
+</font>			<font color="#0000ff">int</font>		m_Line;							<font color="#007f00">//	Source line the code appears on
+</font>			TCHAR	m_Fnc[eMaxFncName];				<font color="#007f00">//	Name of the function the code appears in
+</font>		}; <font color="#007f00">//CodeSourceData
+</font>
+	<font color="#0000ff">private</font> :<br><br>		<font color="#007f00">//
+</font>		<font color="#007f00">//	Members
+</font>		<font color="#007f00">//
+</font>
+		<font color="#0000ff">bool</font>						m_bOK;				<font color="#007f00">//	true if all initialization and processing went ok
+</font>
+		HANDLE						m_hFile;			<font color="#007f00">//	Actual PE file handle
+</font>		HANDLE						m_hMapFile;			<font color="#007f00">//	Memory mapped PE file
+</font>
+		<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">char</font> *		m_pMapAddress;		<font color="#007f00">//	Base address of the mapped file
+</font>
+		<font color="#0000ff">unsigned</font> <font color="#0000ff">int</font>				m_SystemPageSize;	<font color="#007f00">//	Size of a page on this system (4096)
+</font>
+		<font color="#007f00">//
+</font>		<font color="#007f00">//	COFF Debug Members
+</font>		<font color="#007f00">//
+</font>
+		ImageDebugDirectory *		m_pCOFFDbgDir;		<font color="#007f00">//	Pointer to the COFF data directory in the mapped file
+</font>		<font color="#007f00">//	TODO...
+</font>
+		<font color="#007f00">//
+</font>		<font color="#007f00">//	CV Debug Members
+</font>		<font color="#007f00">//
+</font>
+		<font color="#0000ff">const</font> ImageDebugDirectory *	m_pCVDbgDir;		<font color="#007f00">//	Pointer to the CV data directory in the mapped file
+</font>		<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">char</font> *		m_pLFO;				<font color="#007f00">//	LFO CV pointer (base for all cv debug info)
+</font>		<font color="#0000ff">const</font> CVSignature *			m_pCVSig;			<font color="#007f00">//	CV signature
+</font>		<font color="#0000ff">const</font> CVSubSection *		m_pCVGlobalSym;		<font color="#007f00">//	Pointer to the CV global symbol table
+</font>		<font color="#0000ff">const</font> CVSubSection * *		m_pCVSrcMods;		<font color="#007f00">//	Array of CV source module section pointers
+</font>		<font color="#0000ff">const</font> CVSubSection * *		m_pCVAlignSym;		<font color="#007f00">//	Alignment symbol tables for all modules
+</font>		<font color="#0000ff">int</font>							m_NumCVSrcMods;		<font color="#007f00">//	Number of pointers in m_pCVSrcMods
+</font>		<font color="#0000ff">int</font>							m_NumCVAlignSyms;	<font color="#007f00">//	Number of alignment symbol subsections in m_pCVAlignSym
+</font><br><br><br><br>	<font color="#0000ff">public</font> :<br><br>		<font color="#007f00">//	Constructor - sets up a file mapping of the current module
+</font>					GPEMap();<br><br>		<font color="#007f00">//	Constructor - sets up a file mapping of the specified PE file
+</font>					GPEMap(<font color="#0000ff">const</font> TCHAR * pPEFileToMap);<br><br>	<font color="#0000ff">private</font> :<br><br>		<font color="#007f00">//	Shared constructor initialization function
+</font>		<font color="#0000ff">void</font>		Init();<br><br>		<font color="#007f00">//	PE File management
+</font>		<font color="#0000ff">bool</font>		OpenPEFile(<font color="#0000ff">const</font> TCHAR * pPEFileToMap);
+		<font color="#0000ff">bool</font>		ProcessPEFile();
+		<font color="#0000ff">void</font>		ClosePEFile();<br><br>		<font color="#007f00">//	CV and COFF debug directory processing
+</font>		<font color="#0000ff">void</font>		ProcessCVDbgDir(<font color="#0000ff">const</font> ImageDebugDirectory * pDebugDir);
+		<font color="#0000ff">void</font>		ProcessCOFFDbgDir(<font color="#0000ff">const</font> ImageDebugDirectory * pDebugDir);<br><br>		<font color="#007f00">//	Error output (to message box)
+</font>		<font color="#0000ff">void</font>		OutputErrorF(<font color="#0000ff">const</font> TCHAR * pError,...) <font color="#0000ff">const</font>;<br><br>		<font color="#007f00">//	Success check - returns true if the GPEMap constructor successfully created the file mapping
+</font>		<font color="#0000ff">bool</font>		IsOK() <font color="#0000ff">const</font>		{ <font color="#0000ff">return</font> m_bOK;					}<br><br>		<font color="#0000ff">bool</font>		UsingCOFF() <font color="#0000ff">const</font>	{ <font color="#0000ff">return</font> m_pCOFFDbgDir != 0;	}
+		<font color="#0000ff">bool</font>		UsingCV() <font color="#0000ff">const</font>		{ <font color="#0000ff">return</font> m_pCVDbgDir != 0;		}<br><br>
+		<font color="#007f00">//
+</font>		<font color="#007f00">//	CodeView Methods
+</font>		<font color="#007f00">//
+</font>
+		<font color="#007f00">//	CodeView signature checker (may change map file from exe to pdb)
+</font>		<font color="#0000ff">bool</font>		CheckCVSig(<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> Sig);
+		
+		<font color="#007f00">//	CodeView source lookup - note that the symbol lookup can be adapted to lookup the names
+</font>		<font color="#007f00">//	of variables too (see notes in source)
+</font>		<font color="#0000ff">bool</font>		GetCVCodeSource(<font color="#0000ff">const</font> <font color="#0000ff">void</font> * pAddr,CodeSourceData * pData) <font color="#0000ff">const</font>;
+		<font color="#0000ff">bool</font>		CVLookupAddrSym(<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> AddrUInt,CodeSourceData * pData) <font color="#0000ff">const</font>;
+		<font color="#0000ff">bool</font>		CVLookupAddrSrc(<font color="#0000ff">const</font> <font color="#0000ff">unsigned</font> <font color="#0000ff">int</font> AddrUInt,CodeSourceData * pData) <font color="#0000ff">const</font>;<br><br>
+		<font color="#007f00">//
+</font>		<font color="#007f00">//	COFF Methods
+</font>		<font color="#007f00">//
+</font>
+		<font color="#007f00">//	TODO...
+</font><br><br>
+	<font color="#0000ff">public</font> :<br><br>		<font color="#007f00">//	Code source lookup
+</font>		<font color="#0000ff">bool</font>		GetCodeSource(<font color="#0000ff">const</font> <font color="#0000ff">void</font> * pAddr,CodeSourceData * pData) <font color="#0000ff">const</font>;<br><br>		<font color="#007f00">//	Stack walker code source lookup (use _WalkTheStack to build up a list of code pointers for
+</font>		<font color="#007f00">//	this method to interpret)
+</font>		<font color="#0000ff">bool</font>		GetStackWalkCodeSource(<font color="#0000ff">const</font> <font color="#0000ff">int</font>		NumCalls,
+										   <font color="#0000ff">const</font> <font color="#0000ff">void</font> * *	pStackAddrs,
+										   CodeSourceData *	pData) <font color="#0000ff">const</font>;<br><br>		<font color="#007f00">//	Destructor - kills the file mapping
+</font>					~GPEMap();<br><br>
+		<font color="#007f00">//
+</font>		<font color="#007f00">//	Static Methods
+</font>		<font color="#007f00">//
+</font>		
+		<font color="#007f00">//	Bonus fast stack walker - use to format pStackAddrs for a call to GetStackWalkCodeSource. Note
+</font>		<font color="#007f00">//	that this assumes a standard stack frame format that uses EBP as a frame pointer. I think there
+</font>		<font color="#007f00">//	are some optimizations which omit the frame pointer - check FPO_DATA in MSDN for details on 
+</font>		<font color="#007f00">//	how to fixme
+</font>		<font color="#0000ff">static</font> <font color="#0000ff">bool</font>	_WalkTheStack(<font color="#0000ff">const</font> <font color="#0000ff">int</font> NumCallsToCheck,<font color="#0000ff">const</font> <font color="#0000ff">int</font> NumCallsToSkip,<font color="#0000ff">void</font> * * pStackAddrs);<br><br>}; <font color="#007f00">//GPEMap
+</font><br><br><font color="#0000ff">#endif</font>
+ </font></pre></td></tr></table></div></center>
+</font>
+</td>
+</tr>
+</table>
+
+<br>
+
+<center><font face="Verdana, Tahoma" color="#ffffff" size=1>The zip file viewer built into the Developer Toolbox made use
+of the <a href="http://www.gzip.org/zlib/">zlib</a> library, as well as the <a href="http://www.winimage.com/zLibDll/">zlibdll</a> source additions.</font></center>
+<br>
+</center> 
+<center><table cellspacing=0 cellpadding=2 border=0 width="100%"><tr><td background="comments_bar2.jpg" bgcolor="#333333" width="100" valign="center"><font size=1>&nbsp;</font></td></tr></table></center>
+</td></tr></table>
+<br>
+
+
+<a name="comments">
+
+</center>
+
+<center><font face="Arial, Helvetica" size=1><font face="Helvetica,Tahoma,Verdana" size=1>Copyright 1999-2008 (C) FLIPCODE.COM and/or the original content author(s).  All rights reserved.</font> <center><font face="Helvetica,Tahoma,Verdana" size=1>Please read our <a href="terms.shtml">Terms</a>, <a href="terms.shtml">Conditions</a>, and <a href="terms.shtml">Privacy information</a>.</font></center></font></center>
+<br>
+</body>
+</html>
+
