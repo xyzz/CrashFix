@@ -1,0 +1,37 @@
+error: the type 'dirs' is not supported for the entry tag within a navindex! Check your layout file!
+warning: source ..\processing\scripts is not a readable file or directory... skipping.
+warning: source ..\reporting\scripts is not a readable file or directory... skipping.
+warning: source ../include is not a readable file or directory... skipping.
+D:/Oleg/Projects/crashfix/doc/dox/architecture_overview.dox:100: warning: unable to resolve reference to `client_side_integration' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/architecture_overview.dox:102: warning: unable to resolve reference to `installation' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:66: warning: unable to resolve reference to `tutorials' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:70: warning: unable to resolve reference to `changelog' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:91: warning: Found unknown command `\Program'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:91: warning: Found unknown command `\CrashFix'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:91: warning: Found unknown command `\conf'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:102: warning: Found unknown command `\Program'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:102: warning: Found unknown command `\CrashFix'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:102: warning: Found unknown command `\logs'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:123: warning: Found unknown command `\Program'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:123: warning: Found unknown command `\Apache'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:123: warning: Found unknown command `\htdocs'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:123: warning: Found unknown command `\crashfix'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:129: warning: Found unknown command `\wamp'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:129: warning: Found unknown command `\crashfix'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:147: warning: Found unknown command `\wamp'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:147: warning: Found unknown command `\bin'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:147: warning: Found unknown command `\apache'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:147: warning: Found unknown command `\apache2'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:147: warning: Found unknown command `\bin'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:147: warning: Found unknown command `\php'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:148: warning: Found unknown command `\wamp'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:148: warning: Found unknown command `\bin'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:148: warning: Found unknown command `\php'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:148: warning: Found unknown command `\php5'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:148: warning: Found unknown command `\php'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:170: warning: found </b> tag without matching <b>
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:192: warning: found </b> tag without matching <b>
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:193: warning: found </b> tag without matching <b>
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:222: warning: Unsupported xml/html tag <your_dir_name> found
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:227: warning: Unsupported xml/html tag <port> found
+D:/Oleg/Projects/crashfix/doc/dox/introduction_to_crashfix.dox:15: warning: unable to resolve reference to `changelog' for \ref command

@@ -71,7 +71,7 @@
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>CrashRpt1402.lib;libdumperd.lib;ws2_32.lib;tinyxmld.lib;zlibd.lib;minizipd.lib;libeay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libdumperd.lib;ws2_32.lib;tinyxmld.lib;zlibd.lib;minizipd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)crashfixdd.exe</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
