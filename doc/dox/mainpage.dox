@@ -2,7 +2,7 @@
 
 \mainpage CrashFix Documentation
 
-<b>CrashFix</b> is a crash report analysis software designed for Windows-based 
+<b>CrashFix</b> is a crash report analysis software designed for Windows 
 applications written in C++ programming language.
 
 \section toc Table of Contents
@@ -11,4 +11,25 @@ applications written in C++ programming language.
   - \ref getting_started
   - \ref architecture_overview
   - \ref faq
+- \subpage installation
+  - \ref install_windows
+  - \ref install_linux
+  - \ref upgrade_windows
+  - \ref upgrade_linux
+- \subpage crashfix_admin
+  - \ref first_login
+  - \ref users_and_roles
+  - \ref projects
+  - \ref daemon
+  - \ref mail
+  - \ref logging
+- \subpage daily_usage
+  - \ref client_integration
+  - \ref digest
+  - \ref crash_reports
+  - \ref collections
+  - \ref bugs
+  - \ref debug_info
+  - \ref uploader
+  - \ref batch_import
 */

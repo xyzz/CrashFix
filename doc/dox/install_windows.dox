@@ -1,0 +1,262 @@
+/*!
+\page install_windows Installing CrashFix in Windows
+
+CrashFix software contains the following components: CrashFix service, 
+CrashFix web application and CrashFix debug info uploader application.
+
+This page covers the following topics:
+
+ - \ref system_requirements
+ - \ref installing_apache_php_db
+ - \ref installing_web_app
+ - \ref installing_service
+ - \ref installing_uploader
+
+\section system_requirements System Requirements
+
+In order to install and use CrashFix, you need the following system 
+requirements to be satisfied:
+
+ - Windows operating system (Windows Vista or later).
+ - Apache HTTP Server (version 2.2 or later).
+ - PHP (version 5.3 or later).
+ - Database (MySQL).
+ - 2 GB of free disk space (to store crash reports and symbols).
+ - Network connection (either LAN or Internet).
+
+\section installing_apache_php_db Installing Apache + PHP + Database
+
+You may read this section if you do not have Apache HTTP server, 
+PHP engine and a database installed. This section provides instructions 
+on how to install Apache, PHP and an appropriate database (MySQL). If 
+you already have these installed, you may skip this section and refer 
+directly to the Installing CrashFix Web Application section.
+
+\subsection installing_apache_php Installing Apache and PHP
+
+Download the latest stable version (version 2.2 recommended) of Apache 
+HTTP Server from http://httpd.apache.org/download.cgi. On that page, 
+look for the "Win32 Binary without crypto (no mod_ssl)" download link 
+and click it to download the MSI installer.
+
+Run the installer and follow the instructions of the wizard. If everything 
+is OK, you should see the Apache icon in the system tray (see the figure below).
+
+\image html apache_in_tray.png "Apache icon in the system tray"
+                                          
+Next, download the current stable version (version 5.3 recommended) of PHP 
+from http://www.php.net/downloads.php. Download VC9 x86 Thread Safe windows 
+installer (do not download ZIP archive or source code).
+
+Run the installer and follow the instructions of the wizard. When prompted 
+for web server, choose 'Install as Apache 2.2.x module'.
+
+<i>Note</i>: If the installer could not configure Apache web server automatically, 
+you have to edit server config file manually. Typically, the Apache config file 
+is located in <i>C:\Program Files (x86)\Apache Software Foundation\Apache2.2\conf</i> 
+folder. You need to add the following lines to your Apache <i>httpd.conf</i> 
+configuration file to load the PHP-Module for Apache 2.2:
+
+<pre>
+#
+LoadModule php5_module "C:/Program Files (x86)/php/php5apache2_2.dll"
+AddHandler application/x-httpd-php .php
+
+# specify path to php.ini
+PHPIniDir "C:/Program Files (x86)/php"
+</pre>
+
+After editing the config file, restart Apache. You can do this by clicking 
+the Apache tray icon and choosing Restart from the context menu.
+
+<i>Note</i>: In Vista/Windows 7, httpd.conf file permissions may prevent you 
+from saving the changes to file. To be able to save your changes to httpd.conf, 
+you should run your editor as administrator. For example, if you use notepad 
+editor, you should run it as administrator by right-clicking its icon and 
+choosing Run as administrator from context menu.
+
+\subsection checking_webserver_install Checking Web Server Installation
+
+After you set up your web server, check that it is installed correctly 
+and that your Apache server recognizes your PHP engine.
+
+To check that Apache and PHP are installed and running, create <i>phpinfo.php</i> 
+file in Apache document root directory.
+
+<i>Note</i>: Typically, the Apache document root directory is 
+<i>C:\Program Files (x86)\Apache Software Foundation\Apache2.2\htdocs</i>.
+
+<i>Note:</i> In Windows Vista/Windows 7, <i>htdocs</i> directory permissions 
+may prevent you from creating files in it. To workaround this, you may modify 
+directory permissions. Right-click the <i>htdocs</i> directory name, choose 
+Properties from context menu. Properties dialog appears (see the figure below). 
+
+Click <i>Security</i> tab, then in the list select <i>Users</i> and click 
+<i>Edit</i> button. In the appered dialog, set check on <i>Full control</i> 
+checkbox and click OK button.
+
+In the <i>phpinfo.php</i> file, enter the PHP method <i>phpinfo()</i> as follows:
+
+\code
+<?php 
+	phpinfo(); 
+?>
+\endcode
+
+Open the file in your browser. The standard PHP information page should display.
+
+\subsection installing_db Installing a Database
+
+Download the latest version of MySQL Community Server from 
+http://www.mysql.com/downloads/. On the download page, choose Windows (x86, 32-bit), 
+MSI Installer.
+
+Run the MySQL installer and follow the instructions of the wizard.
+
+\subsection configuring_mysql Configuring the MySQL Database Server
+
+Now we want to create a database schema and a database user. We will use command 
+line MySQL Command Line client. You can launch the client from <i>Start Menu | 
+All Programs | MySQL | MySQL Server 5.x | MySQL 5.x Command Line Client</i>. 
+The MySQL Command Line Client console appears (see the figure below):                                                                 
+
+Now we need to create a new database schema that will store CrashFix tables. 
+To do this, type the following in the MySQL client window:
+
+<pre>
+CREATE SCHEMA crashfix;
+</pre>
+
+The command above creates empty schema that we will populate later. If the command 
+is executed successfully, the following message is displayed:
+
+<pre>
+Query OK, 1 rows affected (0.05 sec)
+</pre>
+
+Next, we want to create another database user named <i>crashfix</i> that will 
+be used by CrashFix web application for connecting to database. To create the user, 
+type the following (in the command below, replace the <i><your_password></i> 
+placeholder with some password):
+
+<pre>
+GRANT ALL PRIVILEGES ON crashfix.* TO 'crashfix'@'localhost' IDENTIFIED BY '<your_password>';
+</pre>
+
+The command above creates the user named 'crashfix' and grants the 
+user all privileges on 'crashfix' database schema.
+
+\section installing_web_app Installing CrashFix Web Application
+
+CrashFix web application is a web site written in PHP. Using the web application, 
+CrashFix users may access CrashFix and perform administrative and daily usage tasks.
+
+At this point, you should have Apache HTTP server + PHP + database (MySQL) installed.
+
+Now, download the CrashFix web application zip archive from our Download page. Then 
+unpack the archive to web server's document root directory.
+
+<i>Note</i>: Typically, the document root is <i>C:\Program Files (x86)\Apache Software Foundation\Apache2.2\htdocs</i> 
+directory. Below, we denote the document root directory as <i>%DOCUMENT_ROOT%</i>, 
+and you should replace this placeholder with the actual directory path.
+
+If everything is OK, you should have CrashFix files in %DOCUMENT_ROOT%/crashfix directory:
+
+<pre>
+%DOCUMENT_ROOT%/crashfix
+    index.php       | CrashFix web application entry script
+    assets/         | The directory where temporary resources (like images and CSS files) will be published
+    protected/      | This directory content is protected from direct access by .htaccess file
+        ...
+        config/     | This directory contains configuration files
+        data/       | This directory will contain crash reports and debug info files
+        ...
+        runtime/    | This directory will contain logs and temporary files
+</pre>
+
+Edit the <i>%DOCUMENT_ROOT%/crashfix/protected/config/user_params.ini</i> config 
+file and specify the correct database connection string, login and password. For 
+additional information on config file fields and their meaning, please refer to 
+comment lines that can be found in the config file.
+
+Now, you can try to open the CrashFix web application in your web browser. To do this, 
+type 'http://localhost/crashfix/index.php' in your browser's navigation bar and press 
+Enter. Typically, you should see the following in your browser (see the image below).
+
+<i>Note</i>: If instead of the page like in figure below you see PHP warning 
+'date(): It is not safe to rely on the system's timezone settings', than you 
+need to edit date.timezone parameter in PHP configuration file php.ini (typically, 
+this file is located in C:\Program Files (x86)\PHP directory). You need to specify 
+your time zone, for example:
+
+<pre>
+date.timezone = UTC
+</pre>
+
+Do not forget to restart your Apache webserver after editing the config file.
+
+\subsection init_crashfix_db Initializing CrashFix Database
+
+And at last, CrashFix database tables must be created and initialized before using 
+the web application. This is performed by the database migration mechanism. To initialize 
+the database tables, run the following command from DOS shell:
+
+<i>
+php %DOCUMENT_ROOT%/crashfix/protected/yiic.php migrate
+</i>
+
+When prompted, press 'y' and then press 'Enter'. If everything is OK, the following message appears:
+
+<pre>
+Migrated up successfully.
+</pre>
+
+Congratulations! Your CrashFix web application is now installed!
+
+\section installing_service Installing CrashFix Service
+
+CrashFix service is a long-running application that persists in background and 
+processes incoming crash report files.
+
+First of all, download CrashFix service installer (EXE) from our Download page.
+
+When the installer has been downloaded, run it and follow wizard's instructions.
+
+If everything is OK, you should have the following directories and files:
+
+<pre>
+C:\Program Files (x86)\CrashFix\
+    bin\crashfixd.exe         | The CrashFix service executable file
+    bin\crashfix_hwinfo       | The CrashFix hardware info collection tool
+    conf\crashfixd.conf       | The CrashFix service configuration file
+    logs                      | The directory where CrashFix service places its log files
+    licenses                  | The directory where CrashFix license should be placed    
+</pre>
+
+\section installing_uploader Installing CrashFix Debug Info Uploader Tool
+
+CrashFix debug info uploader tool is a Windows application allowing users to upload 
+their debug info (symbol) files to CrashFix server.
+
+Download the CrashFix uploader tool ZIP archive from our Download page. Then 
+unpack the archive to a directory of your choice.
+
+You should have the following executable files in the directory:
+
+ - uploader_gui.exe - GUI version of the tool
+ - uploader.exe - console version of the tool
+
+To get help on available uploader commands, type the following:
+
+<pre>
+uploader.exe --help
+</pre>
+
+<i>Note</i>: By default, PHP doesn't allow to upload large files (larger than 2MB). 
+In order to upload large symbol files, you may need to edit your php.ini configuration 
+file and modify the post_max_size and upload_max_filesize parameters. Setting these 
+with 100MB would typically be sufficient (if you plan to upload very large PDB files 
+up to 1 GB in size, than better set these with 1024MB). Do not forget to restart your 
+Apache webserver after editing the config file.
+
+*/

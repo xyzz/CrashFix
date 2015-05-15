@@ -1,37 +1,66 @@
-error: the type 'dirs' is not supported for the entry tag within a navindex! Check your layout file!
-warning: source ..\processing\scripts is not a readable file or directory... skipping.
-warning: source ..\reporting\scripts is not a readable file or directory... skipping.
-warning: source ../include is not a readable file or directory... skipping.
-D:/Oleg/Projects/crashfix/doc/dox/architecture_overview.dox:100: warning: unable to resolve reference to `client_side_integration' for \ref command
-D:/Oleg/Projects/crashfix/doc/dox/architecture_overview.dox:102: warning: unable to resolve reference to `installation' for \ref command
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:66: warning: unable to resolve reference to `tutorials' for \ref command
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:70: warning: unable to resolve reference to `changelog' for \ref command
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:91: warning: Found unknown command `\Program'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:91: warning: Found unknown command `\CrashFix'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:91: warning: Found unknown command `\conf'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:102: warning: Found unknown command `\Program'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:102: warning: Found unknown command `\CrashFix'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:102: warning: Found unknown command `\logs'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:123: warning: Found unknown command `\Program'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:123: warning: Found unknown command `\Apache'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:123: warning: Found unknown command `\htdocs'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:123: warning: Found unknown command `\crashfix'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:129: warning: Found unknown command `\wamp'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:129: warning: Found unknown command `\crashfix'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:147: warning: Found unknown command `\wamp'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:147: warning: Found unknown command `\bin'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:147: warning: Found unknown command `\apache'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:147: warning: Found unknown command `\apache2'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:147: warning: Found unknown command `\bin'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:147: warning: Found unknown command `\php'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:148: warning: Found unknown command `\wamp'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:148: warning: Found unknown command `\bin'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:148: warning: Found unknown command `\php'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:148: warning: Found unknown command `\php5'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:148: warning: Found unknown command `\php'
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:170: warning: found </b> tag without matching <b>
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:192: warning: found </b> tag without matching <b>
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:193: warning: found </b> tag without matching <b>
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:222: warning: Unsupported xml/html tag <your_dir_name> found
-D:/Oleg/Projects/crashfix/doc/dox/faq.dox:227: warning: Unsupported xml/html tag <port> found
-D:/Oleg/Projects/crashfix/doc/dox/introduction_to_crashfix.dox:15: warning: unable to resolve reference to `changelog' for \ref command
+Warning: source ..\processing\scripts is not a readable file or directory... skipping.
+Warning: source ..\reporting\scripts is not a readable file or directory... skipping.
+Warning: source ../include is not a readable file or directory... skipping.
+D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:17: Warning: unable to resolve reference to `crashfix_admin' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:18: Warning: unable to resolve reference to `first_login' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:19: Warning: unable to resolve reference to `users_and_roles' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:20: Warning: unable to resolve reference to `projects' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:21: Warning: unable to resolve reference to `daemon' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:22: Warning: unable to resolve reference to `mail' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:23: Warning: unable to resolve reference to `logging' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:24: Warning: unable to resolve reference to `daily_usage' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:25: Warning: unable to resolve reference to `client_integration' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:26: Warning: unable to resolve reference to `digest' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:27: Warning: unable to resolve reference to `crash_reports' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:28: Warning: unable to resolve reference to `collections' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:29: Warning: unable to resolve reference to `bugs' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:30: Warning: unable to resolve reference to `debug_info' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:31: Warning: unable to resolve reference to `uploader' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:32: Warning: unable to resolve reference to `batch_import' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/architecture_overview.dox:98: Warning: unable to resolve reference to `client_side_integration' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:62: Warning: unable to resolve reference to `tutorials' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:66: Warning: unable to resolve reference to `changelog' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:87: Warning: Found unknown command `\Program'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:87: Warning: Found unknown command `\CrashFix'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:87: Warning: Found unknown command `\conf'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:98: Warning: Found unknown command `\Program'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:98: Warning: Found unknown command `\CrashFix'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:98: Warning: Found unknown command `\logs'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:119: Warning: Found unknown command `\Program'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:119: Warning: Found unknown command `\Apache'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:119: Warning: Found unknown command `\htdocs'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:119: Warning: Found unknown command `\crashfix'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:143: Warning: Found unknown command `\wamp'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:143: Warning: Found unknown command `\bin'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:143: Warning: Found unknown command `\apache'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:143: Warning: Found unknown command `\apache2'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:143: Warning: Found unknown command `\bin'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:143: Warning: Found unknown command `\php'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:144: Warning: Found unknown command `\wamp'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:144: Warning: Found unknown command `\bin'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:144: Warning: Found unknown command `\php'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:144: Warning: Found unknown command `\php5'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:144: Warning: Found unknown command `\php'
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:166: Warning: found </b> tag without matching <b>
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:188: Warning: found </b> tag without matching <b>
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:189: Warning: found </b> tag without matching <b>
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:218: Warning: Unsupported xml/html tag <your_dir_name> found
+D:/Oleg/Projects/crashfix/doc/dox/faq.dox:223: Warning: Unsupported xml/html tag <port> found
+D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:54: Warning: Found unknown command `\Program'
+D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:54: Warning: Found unknown command `\Apache'
+D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:54: Warning: Found unknown command `\conf'
+D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:85: Warning: Found unknown command `\Program'
+D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:85: Warning: Found unknown command `\Apache'
+D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:85: Warning: Found unknown command `\htdocs'
+D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:137: Warning: Unsupported xml/html tag <your_password> found
+D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:141: Warning: Unsupported xml/html tag <your_password> found
+D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:157: Warning: Found unknown command `\Program'
+D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:157: Warning: Found unknown command `\Apache'
+D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:157: Warning: Found unknown command `\htdocs'
+D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:187: Warning: Found unknown command `\Program'
+D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:187: Warning: Found unknown command `\PHP'
+D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:226: Warning: Found unknown command `\Program'
+D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:226: Warning: Found unknown command `\CrashFix'
+D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:228: Warning: Found unknown command `\crashfix_hwinfo'
+D:/Oleg/Projects/crashfix/doc/dox/introduction_to_crashfix.dox:11: Warning: unable to resolve reference to `changelog' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/upgrade_windows.dox:32: Warning: found </div> tag without matching <div>
