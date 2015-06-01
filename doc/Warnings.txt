@@ -1,13 +1,6 @@
 Warning: source ..\processing\scripts is not a readable file or directory... skipping.
 Warning: source ..\reporting\scripts is not a readable file or directory... skipping.
 Warning: source ../include is not a readable file or directory... skipping.
-D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:17: Warning: unable to resolve reference to `crashfix_admin' for \ref command
-D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:18: Warning: unable to resolve reference to `first_login' for \ref command
-D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:19: Warning: unable to resolve reference to `users_and_roles' for \ref command
-D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:20: Warning: unable to resolve reference to `projects' for \ref command
-D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:21: Warning: unable to resolve reference to `daemon' for \ref command
-D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:22: Warning: unable to resolve reference to `mail' for \ref command
-D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:23: Warning: unable to resolve reference to `logging' for \ref command
 D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:24: Warning: unable to resolve reference to `daily_usage' for \ref command
 D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:25: Warning: unable to resolve reference to `client_integration' for \ref command
 D:/Oleg/Projects/crashfix/doc/dox/mainpage.dox:26: Warning: unable to resolve reference to `digest' for \ref command
@@ -46,6 +39,7 @@ D:/Oleg/Projects/crashfix/doc/dox/faq.dox:188: Warning: found </b> tag without m
 D:/Oleg/Projects/crashfix/doc/dox/faq.dox:189: Warning: found </b> tag without matching <b>
 D:/Oleg/Projects/crashfix/doc/dox/faq.dox:218: Warning: Unsupported xml/html tag <your_dir_name> found
 D:/Oleg/Projects/crashfix/doc/dox/faq.dox:223: Warning: Unsupported xml/html tag <port> found
+D:/Oleg/Projects/crashfix/doc/dox/first_login.dox:19: Warning: Found unknown command `\localhost'
 D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:54: Warning: Found unknown command `\Program'
 D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:54: Warning: Found unknown command `\Apache'
 D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:54: Warning: Found unknown command `\conf'
@@ -63,4 +57,13 @@ D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:226: Warning: Found unknow
 D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:226: Warning: Found unknown command `\CrashFix'
 D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:228: Warning: Found unknown command `\crashfix_hwinfo'
 D:/Oleg/Projects/crashfix/doc/dox/introduction_to_crashfix.dox:11: Warning: unable to resolve reference to `changelog' for \ref command
+D:/Oleg/Projects/crashfix/doc/dox/logging.dox:42: Warning: Found unknown command `\Program'
+D:/Oleg/Projects/crashfix/doc/dox/logging.dox:42: Warning: Found unknown command `\CrashFix'
+D:/Oleg/Projects/crashfix/doc/dox/logging.dox:42: Warning: Found unknown command `\logs'
+D:/Oleg/Projects/crashfix/doc/dox/logging.dox:42: Warning: Found unknown command `\monitor'
+D:/Oleg/Projects/crashfix/doc/dox/logging.dox:43: Warning: Found unknown command `\Program'
+D:/Oleg/Projects/crashfix/doc/dox/logging.dox:43: Warning: Found unknown command `\CrashFix'
+D:/Oleg/Projects/crashfix/doc/dox/logging.dox:43: Warning: Found unknown command `\logs'
+D:/Oleg/Projects/crashfix/doc/dox/logging.dox:43: Warning: Found unknown command `\error'
+D:/Oleg/Projects/crashfix/doc/dox/logging.dox:77: Warning: unable to resolve reference to `daily_usage' for \ref command
 D:/Oleg/Projects/crashfix/doc/dox/upgrade_windows.dox:32: Warning: found </div> tag without matching <div>
