@@ -43,6 +43,8 @@ blue rectangles on the figure below.
 
 The figure below illustrates the components schematically:
 
+\image html architecture_overview.png "CrashFix Components"
+
 \section crashfix_service CrashFix Service (Daemon)
 
 The daemon component is a server-side component. The term server-side 
@@ -97,7 +99,7 @@ CrashFix currently supports one such a library called CrashRpt. CrashRpt is a
 free and open-source library distributed under the New BSD License. It can be 
 used in both commercial and open-source applications, with or without 
 modifications. More the details on integration with CrashRpt library can be 
-found on \ref client_side_integration page.
+found on \ref client_integration page.
 
 Further reading: \ref installation. 
 

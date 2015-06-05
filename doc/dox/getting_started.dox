@@ -33,7 +33,7 @@ crash reports sent by your C++ app.
 
 CrashFix is able to process crash reports from 32-bit (x86) Windows 
 applications built in Visual C++ IDE. 64-bit (x64) platform is not 
-supported currently, but we plan to add the support in the future.
+supported currently.
 
 CrashFix is useful during development, beta-testing and post-release 
 stages of application's life cycle:

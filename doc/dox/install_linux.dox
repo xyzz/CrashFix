@@ -44,7 +44,7 @@ system requirements to be satisfied:
 
 You may read this section if you do not have Apache HTTP server, PHP 
 engine and a database installed. This section provides instructions on 
-how to install Apache, PHP and an appropriate database (MySQL or SQLite).
+how to install Apache, PHP and an appropriate database (MySQL).
 If you already have these installed, you may skip this section and refer 
 directly to the <a href="#webapp">Installing CrashFix Web Application</a> section.
 
@@ -52,15 +52,7 @@ directly to the <a href="#webapp">Installing CrashFix Web Application</a> sectio
 
 <b>Debian or Linux Ubuntu</b>
 
-First of all, it is recommended that you update your system by installing
-the latest available updates. To do this, from a command shell, run the 
-following commands:
-
-<pre>
-sudo apt-get update
-</pre>
-
-Next, from a command shell, run the following commands:
+From a command shell, run the following commands:
 
 <pre>
 sudo apt-get install apache2
@@ -77,15 +69,7 @@ Your web files will now be located in <i>/var/www</i> directory.
 
 <b>CentOS or Red Hat Linux</b></p>
 
-First of all, it is recommended that you update your system by installing
-the latest available updates. To do this, from a command shell, run the 
-following commands:
-
-<pre>
-sudo yum update
-</pre>
-
-Next, from a command shell, run the following commands:
+From a command shell, run the following commands:
 
 <pre>
 sudo yum install httpd
@@ -210,7 +194,7 @@ PHP are installed and running, create <i>phpinfo.php</i> file in Apache document
 root directory.
 
 <i>Note:</i> Typically, the Apache document root directory is <i>/var/www</i>
-(in Debian or Linux Ubuntu) or <i>/var/www/html</i> (in Fedora, CentOS or Red Hat Linux).
+(in Debian or Linux Ubuntu) or <i>/var/www/html</i> (in CentOS or Red Hat Linux).
 
 In the <i>phpinfo.php</i> file, enter the PHP method <i>phpinfo()</i> as follows:
 
