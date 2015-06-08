@@ -14,6 +14,7 @@
 // More details at: http://www.codeproject.com/KB/mcpp/CSmtp.aspx
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "stdafx.h"
 #include "CSmtp.h"
 #include "base64.h"
 

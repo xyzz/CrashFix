@@ -72,6 +72,7 @@ extern CAppModule _Module;
 #include <sys/utsname.h>
 #include <sys/wait.h>
 #include <fstream>
+#include <stddef.h>
 #endif
 
 #include <stdio.h>

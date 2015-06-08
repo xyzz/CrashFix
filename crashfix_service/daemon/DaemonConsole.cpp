@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include "DaemonConsole.h"
 #include "Misc.h"
+#include "LibDumperVersion.h"
 
 #ifdef _WIN32
 //#include "CrashRpt.h"

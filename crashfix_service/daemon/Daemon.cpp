@@ -10,7 +10,6 @@
 #include "Misc.h"
 #include "CSmtp.h"
 #include <iostream>
-#include "License.h"
 #include "base64.h"
 
 #ifdef _WIN32

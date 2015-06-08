@@ -7,7 +7,6 @@
 #include "stdafx.h"
 #include "Log.h"
 #include "SocketServer.h"
-#include "License.h"
 #include "strconv.h"
 #include "base64.h"
 

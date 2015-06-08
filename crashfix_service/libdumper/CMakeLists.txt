@@ -35,7 +35,7 @@ target_link_libraries(libdumper zlib minizip tinyxml)
 
 # In Linux, link to pthread library
 if(UNIX)	
-	target_link_libraries(libdumper pthread libcrypto.a)
+	target_link_libraries(libdumper pthread)
 	set_target_properties(libdumper PROPERTIES COMPILE_FLAGS "-lrt")
 endif(UNIX)
 

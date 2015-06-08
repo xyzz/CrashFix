@@ -17,7 +17,7 @@ else(UNIX)
 endif(UNIX)
 
 add_executable(daemon ${source_files})
-target_link_libraries(daemon libdumper libcrypto.a ${CMAKE_DL_LIBS})
+target_link_libraries(daemon libdumper ${CMAKE_DL_LIBS})
 if(WIN32)
 target_link_libraries(daemon ws2_32.lib libeay32.lib)
 endif(WIN32)

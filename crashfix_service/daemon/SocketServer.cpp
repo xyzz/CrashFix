@@ -9,8 +9,8 @@
 #include "Daemon.h"
 #include "Misc.h"
 #include "strconv.h"
-#include "License.h"
 #include "Outputter.h"
+#include "LibDumperVersion.h"
 
 
 CSocketServer::CSocketServer()
@@ -576,8 +576,6 @@ int CSocketServer::GetServerLicenseInfo(LPCWSTR szOutFile, std::string& sErrMsg)
 	FILE* f = NULL;
 	COutputter doc;
 	char szBuffer[1024];
-	ProductInfo pi;
-	CustomerInfo ci;
 	time_t CreationDate = 0;
 	std::string sDateCreated;
 	int nDaysExpiresFromNow = -1;
@@ -614,39 +612,34 @@ int CSocketServer::GetServerLicenseInfo(LPCWSTR szOutFile, std::string& sErrMsg)
 	sprintf(szBuffer, "%d", nDaysExpiresFromNow);
 	doc.PutRecord("DaysExpiresFromNow", szBuffer);
 
-	sprintf(szBuffer, "%d", (int)pi.m_bEval);
+	sprintf(szBuffer, "%d", 0);
 	doc.PutRecord("Evaluation", szBuffer);
 
 	doc.EndSection();
 
 	doc.BeginSection("ProductInfo");
 
-	doc.PutRecord("ProductName", strconv::a2utf8(pi.m_sProductName).c_str());
+	doc.PutRecord("ProductName", "CrashFix");
 
-	sprintf(szBuffer, "%d.%d", pi.m_nVerMajor, pi.m_nVerMinor);
+	sprintf(szBuffer, "%d.%d", 1, 0);
 	doc.PutRecord("ProductVersion", szBuffer);
 
-	if(pi.m_FeaturesType==FT_LITE)
-		sFeatureType = "Lite";
-	else if(pi.m_FeaturesType==FT_PRO)
-		sFeatureType = "Professional";
-	else
-		goto exit;
-
+	sFeatureType = "Professional";
+	
 	doc.PutRecord("Edition", sFeatureType.c_str());
 
 	doc.EndSection();
 
 	doc.BeginSection("CustomerInfo");
 
-	doc.PutRecord("Name", strconv::w2utf8(ci.m_sName).c_str());
-	doc.PutRecord("Surname", strconv::w2utf8(ci.m_sSurname).c_str());
-	doc.PutRecord("CompanyName", strconv::w2utf8(ci.m_sCompanyName).c_str());
-	doc.PutRecord("Country", strconv::w2utf8(ci.m_sCountry).c_str());
-	doc.PutRecord("State", strconv::w2utf8(ci.m_sState).c_str());
-	doc.PutRecord("City", strconv::w2utf8(ci.m_sCity).c_str());
-	doc.PutRecord("PostalCode", strconv::w2utf8(ci.m_sPostalCode).c_str());
-	doc.PutRecord("Address", strconv::w2utf8(ci.m_sAddress).c_str());
+	doc.PutRecord("Name", "");
+	doc.PutRecord("Surname", "");
+	doc.PutRecord("CompanyName", "");
+	doc.PutRecord("Country", "");
+	doc.PutRecord("State", "");
+	doc.PutRecord("City", "");
+	doc.PutRecord("PostalCode", "");
+	doc.PutRecord("Address", "");
 
 	doc.EndSection();
 

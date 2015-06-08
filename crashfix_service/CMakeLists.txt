@@ -69,8 +69,6 @@ ENDMACRO(ADD_PCH_RULE _header_filename _src_list)
 add_subdirectory("libdumper")
 add_subdirectory("dumper")
 add_subdirectory("daemon")
-add_subdirectory("hwinfo")
-add_subdirectory("admin_console")
 
 add_subdirectory("libtest")
 add_subdirectory("libdumper_tests")
