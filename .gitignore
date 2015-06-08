@@ -33,7 +33,6 @@
 /crashfix_service/uploader/Release
 /crashfix_service/uploader_gui/Debug
 /crashfix_service/uploader_gui/Release
-/crashfix_webapp/protected/framework
 /crashfix_service/thirdparty/tinyxml/tinyxml_vs2010.vcxproj.user
 /crashfix_service/thirdparty/zlib/*.user
 /crashfix_service/uploader/*.user
