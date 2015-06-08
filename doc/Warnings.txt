@@ -12,7 +12,6 @@ D:/Oleg/Projects/crashfix/doc/dox/crash_reports.dox:38: Warning: explicit link r
 D:/Oleg/Projects/crashfix/doc/dox/crash_reports.dox:47: Warning: Found unknown command `\subection'
 D:/Oleg/Projects/crashfix/doc/dox/debug_info.dox:19: Warning: unable to resolve reference to `uploader_tool' for \ref command
 D:/Oleg/Projects/crashfix/doc/dox/debug_info.dox:22: Warning: found subsection command outside of section context!
-D:/Oleg/Projects/crashfix/doc/dox/debug_info.dox:43: Warning: unable to resolve reference to `uploader_tool' for \ref command
 D:/Oleg/Projects/crashfix/doc/dox/faq.dox:62: Warning: unable to resolve reference to `tutorials' for \ref command
 D:/Oleg/Projects/crashfix/doc/dox/faq.dox:87: Warning: Found unknown command `\Program'
 D:/Oleg/Projects/crashfix/doc/dox/faq.dox:87: Warning: Found unknown command `\CrashFix'
@@ -43,14 +42,6 @@ D:/Oleg/Projects/crashfix/doc/dox/faq.dox:223: Warning: Unsupported xml/html tag
 D:/Oleg/Projects/crashfix/doc/dox/first_login.dox:19: Warning: Found unknown command `\localhost'
 D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:71: Warning: Unsupported xml/html tag <your_password> found
 D:/Oleg/Projects/crashfix/doc/dox/install_windows.dox:75: Warning: Unsupported xml/html tag <your_password> found
-D:/Oleg/Projects/crashfix/doc/dox/logging.dox:42: Warning: Found unknown command `\Program'
-D:/Oleg/Projects/crashfix/doc/dox/logging.dox:42: Warning: Found unknown command `\CrashFix'
-D:/Oleg/Projects/crashfix/doc/dox/logging.dox:42: Warning: Found unknown command `\logs'
-D:/Oleg/Projects/crashfix/doc/dox/logging.dox:42: Warning: Found unknown command `\monitor'
-D:/Oleg/Projects/crashfix/doc/dox/logging.dox:43: Warning: Found unknown command `\Program'
-D:/Oleg/Projects/crashfix/doc/dox/logging.dox:43: Warning: Found unknown command `\CrashFix'
-D:/Oleg/Projects/crashfix/doc/dox/logging.dox:43: Warning: Found unknown command `\logs'
-D:/Oleg/Projects/crashfix/doc/dox/logging.dox:43: Warning: Found unknown command `\error'
 D:/Oleg/Projects/crashfix/doc/dox/upgrade_windows.dox:32: Warning: found </div> tag without matching <div>
 D:/Oleg/Projects/crashfix/doc/dox/uploader_tool.dox:18: Warning: found subsection command outside of section context!
 D:/Oleg/Projects/crashfix/doc/dox/uploader_tool.dox:47: Warning: found subsection command outside of section context!

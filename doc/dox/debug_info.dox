@@ -42,6 +42,6 @@ click <i>Update Project</i> link. On the appeared page, remove check mark from t
 <i>Require exact build age for debugging symbols</i> check box and click Save button.
 After that, CrashFix will load your symbols even if their build age does not match accurately.
 
-Further reading: \ref uploader_tool
+Further reading: \ref uploader
 
 */

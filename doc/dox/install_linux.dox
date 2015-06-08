@@ -200,7 +200,7 @@ In the <i>phpinfo.php</i> file, enter the PHP method <i>phpinfo()</i> as follows
 
 <pre>
 &lt;?php 
-	phpinfo(); 
+    phpinfo(); 
 ?&gt;
 </pre>	
 
@@ -218,42 +218,23 @@ daily usage tasks.
 At this point, you should have Apache HTTP server + PHP + database 
 (MySQL or SQLite) installed. 
 
-Create directory for downloads:
-
-<pre>
-mkdir ~/downloads
-
-cd ~/downloads
-</pre>
-
-Commands above create the <i>downloads</i> directory under your home directory
-and make that directory current.
-
-Download CrashFix web application archive:
-
-<pre>
-wget http://crashfixsoftware.com/index.php/download/file/crashfix-webapp-1.0.3.tar.gz
-</pre>
-
-<i>Note:</i> Please also check our <?php echo CHtml::link('Download', array('download/index')); ?> 
-page to ensure you are installing the latest version of CrashFix. If the Download page
-contains a newer version, than please modify the version number in the download link above.
+Download CrashFix web application archive from our <a href="https://sourceforge.net/projects/crashfix/files/">Download</a> page.
 
 Unpack the archive: 
 
 <pre>
-tar xzvf crashfix-webapp-1.0.3.tar.gz
+tar xzvf crashfix-webapp-1.0.x.tar.gz
 </pre>	
 
 Next, move the files to web server's document root directory: 
 
 <i>Note:</i> Typically, the document root is <i>/var/www</i> directory (in Debian or Linux Ubuntu) 
-or <i>/var/www/html</i> directory (in Fedora, CentOS or Red Hat). Below,
-we denote the document root directory as <i>%DOCUMENT_ROOT%</i>,
+or <i>/var/www/html</i> directory (in CentOS or Red Hat). Below,
+we denote the document root directory as <i>DOCUMENT_ROOT%</i>,
 and you should replace this placeholder with the actual directory path.
 
 <pre>
-sudo mv crashfix %DOCUMENT_ROOT%
+sudo mv crashfix DOCUMENT_ROOT
 </pre>
 
 If everything is OK, you
@@ -310,7 +291,7 @@ the following command:
 sudo chown -R www-data:www-data %DOCUMENT_ROOT%/crashfix
 </pre>
 
-If your system is Fedora, CentOS or Red Hat Linux, type the following:
+If your system is CentOS or Red Hat Linux, type the following:
 
 <pre>
 sudo chown -R apache:apache %DOCUMENT_ROOT%/crashfix
@@ -350,7 +331,7 @@ incoming crash report files.
 First of all, download an appropriate CrashFix package (RPM or DEB) from 
 our Download 
 page. If your server is running Debian or Linux Ubuntu, you should download DEB 
-package. If your server is running Fedora, CentOS or Red Hat, you should download RPM
+package. If your server is running CentOS or Red Hat, you should download RPM
 package. 
 
 When the package has been downloaded, install it by typing the following 
@@ -392,7 +373,7 @@ If your system is Debian or Linux Ubuntu, type:
 sudo update-rc.d -f crashfixd defaults
 </pre>
 
-If your system is Fedora, CentOS or Red Hat Linux, type:
+If your system is CentOS or Red Hat Linux, type:
 
 <pre>
 sudo chkconfig --level 235 crashfixd on
@@ -437,8 +418,7 @@ periodically and restart the daemon on critical errors.
 CrashFix debug info uploader tool is a Windows application allowing
     users to upload their debug info (symbol) files to CrashFix server.
 
-Download the CrashFix uploader tool ZIP archive from our 
-    <?php echo CHtml::link('Download', array('download/index')); ?> 
+Download the CrashFix uploader tool ZIP archive from our Download 
     page. Then unpack the archive to a directory of your choice. 
 
     You should have the following executable files in the directory:

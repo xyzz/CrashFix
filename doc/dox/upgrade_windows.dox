@@ -29,14 +29,13 @@ If something happens when you upgrade your database, you can use the
 If you decide to restore your database, from your command shell, run the following command:
 
 <pre>
-mysql -uroot -p database_name &lt database_backup.txt
+mysql -uroot -p database_name &lt; database_backup.txt
 </pre>
 </div>
 
 \section upgrade_webapp Upgrading CrashFix Web Application
 
-Download the CrashFix web application <i>ZIP</i> archive from our 
-<?php echo CHtml::link('Download', array('download/index')); ?> 
+Download the CrashFix web application <i>ZIP</i> archive from our Download 
 page. Then unpack the archive to web server's document root directory.
 
 Edit the <i>%DOCUMENT_ROOT%/crashfix/protected/config/user_params.ini</i> config file and
@@ -73,8 +72,7 @@ Now your CrashFix web application is upgraded.
 
 \section upgrade_crashfix_service Upgrading CrashFix Service
 
-Download the CrashFix service installer EXE file from our 
-<?php echo CHtml::link('Download', array('download/index')); ?> page.
+Download the CrashFix service installer EXE file from our Download page.
 Then run the installer wizard and follow the installation steps.
 
 */

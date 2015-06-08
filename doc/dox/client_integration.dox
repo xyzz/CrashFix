@@ -18,7 +18,7 @@ First of all, download the latest version of the CrashRpt library from its
 <a href="http://crashrpt.sourceforge.net">official project page</a>. 
 
 Exhaustive instructions on how to install CrashRpt can be found on CrashRpt project's
-<a href="crashrpt.sourceforge.net">Online Documentation</a> page.
+<a href="http://crashrpt.sourceforge.net/docs/html/index.html">Online Documentation</a> page.
 
 Below, we provide specific instructions on how to configure CrashRpt to send crash reports
 to CrashFix server.

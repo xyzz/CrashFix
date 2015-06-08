@@ -41,8 +41,8 @@ the error information is written to this file.
 CrashFix service creates the following log files (in Windows):
 
 <pre>
-C:\Program Files (x86)\CrashFix\logs\monitor.log
-C:\Program Files (x86)\CrashFix\logs\error.log
+C:\\Program Files (x86)\\CrashFix\\logs\\monitor.log
+C:\\Program Files (x86)\\CrashFix\\logs\\error.log
 </pre>
 
 and the following log files in Linux:

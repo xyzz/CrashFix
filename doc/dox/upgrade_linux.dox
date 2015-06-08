@@ -19,9 +19,6 @@ cp -R /path/to/dir/crashfix /path/to/backup/dir
 The command above will copy CrashFix web application's directory and all
 its subdirectories to the backup directory.
 
-<i>Note:</i> if you use SQLite database, it will also be copied by the command above, because
-it is located in <i>crashfix.db</i> file inside of <i>%DOCUMENT_ROOT%/crashfix/protected/data</i> directory.
-
 To backup your MySQL database, you can use the <i>mysqldump</i> tool. From your command shell,
 run the following command:
 
@@ -39,14 +36,13 @@ of the database where CrashFix tables are stored.
 If you decide to restore your database, from your command shell, run the following command:
 
 <pre>
-mysql -uroot -p database_name &lt database_backup.txt
+mysql -uroot -p database_name &lt; database_backup.txt
 </pre>
 
 \section linux_upgrade_webapp Upgrading CrashFix Web Application
 
 Download the CrashFix web application <i>tar.gz</i> archive from our 
-<?php echo CHtml::link('Download', array('download/index')); ?> 
-page. Then unpack the archive to web server's document root directory: 
+Download page. Then unpack the archive to web server's document root directory: 
 
 <pre>
 tar xzvf &lt;archive_name&gt;
@@ -73,14 +69,14 @@ files readable and writable for Apache webserver.
 The following command sets Apache webserver user to be the owner of 
 <i>%DOCUMENT_ROOT%/crashfix</i> directory and its subdirectories (typically, Apache webserver
 runs as 'www-data' user of 'www-data' group in Debian or Linux Ubuntu or as 'apache' user of
-'apache' group in Fedora, CentOS or Red Hat Linux). If your system is Debian or Linux Ubuntu, type 
+'apache' group in CentOS or Red Hat Linux). If your system is Debian or Linux Ubuntu, type 
 the following command:
 
 <pre>
 sudo chown -R www-data:www-data %DOCUMENT_ROOT%/crashfix
 </pre>
 
-If your system is Fedora, CentOS or Red Hat Linux, type the following:
+If your system is CentOS or Red Hat Linux, type the following:
 
 <pre>
 sudo chown -R apache:apache %DOCUMENT_ROOT%/crashfix
@@ -119,8 +115,7 @@ sudo service crashfixd stop
 </pre>
 
 Download an appropriate CrashFix package (RPM or DEB) from 
-our <?php echo CHtml::link('Download', array('download/index')); ?> 
-page. 
+our Download page. 
 
 When the package has been downloaded, update it by typing the following 
 (for DEB package):
