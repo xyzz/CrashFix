@@ -17,6 +17,7 @@ applications written in C++ programming language.
   - \ref install_linux
   - \ref upgrade_windows
   - \ref upgrade_linux
+  - \ref building_crashfix
 - \subpage crashfix_admin
   - \ref first_login
   - \ref users_and_roles
