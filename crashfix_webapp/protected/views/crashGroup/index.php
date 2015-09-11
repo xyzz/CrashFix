@@ -63,7 +63,8 @@ You have no projects assigned.
 <div class="span-27 last">
 	<div class="div_actions">				
 		<?php 
-			if(Yii::app()->user->checkAccess('pperm_manage_crash_reports', Yii::app()->user->getCurProjectId()))
+			if(Yii::app()->user->checkAccess('pperm_manage_crash_reports',  
+                    array('project_id'=>Yii::app()->user->getCurProjectId())))
 				echo CHtml::linkButton("Delete Selected", 
 						array(
 							'id'=>'delete_selected', 

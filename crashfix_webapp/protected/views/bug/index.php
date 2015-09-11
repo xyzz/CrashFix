@@ -144,7 +144,7 @@ $this->breadcrumbs = array(
     <div class="span-27 last">
         <div class="div_actions">				
             <?php
-            if (Yii::app()->user->checkAccess('pperm_manage_bugs', Yii::app()->user->getCurProjectId())) {
+            if (Yii::app()->user->checkAccess('pperm_manage_bugs', array('project_id'=>Yii::app()->user->getCurProjectId()))) {
                 echo CHtml::link('Open New Bug', $this->createUrl('bug/create'));
             }
             ?>	
