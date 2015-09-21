@@ -38,3 +38,6 @@
 /crashfix_service/uploader/*.user
 /crashfix_service/uploader_gui/*.user
 /doc/html
+/crashfix_webapp/assets
+/crashfix_webapp/nbproject
+/crashfix_webapp/protected/runtime

@@ -16,7 +16,7 @@ $this->breadcrumbs=array(
 		
 			<?php
 			
-				if(Yii::app()->user->checkAccess('pperm_manage_bugs', Yii::app()->user->getCurProjectId()))
+				if(Yii::app()->user->checkAccess('pperm_manage_bugs', array('project_id'=>Yii::app()->user->getCurProjectId())))
 				{
 					echo CHtml::link('Comment/Change', '#', array('id'=>'link-make-changes')); 
 		

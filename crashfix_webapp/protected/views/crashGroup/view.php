@@ -15,7 +15,7 @@ $this->breadcrumbs=array(
 		<?php echo CHtml::hiddenField('id', $model->id); ?>		
 		
 		<?php
-			if(Yii::app()->user->checkAccess('pperm_manage_bugs', Yii::app()->user->getCurProjectId()))
+			if(Yii::app()->user->checkAccess('pperm_manage_bugs', array('project_id'=>Yii::app()->user->getCurProjectId())))
 			{
 				echo CHtml::link('Open Bug', $this->createUrl('bug/create', 
 						array('crashgroup'=>$model->id,)) ); 
@@ -23,7 +23,7 @@ $this->breadcrumbs=array(
 		?>
 		
 		<?php
-			if(Yii::app()->user->checkAccess('pperm_manage_crash_reports', Yii::app()->user->getCurProjectId()))
+			if(Yii::app()->user->checkAccess('pperm_manage_crash_reports', array('project_id'=>Yii::app()->user->getCurProjectId())))
 			{				
 				echo CHtml::linkButton('Delete Collection', 
 						array(

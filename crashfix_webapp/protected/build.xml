@@ -12,24 +12,18 @@
     <property name="srcdir"   value="${project.basedir}" override="true" />
     
     <!-- Directory where to write build output files. -->
-	<property name="builddir" value="${project.basedir}/build/crashfix" override="true" />
-    
-    <!-- Directory where ionCube encoder is installed -->
-	<property name="ioncubedir" value="C:\Program Files (x86)\ionCube PHP Encoder 7.0" override="true" />	
+    <property name="builddir" value="${project.basedir}/build/crashfix" override="true" />
     
     <!-- Wether to skip third-party files when building (reduces build time) -->
     <property name="skipthirdparty" value="false" override="false" />
-	
-    <!-- Where to save ionCube-encoded files -->
-    <property name="buildencodeddir" value="${project.basedir}/build_encoded/crashfix" override="true" />
-    
+
     <!-- How to name the output package -->
     <property name="package_name"  value="crashfix-webapp-${product_version}" override="true" />	
     
     <!-- Directory where to install output files (OS-specific). -->
     <if><equals arg1="${host.os}" arg2="Linux" />
     <then>
-        <property name="installdir"   value="/var/www/crashfix" override="true" />
+        <property name="installdir"   value="/var/www/html/crashfix" override="true" />
     </then>
     <else>
         <property name="installdir"   value="C:\Program Files (x86)\Apache Software Foundation\Apache2.2\htdocs\crashfix" override="true" />
@@ -44,7 +38,7 @@
     <fileset id="mainfiles" dir="${srcdir}">
         <include name="index.php" /> 
         <include name="css/*.css" />        
-		<include name="css/*.gif" />        
+	<include name="css/*.gif" />        
         <include name="images/*.png" />                 
         <include name="protected/.htaccess" />
         <include name="protected/yiic.php" />
@@ -52,7 +46,7 @@
         <include name="protected/yiic.bat" />
         <include name="protected/commands/*.php" />		
         <include name="protected/components/*.php" />
-		<include name="protected/config/*.php" />
+	<include name="protected/config/*.php" />
         <include name="protected/controllers/*.php" />
         <include name="protected/migrations/*.php" />
         <include name="protected/models/*.php" />                
@@ -62,8 +56,8 @@
     <!-- Third-party files (frameworks, extensions and so on). -->
     <fileset id="thirdpartyfiles" dir="${srcdir}">
         <include name="protected/extensions/**" />
-	    <include name="protected/vendors/**" />
-		<include name="protected/framework/**" />        
+        <include name="protected/vendors/**" />
+	<include name="protected/framework/**" />        
     </fileset>
     
     <!-- Config file(s). -->
@@ -84,10 +78,10 @@
     <!-- ============================================  -->
     <target name="clean" description="Cleans the build directory">
 		
-		<echo msg="Cleaning up build directory..." />      
+        <echo msg="Cleaning up build directory..." />      
         <delete dir="${builddir}" />        
 		
-		<echo msg="Cleaning up build_encoded directory..." />      		
+	<echo msg="Cleaning up build_encoded directory..." />      		
         <delete dir="${buildencodeddir}" />        		
 		
     </target>
@@ -100,7 +94,7 @@
         <echo msg="Creating build directory..." />      
         <mkdir dir="${builddir}" />         
         
-		<echo msg="Copying main files..."/>
+	<echo msg="Copying main files..."/>
                
         <copy todir="${builddir}">
             <fileset refid="mainfiles" />            
@@ -113,17 +107,17 @@
                 <fileset refid="thirdpartyfiles" />            
             </copy>
         </then>
-		<else>
-			<echo msg="Skipping third-party files (skipthirdparty==${skipthirdparty})..."/>               
-		</else>		
-		</if>
-        
-		<echo msg="Copying config file(s)..." />
-		
-		<copy todir="${builddir}/">
-			<mapper type="glob" from="*.ini.template" to="*.ini"/>
-			<fileset refid="config_template_files" />                
-		</copy>
+        <else>
+            <echo msg="Skipping third-party files (skipthirdparty==${skipthirdparty})..."/>               
+        </else>		
+        </if>
+
+        <echo msg="Copying config file(s)..." />
+
+        <copy todir="${builddir}/">
+            <mapper type="glob" from="*.ini.template" to="*.ini"/>
+            <fileset refid="config_template_files" />                
+        </copy>
 			   
         <echo msg="Making subdirectories..." />
 		
@@ -132,107 +126,41 @@
         <mkdir dir="${builddir}/protected/data/crashReports"  mode="0775"/>
         <mkdir dir="${builddir}/protected/data/debugInfo" mode="0775"/>        
         <mkdir dir="${builddir}/protected/runtime"  mode="0775"/>
-		<mkdir dir="${builddir}/protected/runtime/crashReports"  mode="0775"/>
-		<mkdir dir="${builddir}/protected/runtime/debugInfo"  mode="0775"/>        
-		<mkdir dir="${builddir}/protected/import"  mode="0775"/>
-		<mkdir dir="${builddir}/protected/import/crashReports"  mode="0775"/>
-		<mkdir dir="${builddir}/protected/import/debugInfo"  mode="0775"/>        
-				
+        <mkdir dir="${builddir}/protected/runtime/crashReports"  mode="0775"/>
+        <mkdir dir="${builddir}/protected/runtime/debugInfo"  mode="0775"/>        
+        <mkdir dir="${builddir}/protected/import"  mode="0775"/>
+        <mkdir dir="${builddir}/protected/import/crashReports"  mode="0775"/>
+        <mkdir dir="${builddir}/protected/import/debugInfo"  mode="0775"/>        
+
 		
     </target>
-	
-	<!-- ============================================  -->
-    <!-- Target: Encode                                -->
+
     <!-- ============================================  -->
-    <target name="encode" depends="build" description="Encodes output files with ionCube PHP Encoder">
-				
-		<mkdir dir="${buildencodeddir}"  mode="0775"/>        
-		
-		<echo msg="Running ionCube PHP Encoder..." />      
-		<exec command="ioncube_encoder53.exe --optimize more --binary --update-target ${builddir} -o ${buildencodeddir}" 
-              dir="${ioncubedir}"               
-			  passthru="true" 
-			  checkreturn="true" /> 
-			  
-    </target>
-	
-    <!-- ============================================  -->
-    <!-- Target: Install                                 -->
-    <!-- ============================================  -->
-    <target name="install" depends="encode" description="Installs the web application">
-        
-        <echo msg="Creating install directory..." />      
-        <mkdir dir="${installdir}" />                  
-                          
-        <echo msg="Copying encoded files..." />
-               
-        <copy todir="${installdir}">
-            <fileset dir="${buildencodeddir}">           
-				<include name="**" />
-				<exclude name="protected/config/user_params.ini"/>
-			</fileset>
-        </copy>
-        
-		<echo msg="Copying config file..." />		
-		<if><available file="${installdir}/protected/config/user_params.ini"/>
-		<then>
-			<!-- if file already exists, we need to update its modtime to avoid
-			     rewriting the file. -->
-			<echo msg="Touching existing config file..." />		
-			<touch file="${installdir}/protected/config/user_params.ini"/>
-		</then>
-		</if>		
-		<copy todir="${installdir}">
-            <fileset dir="${buildencodeddir}">           
-				<include name="protected/config/user_params.ini"/>				
-			</fileset>
-        </copy>
-				
-		<echo msg="Copying test files..." />
-               
-        <copy todir="${installdir}">
-            <fileset refid="testfiles" />            
-        </copy>		
-				
-        <if><equals arg1="${host.os}" arg2="Linux" /><then>
-		
-			<echo msg="Setting up files owner permissions..." />
-		
-            <chown file="${installdir}" user="${webserveruser}.${webservergroup}">
-                <fileset dir="${installdir}" includes="**" />
-            </chown>            
-        </then></if> 
-        
-        <phingcall target="migrate" />
-        
-    </target>
-    
-	<!-- ============================================  -->
     <!-- Target: install-no-encode                     -->
     <!-- ============================================  -->
-    <target name="install-no-encode" depends="build" description="Installs the web application (no encoding)">
+    <target name="install" depends="build" description="Installs the web application">
         
         <echo msg="Creating install directory..." />      
         <mkdir dir="${installdir}" />                  
                           
-        <echo msg="Copying unencoded files..." />
+        <echo msg="Copying files..." />
                
         <copy todir="${installdir}">
             <fileset dir="${builddir}">           
-				<include name="**" />
-				<exclude name="protected/config/user_params.ini"/>
-			</fileset>
+		<include name="**" />
+		<exclude name="protected/config/user_params.ini"/>
+            </fileset>
         </copy>
         
-		<echo msg="Copying config file..." />
-		<touch file="${installdir}/protected/config/user_params.ini"/>
-		<copy todir="${installdir}">
+	<echo msg="Copying config file..." />
+            <touch file="${installdir}/protected/config/user_params.ini"/>
+            <copy todir="${installdir}">
             <fileset dir="${builddir}">           
-				<include name="protected/config/user_params.ini"/>				
-			</fileset>
+		<include name="protected/config/user_params.ini"/>				
+            </fileset>
         </copy>
 				
-		<echo msg="Copying test files..." />
+	<echo msg="Copying test files..." />
                
         <copy todir="${installdir}">
             <fileset refid="testfiles" />            
@@ -240,7 +168,7 @@
 				
         <if><equals arg1="${host.os}" arg2="Linux" /><then>
 		
-			<echo msg="Setting up files owner permissions..." />
+            <echo msg="Setting up files owner permissions..." />
 		
             <chown file="${installdir}" user="${webserveruser}.${webservergroup}">
                 <fileset dir="${installdir}" includes="**" />
@@ -256,7 +184,7 @@
     <!-- ============================================  -->
     <target name="migrate" description="Migrates database up">
         
-		<echo msg="Migrating database up..." />
+        <echo msg="Migrating database up..." />
         <exec command="php yiic.php migrate --interactive=0" 
               dir="${installdir}/protected" 
               logoutput="true" checkreturn="true" />    
@@ -264,9 +192,9 @@
     </target>
     
     <!-- ============================================  -->
-    <!-- Target: Test                              -->
+    <!-- Target: test                                  -->
     <!-- ============================================  -->
-    <target name="test" depends="install" description="Runs unit tests (encoded)">
+    <target name="test" depends="install" description="Runs unit tests">
         
         <echo msg="Migrating test database up..." />
 		
@@ -274,24 +202,6 @@
               dir="${installdir}/protected" logoutput="true" checkreturn="true" />
                     		
 		<echo msg="Running PHPUnit..." />
-		
-		<exec command="phpunit --stderr unit" 
-              dir="${installdir}/protected/tests" 
-              passthru="true" checkreturn="true" />  
-            
-    </target>
-	
-	<!-- ============================================  -->
-    <!-- Target: test-no-encode                        -->
-    <!-- ============================================  -->
-    <target name="test-no-encode" depends="install-no-encode" description="Runs unit tests (unencoded)">
-        
-        <echo msg="Migrating test database up..." />
-		
-        <exec command="php yiic.php migrate up --connectionID=dbTest --migrationTable=test_migration --interactive=0" 
-              dir="${installdir}/protected" logoutput="true" checkreturn="true" />
-                    		
-		<echo msg="Running PHPUnit (unencoded)..." />
 		
 		<exec command="phpunit --stderr --coverage-html ./report unit" 
               dir="${installdir}/protected/tests" 
@@ -302,35 +212,35 @@
     <!-- ============================================  -->
     <!-- Target: package                               --> 
     <!-- ============================================  -->
-    <target name="package" depends="encode" description="Packages the web application's files (encoded)">
+    <target name="package" depends="build" description="Packages the web application's files">
 
-		<delete file="./${package_name}.tar.gz" />
+	<delete file="./${package_name}.tar.gz" />
 		
         <echo msg="Creating TAR.GZ archive..." />
 
         <tar destfile="./${package_name}.tar.gz" 
-             basedir="${project.basedir}/build_encoded" 
+             basedir="${project.basedir}/build" 
              compression="gzip">            
         </tar>			
 	
-		<reflexive>
-		  <fileset dir="${buildencodeddir}/">
-			<include name="protected/config/user_params.ini"/>
-		  </fileset>
-		  <filterchain>
-			<replaceregexp>
-			   <regexp pattern="\n" replace="${line.separator}"/>
-			</replaceregexp>
-		  </filterchain>
-		</reflexive>
+        <reflexive>
+          <fileset dir="${builddir}/">
+                <include name="protected/config/user_params.ini"/>
+          </fileset>
+          <filterchain>
+                <replaceregexp>
+                   <regexp pattern="\n" replace="${line.separator}"/>
+                </replaceregexp>
+          </filterchain>
+        </reflexive>
 			
-		<delete file="./${package_name}.zip" />
-				
-		<echo msg="Creating ZIP archive..." />
-		
-		<zip destfile="./${package_name}.zip"
-			basedir="${project.basedir}/build_encoded">			
-		</zip>			
+        <delete file="./${package_name}.zip" />
+
+        <echo msg="Creating ZIP archive..." />
+
+        <zip destfile="./${package_name}.zip"
+                basedir="${project.basedir}/build">			
+        </zip>			
 
     </target>
     
