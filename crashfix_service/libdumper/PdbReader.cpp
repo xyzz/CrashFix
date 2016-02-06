@@ -336,25 +336,20 @@ CPdbSectionMapStream* CPdbReader::GetSectionMapStream()
 		// This stream is typically #9 for x86, but can be sometimes #8 for x64 when FPO streams missing
 
         BOOL bResult = FALSE;
-        CMsfStream* pStream = m_MsfFile.GetStream(9);
-        m_pSectionMapStream = new CPdbSectionMapStream(this, pStream, &bResult);
-        if(!bResult)		
-		{
-			// Delete stream
-			delete m_pSectionMapStream;
-			m_pSectionMapStream = NULL;
-						
-			// Try stream #8
-			pStream = m_MsfFile.GetStream(8);
-			m_pSectionMapStream = new CPdbSectionMapStream(this, pStream, &bResult);
-			if(!bResult || !m_pSectionMapStream)		
-			{
-				// Delete stream
-				delete m_pSectionMapStream;
-				m_pSectionMapStream = NULL;
-	            return FALSE; 
-			}
-		}
+
+        // Try streams #9, #8, #10
+        int try_streams[] = { 9, 8 , 10 };
+        int i;
+        for (i = 0; i < sizeof(try_streams)/sizeof(try_streams[0]); ++i) {
+            int stream = try_streams[i];
+            CMsfStream* pStream = m_MsfFile.GetStream(stream);
+            m_pSectionMapStream = new CPdbSectionMapStream(this, pStream, &bResult);
+            if (bResult && m_pSectionMapStream)
+                return m_pSectionMapStream;
+
+            delete m_pSectionMapStream;
+            m_pSectionMapStream = NULL;
+        }
 	}
 
     return m_pSectionMapStream;
